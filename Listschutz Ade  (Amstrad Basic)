@@ -1,0 +1,10 @@
+rem ++++++++++++++++++++++++++++++++++
+rem ++++++++ Ade Listschutz ++++++++++
+rem ++++++++   Amstrad CPC  ++++++++++
+rem ++++++++++++++++++++++++++++++++++
+FOR i=&A600 to &AE604
+READ a:POKE i,a:NEXT
+FOR i=&AC01 to &AC03
+READ a:POKE i,a:NEXT
+DATA &97,&32,&45,&ae,&c9
+DARA &c3,&00,&a6
