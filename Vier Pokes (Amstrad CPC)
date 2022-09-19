@@ -1,0 +1,4 @@
+poke &ac01,&af
+poke &ac02,&32
+poke &ac03,&45
+poke 6ac04,&ae
