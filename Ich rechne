@@ -1,0 +1,67 @@
+INK 0,0:INK 1,26:INK 2,6:INK 3,18; BORDER 0
+REM Dieses Programm zeichnet Muster 
+mode 1:DEG
+PRINT "3,4 oder 6seitige Muster ?
+LINE INPUT p$
+IF p$="3" THEN sa=120:GOTO 100 
+IF p$ = "4" THEN sa = 135.:G0T0 100 
+IF p$="6” THEN sa=150:GOTO 100 
+GOTO 50
+PRINT:PRINT "Ich rechne";
+IF p$="3" THEN ORIGIN 0,-50,0,640,0,400 ELSE ORIGIN 0,0,0,640,0,400 
+DIM cx(5) ,cy(5),r(5),Lc(5)
+DIM np(5)
+DIM px%(5,81),py%(5,81)
+st=1
+cx( 1 )=320: cy( 1 ) = 200:r(1 )=80
+FOR st=1 TO 4
+r(st+1)=r(st)/2
+NEXT st
+FOR st=1 TO 5
+ lc(st)=0:np(st)=0
+ np(st)=np(st)+1
+ px%(st,np(st))=r(st)*SIN(Lc(st))
+ py%(st,np(st))=r(st)*COS(lc(st))
+ Lc(st)=lc(st)+360/r(st)
+ IF (lc(st) MOD 60)=0 THEN PRINT ".";
+ IF Lc(st) < 360 THEN 210 
+ px%(st,np(st) +1)=px%(st, 1)
+ py%(st,np(st) + 1)=py%(st, 1)
+NEXT st
+CLS:ink 1,2
+st=1
+GOSUB 340
+LOCATE 1,1
+EVERY 25,1 GOSUB 510
+EVERY 15,2 GOSUB 550
+EVERY 5,3 GOSUB 590
+GOTO 330
+REM Kreis zeichnen und 3,4 oder 6 andere um diesen
+cx%=cx(st):cy%=cy(st):Lc(st)=0 
+FOR x%=1 TO np(st)
+MOVE cx%,cy%
+DRAW cx%+px%(st,x%),cy%+py%(st,x%),1+(st MOD 3)
+DRAW cx%+px%(st,x%+1),cy%+py%(st,x%+1),1+(st MOD 3)
+NEXT x%
+IF st=5 THEN RETURN 
+lc(st)=0
+cx(st+1)=cx(st)+1.5*r(st)*SIN(sa+Lc(st))
+cy(st+1)=cy(st)+t.5*r(st)*COS(sa+Lc(st))
+st=st+1
+GOSUB 340 
+st=st-1
+Lc(st)=Lc(st)+2*sa
+IF (lc(st) MOD 360)00 THEN 430
+RETURN
+ik(1)=1+RND*25
+IF ik(1)=ik(2) OR ik(1)=ik(3) THEN 510
+INK 1,ik(1)
+RETURN
+ik(2)=1+RND*25
+IF fk(2)=ik(1) OR ik(2)=ik(3) THEN 550
+INK 2,ik(2)
+RETURN
+ik(3)=1+RND*25
+IF ik(3)=ik(1) OR ik(3)=ik(2) THEN 590
+INK 3,ik(3)
+RETURN
