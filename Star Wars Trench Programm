@@ -1,0 +1,89 @@
+100 REM ******************************
+110 REM ******************************
+120 REM *  STAR WARS TRENCH PROGRAM  *
+130 REM ******************************
+140 REM ******************************
+150 GOSUB 410
+160 GOSUB 250
+170 z$=INKEY$
+180 IF z$="" THEN 170
+190 IF ASC(z$)=241 THEN GOSUB 800
+200 IF ASC(zS)=240 THEN GOSUB 590
+210 rep=INT(clelay/10) : IF rep<10 THEN rep=10
+220 SOUND 1,INT(deIay*10),rep,15,15,15,5
+230 FOR L=1 TO delay : NEXT l
+240 GOTO 170
+250 REM ******************************
+260 REM * DRAW TRENCH
+270 REM ******************************
+280 CLS
+290 FOR xc=10 TO 320
+300 c=INT(colour+0.5)
+310 PLOT x0-320,ycl,c
+320 DRAW xcl-320,yc2,c
+330 DRAW 318-xc,yc2,c
+340 DRAW 318-xc,ycl,c
+350 yc1=yc1-1-0.6
+360 yc2=yc2-0.6 370 coIour=colour+((318-xc)/640)/4
+380 IF coIour+0.5>=4 THEN coIour=colour-3
+390 NEXT
+400 RETURN
+410 REM ******************************
+420 REM * INITIALISE
+430 REM ******************************
+440 co1our=1
+450 yc1=200
+460 yc2=210
+470 PAPER 0
+480 BORDER 0
+490 delay=400
+500 INK 0,0
+510 c1=24 : INK 1,c1
+520 c2=24 : INK 2,c2
+530 c3=2 : INK 3,c3
+540 accel=0.95
+550 KEY DEF 72,1,240
+560 KEY DEF 73,1,241
+570 RETURN
+580 REM ******************************
+590 REM * ROTATE FORWARDS
+600 REM ******************************
+610 ON r GOSUB 670,710,750
+620 r=r+1
+630 IF r>3 THEN r=1
+640 F dir=1 THEN delay=deLay*accel : GOTO 660
+650 dir=1 : de1ay=400
+660 RETURN
+670 INK 1,c1
+680 INK 2,c2
+690 INK 3,c3
+700 RETURN
+710 INK 1,c3
+720 INK 2,c1
+730 INK 3,c2
+740 RETURN
+750 INK 1,c2
+760 INK 2,c3
+770 INK 3,c1
+780 RETURN
+790 REM ******************************
+800 REM * ROTATE BACKWARDS
+810 REM ******************************
+820 ON r GOSUB 880,920,960
+830 r=r+1
+840 IF r>3 THEN r=1
+850 IF dir=2 THEN delay=delay*accel : GOTO 870
+860 dir=2 : deLay=400
+870 RETURN
+880 INK 1,c1
+890 INK 2,c2
+900 INK 3,c3
+910 RETURN
+920 INK 1,c2
+930 INK 2,c3
+940 INK 3,0
+950 RETURN
+960 INK 1,c3
+970 INK 2,c1
+980 INK 3,c2
+990 RETURN
