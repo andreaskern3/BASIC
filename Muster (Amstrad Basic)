@@ -1,4 +1,4 @@
- 10 INK 0,0:INK 1,26:INK 2,6:INK 3,18; BORDER 0
+ 10 INK 0,0:INK 1,26:INK 2,6:INK 3,18: BORDER 0
  20 REM Dieses Programm zeichnet Muster 
  30 mode 1:DEG
  40 PRINT "3,4 oder 6seitige Muster ?
@@ -32,9 +32,9 @@
 270 st=1
 280 GOSUB 340
 290 LOCATE 1,1
-300 EVERY 25,1 GOSUB 510
-310 EVERY 15,2 GOSUB 550
-320 EVERY 5,3 GOSUB 590
+300 EVERY 250,1 GOSUB 510
+310 EVERY 150,2 GOSUB 550
+320 EVERY 50,3 GOSUB 590
 330 GOTO 330
 340 REM Kreis zeichnen und 3,4 oder 6 andere um diesen
 350 cx%=cx(st):cy%=cy(st):Lc(st)=0 
@@ -51,7 +51,7 @@
 460 GOSUB 340 
 470 st=st-1
 480 Lc(st)=Lc(st)+2*sa
-490 IF (lc(st) MOD 360)00 THEN 430
+490 IF (lc(st) MOD 360)<>00 THEN 430
 500 RETURN
 510 ik(1)=1+RND*25
 520 IF ik(1)=ik(2) OR ik(1)=ik(3) THEN 510
