@@ -2,7 +2,7 @@ rem ++++++++++++++++++++++++++++++++++
 rem ++++++++ Ade Listschutz ++++++++++
 rem ++++++++   Amstrad CPC  ++++++++++
 rem ++++++++++++++++++++++++++++++++++
-10 FOR i=&A600 to &AE604
+10 FOR i=&A600 to &A604
 20 READ a:POKE i,a:NEXT
 30 FOR i=&AC01 to &AC03
 40 READ a:POKE i,a:NEXT
