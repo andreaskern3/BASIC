@@ -7,4 +7,4 @@ rem ++++++++++++++++++++++++++++++++++
 30 FOR i=&AC01 to &AC03
 40 READ a:POKE i,a:NEXT
 50 DATA &97,&32,&45,&ae,&c9
-60 DARA &c3,&00,&a6
+60 DATA &c3,&00,&a6
