@@ -1,0 +1,122 @@
+10 POKE &AC02,&90
+20 POKE &AC03,&C0
+30 POKE&AC01,&C3
+
+SAVE "Deprotector" (auf Disk) (für ,P)
+
+1 REM ===============================
+2 REM
+3 REM         FILE EXAMINER
+4 REM
+5 REM  (C) 1985 by Andreas 
+6 REM
+7 REM ===============================
+100 ON ERROR GOTO 110 :�CAS  :GOTO   140
+110 RESUME 120
+120 ON ERROR GOTO 130 :�TAPE :GOTO   140
+130 RESUME 140
+140 ON ERROR GOTO
+150 IF PEEK(&BB01)=&E0 THEN cpc=0
+160 IF PEEK(&BB01)=&5C THEN cpc=1768
+170 SYMBOL AFTER 255:SYMBOL 255,0,0,0,0,0,0,66,126
+180 MODE 1:PEN 1
+190 PEN 1:PRINT "----------------------------------------";
+200 PEN 2:PRINT "    CPC 464/664/6128 - HEADER READER"
+210 PEN 1:PRINT "----------------------------------------";
+220 PEN 2:PRINT "     (C) 1985 by Andreas Zallmann."
+230 PEN 1:PRINT "----------------------------------------"
+240 WINDOW 1,40,7,25
+250 GOSUB 620
+260 PEN 1
+270 ON BREAK GOSUB 290
+280 CAT
+290 CLS
+300 a=PEEK(47262-cpc):b=(a AND 14)/2
+310 IF b=0 THEN PRINT"Programm: ";
+320 IF b=1 THEN PRINT"Bytes   : ";
+330 IF b=2 THEN PRINT"Screen  : ";
+340 IF b=3 THEN PRINT"ASCII   : ";
+350 n$=""
+360 FOR i=47244-cpc TO 47259-cpc
+370 IF PEEK(i)=0 THEN POKE i,255
+380 n$=n$+CHR$(PEEK(i))
+390 NEXT i
+400 PRINT n$
+410 PRINT
+420 PRINT"Block   :";PEEK(47260-cpc)
+430 PRINT
+440 PRINT
+450 PRINT"Startadresse            :";PEEK(47265-cpc)+256*PEEK(47266-cpc)
+460 PRINT
+470 PRINT"Laenge des Blockes      :";PEEK(47263-cpc)+256*PEEK(47264-cpc)
+480 PRINT
+490 PRINT"Laenge des ganzen Files :";PEEK(47268-cpc)+256*PEEK(47269-cpc)
+500 PRINT
+510 PRINT"Auto-Start              :";PEEK(47270-cpc)+256*PEEK(47271-cpc)
+520 PRINT
+530 PRINT
+540 PRINT"Bemerkungen: ";
+550 IF PEEK(47261-cpc)<>0 AND PEEK(47267-cpc)<>0 THEN PRINT "Der einzige Block":GOTO 570
+560 IF PEEK(47261-cpc)<>0 THEN PRINT "Der letzte Block" ELSE IF PEEK(47267-cpc)<>0 THEN PRINT "Der erste Block" ELSE PRINT "Weder erster noch","             letzter Block"
+570 c=a AND 1
+580 IF c=1 THEN PRINT "             Geschuetztes Programm" ELSE IF b=0 THEN PRINT "             Ungeschuetztes Programm"
+590 LOCATE 12,19:PEN 2:PRINT "E-ENDE  W-WEITER":PEN 1
+600 i$=UPPER$(INKEY$)
+610 IF i$="E" THEN MODE 1:END ELSE IF i$="W" THEN CLS:GOTO 280 ELSE 600
+620 CLS:PRINT:PRINT "Druecken Sie eine Taste um das Band zu  Starten. Nach dem Einlesen des Namens   koennen sie 2 x >ESCAPE< druecken, um   alle Informationen ueber das File zu er-halten."
+630 PRINT:PRINT"Druecken Sie nach der Ausgabe der In-   formationen >W< um weiterzulesen oder   >E< um das Programm zu beenden."
+640 LOCATE 7,19:PEN 2:PRINT "Bitte eine Taste druecken."
+650 WHILE INKEY$<>"":WEND:WHILE INKEY$="":WEND:CLS:RETURN
+
+SAVE "File Examine" (aif Disk)
+
+POKE &B092,0
+POKE &B093,&C0
+POKE &B094,0
+POKE &BO95,&D0
+
+Load "Dass zu kopierende geschütze Programm" 
+
+SAVE "NAME", b, Startadresse, Länge, < Aufruf >
+
+-----------------------------
+
+Load "File Examiner" (für ,B)
+
+Rechner zurücksetzen
+OPENOUT "d",
+MEMORY 499,
+Maschinenprogramm von Cassette laden,
+Maschinenprogramm auf Diskette ablegen.
+
+Beginnt das Maschinenprogramm erst ab Adresse 4600 und endet vor Adresse 42620, so bietet sich folgendes Verfahren an, bei dem der Cassettenbuffer vor das Programm gelegt wird:
+
+Rechner zurücksetzen,
+MEMORY 4599,
+Maschinenprogramm von Cassette laden,
+Maschinenprogramm auf Diskette ablegen.
+
+Falls der Cassettenbuffer jedoch nicht vor oder hinter das Programm paßt, also unter Adresse 4600 beginnt und bis über -Adresse 38520 hinausreicht, so können wir den Cassettenbuffer wieder in den Bildschirmspeicher legen. Voraussetzung: Das Programm beginnt nicht unter Adresse 400 und überschreitet nicht Adresse 42619. Sie müssen dann folgende Schritte durchführen:
+
+Rechner zurücksetzen,
+OPENOUT "d",
+Cassettenbuffer in Bildschirmspeicher verlegen (s.o.),
+Maschinenprogramm von Cassette laden,
+Maschinenprogramm auf Diskette ablegen.
+
+-------------------------------
+
+ASCII-Files kopieren
+
+Eine ASCII-Datei auf Diskette zu kopieren, ist eigentlich überhaupt kein Problem. Sie benutzen dazu folgendes Programm:
+
+10 |TAPE.IN
+20 |DISC.OUT
+30 OPENIN "Cassettenname"
+40 OPENOUT "Diskettenname"
+50 WHILE NOT EOF
+60 INPUT #9,A$
+70 PRINT #9,A$
+80 WEND
+90 CLOSEIN
+100 CLOSEOUT
