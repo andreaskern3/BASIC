@@ -68,7 +68,7 @@ SAVE "Deprotector" (auf Disk) (für ,P)
 640 LOCATE 7,19:PEN 2:PRINT "Bitte eine Taste druecken."
 650 WHILE INKEY$<>"":WEND:WHILE INKEY$="":WEND:CLS:RETURN
 
-SAVE "File Examine" (aif Disk)
+SAVE "File Examiner" (auf Disk)
 
 POKE &B092,0
 POKE &B093,&C0
