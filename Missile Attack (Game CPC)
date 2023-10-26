@@ -1,0 +1,168 @@
+100 Rem Missile Attack
+110 Rem Initialisation
+120 defint a-z:defreal o,x,y
+130 dim x(20),offx(20),xold(20),y(20),offy(20),citypos(10),city(20),kill(20),target(20),dead(10)
+140 sightx=10:sighty=10:pressed=0:gosub 1210:dummy=SQ(2)
+150 mode 0:randomize time:origin 0,0,0,639,380,0
+160 cnum=6:silonum=4:mnum=32:tim=99:count=1
+170 son$=chr$(22)+chr$(1):soff$=chr$(22)+chr$(0)
+180 restore 1770:pen 9:locate 1,1:print "T:99";
+190 pen 5:locate 7,1:print "S:000000";:pen 10:locate 17,1:print "R:32";
+200 for n=1 to 10:read citypos(n):dead(n)=0:next n:basepos=9
+210 ink 0,0:border 0:ink 1,21:ink 2,23:ink 3,16:ink 5,7
+220 FOR n=0 TO 4 STEP 2:PLOT 0,n,5:DRAW 639,n:NEXT n:PRINT son$;
+230 pen 9:for n=1 to 10:if n>3 and n<8 then 250
+240 locate citypos(n),25:print "[]";
+250 next n:pen 10:locate basepos,25:print "↑↑↑↑";soff$;
+260 plot 0,6,15:draw 0,14:plot 639,6:draw 639,14
+270 every 5000,1 gosub 1000
+280 every 50 gosub 970
+290    rem    Calculate targets & No of Bombs
+300 num=1+cint(rnd*2):for n=1+stagger to num+stagger
+310     x(n)=cint(rnd*640):y(n)=400:xold(n)=x(n)
+320     city=1+cint(rnd*9):city(n)=cint(32*citypos(city)+16*(city>3 and city<8))
+330     target(n)=city:offx(n)=(city(n)-x(n))/100:offy(n)=(0-y(n))/100
+340 next n:bnum=num+stagger
+350     rem   Main Loop - move bombs & sight 
+360 if pass then 410
+370 for n=1 to bnum
+380 x=xn(n):y=y(n):plot x,y,1:x=x+offx(n):y=y+offy(n):plot x,y,3:x(n)=x:y(n)=y
+390 if y<20 then goto 540
+400 next n
+410 pas=1-pass:sightxold=sightyold=sighty
+420 sighty=sighty+((inkey(up)=pressed)-(inkey(down)=pressed))
+430 if (sighty<2 or sightx>23) then sighty=sightyold
+440 sightx=sightx+((inkey(left)=pressed)-(inkey(right)=pressed))
+450 if (sightx<1 or sight>20) then sightx=sightxold
+460 a=((sightx<4)+(sightx<7)+(sightx<10))
+470 sty=sighty*50:sound 129,sty,99,a:sound 130,sty,99,b:sound 132,sty,99,c 
+480 di:pen 4:locate sightxold,sightyold:print "";
+490 locate sightx,sighty:print "+";:EI 
+500 if inkey(fire)=pressed then gosub 720
+510 if (rnd<0.015 and bnum<18) then stagger=0:goto 300
+520 goto 360
+530    rem    Bomb hits target !
+540 gosub 570:if bnum=0 then stagger=o:goto 300 else goto 360
+550    end
+560    rem    Destroy city etc
+570 city=target(n):if dead(city)=1 then 610
+580 dead(city)=1:if (city>3 and city<8) then mnum=cint(mnum-mnum/silonum):silonum=silonum-1:gosub 940:if silonum<1 then mnum=0:silonum=1 goto 610 else 610
+590 cnum=cnum-1:if (cnum+store)>0 then 610 else dummy=reamain(0):dummy=remain(1):vol=0:flag=1:restore:on sq(2) gosub 1540
+600 goto 600
+610 for wipe=-4 to 4 step 4:move xold(n)+wipe,400:draw city(n)+wipe,0,0:next wipe
+620 di:city(n)=cint(city(n) /32):pen 6:locate city(n),25
+630 if city(n)<9 or city(n)>12 then print "/\";else print "-";
+640 plot 0,0,5:draw 649,0:plot 0,6,15:draw 0,14:plot 639,6:draw 639,14
+650 for crash=999 to 0 step -15:sound 135,rnd*crash,1,7,0,0,7:next crash:EI
+660 for m=n to bnum-1
+670    x(m)=x(m+1):y(m)=y(m+1):offx(m)=offx(m+1):offy(m)=offy(m+1)
+680    city(m)=city(m+1):target(m)=target(m+1):xold(m)=xold(m+1)
+690 next m:bnum=bnum-1
+700    return 
+710    rem    Launch rockets !!
+720 if mnum<1 then for boink=300 to 0 step -10:sound 130,boink,1,5:next boink:goto 950
+730 sx=cint(sight*32-16):sy=cint(408-sighty*16)
+740 plot 0,16,14:draw sx,sy:plot 639,16:draw sx,sy
+750 di:plot sx,sy,11:blank=0:kill=0
+760 z=0:boomx=25:boomy=0
+770 z1=z+bommy+bommy+1:z2=z1-boomx-boomx1+1:move sx,sy:drawr boomx,boomy
+780 move sx,sy:drawr -boomx,boomy:move sx,sy:drawr boomx,-boomy:move sx,sy
+790 drawr -boomx,-boomy:move sx,sy:drawr boomy,-boomx:move sx,sy
+800 drawr -boomy,boomx:move sx,sy:drawr boomy,-boomx:move sx,sy
+810 drawr -bommy,-boomx:z=z1=boomy+2:EI
+820 sound 129,boomx:sound 130,z1:sound 132,boomy
+830 if abs(z2)<abs(z1) then z=z2:boomx=boomx-1
+840 if boomx>bommy then 770
+850 if blank then 940
+860 for n=1 to bnum:if test (x(n),y(n))=11 then kill=kill+1:hit(kill)=n
+870 next n:if kill=0 then 920
+880 for remove=1 to kill:n=hit(remove)
+890 for wipe=-4 to 4 step 4:move xold(n)+wipe,400:draw x(n)+wipe,y(n),0:next
+900 for bang=1500 to 100 step -25:sound 5,rnd*bang/200,0,0,bang/100:next
+910 next remove:score!=score!+50*kill:di:gosub 1150
+920 blank=1:di:plot 0,16,0:draw sx,sy:plot 639,16:draw sx,sy
+930 mnum=mnum-1:plot sx,sy,0:goto 760
+940 di:pen 10:locate 19,1:print using "##";mnum;:EI 
+950    return
+960    rem    Decrement clock interrupt
+970 di:tim=tim-1:pen 9:locate 3,1:print using "##";tim;:EI
+980    return
+990    rem    End of wave etc interrupt
+1000 colour=colour+1:if (colour=2 or colour=7 or colour=12 or colour=14 or colour=16 or colour=21 or colour=24) then 1000
+1010 if colour=26 then colour=0
+1020 ink 0,colour:border colour:tim=100
+1030 score!=score!+1000*cnum+100*mnum:silonum=4:mnum=32:gosub 940
+1040 for refresh=4 to 7:dead(refresh)=0:next refresh
+1050 pen 10:locate basepos,25:print son$;"___";soff$;
+1060 if (score!/count)>=20000 then count=count+1:store=store+1:for refresh=1 to 99:sound 130,rnd+refresh,1,7:next refresh
+1070 if (cnum=6 or store=0) then 1150
+1080 for check=1 to 3:refresh=7+check:if dead(refresh)=0 then refresh=4-check:if dead(refresh)=0 then 1140
+1090 dead(refresh)=0:cnum=cnum+1:store=store-1
+1100 pen 5:locate citypos(refresh),25:print son$;chr$(255);chr$(255);
+1110 pen 9:locate citypos(refresh),25:print "[]"soff$;
+1120 if (cnum=6 or store=0) then 1150
+1130 if refresh>7 then refresh=4-check:if dead(refresh)=1 then 1090
+1140 next check
+1150 if score!>999999 then score!=score!-1000000:count=1:pen 5:locate 9,1:print "000000";
+1160 score$=str$(score!):score$=mid$(score$,2)
+1170 locate (14+(score!>9)+(score!>99)+(score!>999)+(score!>9999)+(score!>99999)),1
+1180 pen 5:print score$;
+1190    return
+1200    rem     Initialisation (charcters,keys,etc)
+1210 vol=0:flag=1:restore:on sq(2) gosub 1540
+1220 mode 1:ink 0,13:ink 0,13:ink 1,0:ink 3,22:border 13
+1230 pen 1:locate 13,1:print "Missile Attack"
+1240 pen 3:locate 8,3:print "By David and Brian Lewis"
+1250 pen 2:locate 1,5:print "You are on the Planet Dartsma, and you"
+1260 print "have to defend your six cities from an"
+1270 print "Awesome Alien Missile Attack !!"
+1280 print "Each wave lasts 100 Seconds, and you"
+1290 print "start with 32 rockets to intercept the"
+1300 print "incoming missilies. The rockets are in"
+1310 print "four central bases, losing one means"
+1320 print "losing that fraction of your remaining"
+1330 print "rockets. The end of each wave gets you
+1340 print "100 points for each rocket unused, and"
+1350 print "1000 points for each city left. Every"
+1360 print "20000 points bonus cities are awared."
+1370 print "HINT:-  Go for double or triple kills,"
+1380 print "and move diagonally for maximum speed."
+1390 pen 1:locate 1,21:print "The fate of Dartsma is in your hands !!"
+1400 pen 2:locate 15,23:print "Good Luck"
+1410 pen 3:locate 5,25:print "Press Fire button or Space bar";
+1420 a$=inkey$:if (a$<>" " and a$<>"X") then 1420
+1430 if a$=" " then up=0:down=2:left=8:right=1:fire=9 else up=72:down=73:left=74:right=75:fire=76
+1440 symbol after 0
+1450 SYMBOL ASC("["),&8,&8,&A,&A1,&3F,&3F,&3F
+1460 symbol ASC("]"),0,0,&80,&D0,&F8,&FC,&FC
+1470 symbol ASC("/"),0,0,0,0,0,&C0,&F0
+1480 symbol ASC("\"),0,0,0,0,0,&3,&F
+1490 symbol ASC("_"),&18,&18,&18,&3C,&3c,&FF,&FF
+1500 symbol ASC("-"),0,0,0,0,0,&C3,&E7
+1510 symbol 255,0,0,0,0,0,&FF,&FF,&FF
+1520    return
+1530    rem    Real-time music routine
+1540 read note:if note=-1 then restore:vol=2-vol:flag=flag*2+15*(flag=8):goto 1540
+1550 if note=0 then sound 7,0,8,0:goto 1570
+1560 sound 1,note\flag-1,8,4+vol:sound 2,note\flag,8,5+vol:sound 4,note\flag+1,8,4+vol
+1570 on sq(2) gosub 1540
+1580    return
+1590    rem    Data for  'Toreadors Song'        from Carmen  by Bizet
+1600 data 478,478,478,478,426,426,426,0,478,,0,568,568,568,568,0
+1610 data 568,568,568,0,568,568,568,638,568,568,568,506
+1620 data 568,568,568,568,568,568,568,568,0,506,506,506,638,638,638,0
+1630 data 478,0,568,568,568,568,568,568,568,568,0,716,716,716,716
+1640 data 851,851,851,0,638,0,956,956,956,956,956,956,956,956,0
+1650 data 638,638,638,638,638,638,638,638,0,638,638,426,426,478,478,0
+1660 data 506,506,0,568,568,0,638,0,568,568,568,0,506,0 
+1670 data 568,568,568,568,568,568,568,568,0,758,758,758,758,0
+1680 DATA 568,568,568,568,0,568,568,568,568,0,602,602,602,0,506,0
+1690 DATA 379,379,379,379,379,379,379,379,379,379,379,379,379,379,379,379
+1700 DATA 379,379,0,426,379,426,8,451,451,0,426,426,0
+1710 DATA 638,638,0,568,568,0,506,506,506,506,506,506,0,568,506
+1720 DATA 568,0,716,716,0,426,426,0,478,478,478,478,478,478,478,478
+1730 DATA 478,478,0,716,716,0,956,956,0,506,506,0,568,568,568,568,0
+1740 DATA 638,638,638,638,0,716,716,956,851,758,716,638,568,506,478,426,379
+1750 data 358,319,284,253,-1
+1760    REM    Data for City positions
+1770 data 1,4,7,9,10,11,12,13,16,19
