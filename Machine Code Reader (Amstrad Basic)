@@ -1,0 +1,55 @@
+10 rem *---------------*
+20 rem *   Listing 2   *
+30 rem *---------------
+40 mode 2
+50 gosub 270
+60 input "Load.address :",addr : rem recommended 'addr' is Himem+1 after memory=himem-138
+70 lin$=""
+80 while lin$<>"end"
+90 print hex$(addr,4);":";:line input lin$
+100 lin$=upper$(lin$)
+110 chk=0:oldaddr=addr
+120 for a=1 to len(lin$) step 3
+130  m$=mid$(lin$,a,1)
+140  l$=mid$(lin$,(a+1),1)
+150  m=asc(m$)
+160  l=asc(l$)
+170 if m>&2f and m<&3a tehn m=m-&30 else if m>&40 and m<&47 then m=m-&37 else print "error",m$
+180 if l>&2f and l<&3a then l=l-&30 else if l>&40 and l<&47 then l=l-&37 else print "error",l$
+190 byt=m*16+l 
+200 if a=len(lin$)-1 then goto 240
+210 chk=(chk+byt) mod 256
+220 poke addr,byt
+230 addr=addr+1
+240 next a 
+250 if chk<>byt then print "Checksum Error - retype line":a=len(in$):addr=oldaddr 
+260 wend
+270 '*********************************************
+280 '*  Instructions - can be omitted, just put  *
+290 '*  560 return                               *
+300 '*********************************************
+310 print,"        Machine code loader"
+320 print,"        ==================="
+330 print
+340 print"When asked, input address at which to start loading the code"
+350 print"this is taken as a decimal value - to use hex, prefix with &."
+360 print
+370 print"Then enter lines of bytes, each separated by a space, the final"
+380 print"one being the checksum for that line."
+390 print
+400 print"example:-"
+410 print
+420 print"load address:&8000"
+430 print"8000:01 02 03 04 0A      (where 0A is the checksum)"
+440 print"8004: etc."
+450 print 
+460 print"If an error occurs, 'Checksum error - retype line' will be printed"
+470 print 
+480 print "example:-" 
+490 print
+500 print"8000:01 02 03 04 01 01 01 37"
+510 print"Checksum error - retype line"
+520 print"8000:01 02 03 04 01 01 01 0D"
+530 print"8007: etc."
+540 print
+550 return
