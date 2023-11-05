@@ -13,7 +13,7 @@
 130 dim s%(80,4),x$(40),q$(80),g$(30),b%(30),n%(30),v$(4)
 140 for x=1 to 78:read q$(x):for y= 1 to 4: read s%(x,y):next y,x 
 150 for x=1 to 23:read g$(x),b%(x):next 
-160 for x=1 to 27:read n$(x),n%(x):next
+160 for x=1 to 27:read n$(x),n%(x):next      ------> Fehler: Subscript out of Range in 160
 170 for x=1 to 34:read x$(x):next
 180 data in a small wardrobe. It is full of tattyold clothes.,0,0,2,0,in a small bedroom.There are no covers on the old bed.,0,4,3,1,in a small bathroom.There is a rusty  hole in the tin bath.,0,0,0,2
 190 data at the top of a flight of stairs.,2,0,0,0,at the bottom of a narrow flight of stairs.,0,8,0,6,in a small kitchen.There is a large table covered with dirty pots.,0,7,5,0,in an empty dining room.,6,0,8,0
