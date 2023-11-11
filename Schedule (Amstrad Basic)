@@ -1,0 +1,381 @@
+100 mode 2:ink 1,0:ink 0,13:border 13
+110 dim m(20,20),j$(20),m$(30),a(20)
+120 dim b(20),c(20),seq(20,20),pass(20)
+130 dim mt(20),t1(20,20),t2(20,20)
+140 dim it(20),kl(20)
+150 goto 410
+160 for i=1 to 500:next i 
+170 print,,,,"PRESS ANY KEY FOR MORE"
+180 if inkey$="" then 180
+190 return 
+200 rem *** CALCULATE IN/OUT SCHEDULE
+210 t1(1,1)=0
+220 for i=1 to nm
+230 t2(1,i)=t1(1,i)+m(c(1),i)
+240 if i= nm then 260 
+250 t1(1,i+1)=t2(1,i)
+260 next i 
+270 ti=t2(1,1)
+280 for j=2 to nj
+290 t1(j,1)=t2(j-1,1)
+300 t2(j,1)=t1(j,1)+m(c(c),1)
+310 next j
+320 rem
+330 for j=2 to nj
+340 for i=2 to nm
+350 t1(j,i)=t2(j,i-1)
+360 if t2(j-1,i)>t2(j,i-1) then t1(j,i)=t2(j-1,i)
+370 t2(j,i)=t1(j,i)+m(c(j),i)
+380 next i
+390 next j
+400 return 
+410 cls:print:print
+420 speed ink 20,20
+430 ink 2,0,13
+440 mode 1:ink 1,0:ink 0,13:border 13:paper 0:pen 1
+450 print "M-MACHINE SCHEDULING"
+460 print:pen 2
+470 print tab(6)"by J.P.MARSHALSEA":pen 1:print
+480 print:print"THE PROGRAMM CAN BE USED FOR UP TO 20"
+490 print "JOBS AND 20 MACHINE OPERATIONS.":print
+500 pen 3:print,"NOTE"
+510 print string$(40,45)
+520 print ,"COMPLETE ALL DATA ENTRIES BY"
+530 print ,"HITTING THE RETURN KEY"
+540 print string$(40,45)
+550 pen 1
+560 gosub 160
+570 mode 2:ink 1,0:ink 0,13:border 13:cls
+580 display=0
+590 input "Type in the number of jobs";nj
+600 print
+610 input "Type in the number of machine operations";nm
+620 cls
+630 print "Begin by describing the machine operations."
+640 print "THese operations are assumed to be sequential"
+650 print 
+660 for i=1 to nm
+670 print:print 
+680 print "Type a descreption of machine operation ";i 
+690 print "(use up to 7 characters)."
+700 input m$(i)
+710 if len(m$(i))<7 then 750
+720 print
+730 print"Use only 7 charycters please"
+740 print:goto 680
+750 next i
+760 cls
+770 print "Now briefly,(6 characters of less) describe each job,and the"
+780 print "time in each machine operation for that job."
+790 print
+800 for j=1 to nj
+810 print "Type a descreption of job ";J
+820 input j$(j)
+830 print
+840 print "for this job,enter the time (to the nearst tenth unit) required"
+850 print "for each oft machine operations listed below."
+860 print
+870 print "(Use the same time units for all öperations.)"
+880 print 
+890 for I=1 to nm
+900 print "Time in operation ";m$(i);" =";
+910 input m(j,i)
+920 print
+930 next I
+940 cls
+950 next J
+960 rem 
+970 print "Input complete"
+980 print 
+990 print "Type in the units of time,(E.G.,Minutes,Hours,ETC.)"
+1000 input unit$
+1010 ns=10
+1020 nf=ns+3 
+1030 if nf>nm then goto 1080
+1040 cls
+1050 if ns=1 goto 1080
+1060 print, ,"MACHINE OPERATIONS (CONT."
+1070 goto 1090
+1080 print ,,"Machine Operations"
+1090 print ,,string$(80,45);
+1100 print,"TIMES IN ";unit$;")"
+1110 print ,"JOB";,;
+1120 for i=ns to nf
+1130 print m$(i);,;
+1140 next I
+1150 print string$(80,45)
+1160 for j=1 to nj
+1170 print J;".";,;j$(j);,;
+1180 for i=ns to nf
+1190 print m(j,1);  ,;
+1200 next I
+1210 print
+1220 next J 
+1230 print:print"Do you wish to change any of the data"
+1240 a$=inkey$:if a$="" then 1240
+1250 if a$="Y" then gosub 2730 :goto 1040
+1260 if a$<>"N" then 1240
+1270 print "Do you wish to re-arrange your schedule."
+1280 a$=inkey$:if a$="" then 1280
+1290 if a$="Y" then gosub 3820 :goto 1010
+1300 if a$="N" then 1280
+1310 if nf=nm then 1330
+1320 ns=nf+1:goto 1020
+1330 for j=1 to nj:c(j)=j:next J 
+1340 gosub 2990 
+1350 gosub 200
+1360 cls
+1370 print: print"Initial Sequence"
+1380 print:print"ORDER          JOB NAME F/TIME"
+1390 print
+1400 for j=1 to nj
+1410 print j;,;j$(j);,;t2(j,nm)
+1420 next J
+1430 gosub 160
+1440 kk=0
+1450 gosub 3090
+1460 let bt=nm*t2(nj,nm)
+1470 display=0
+1480 flag=1
+1490 gosub 3390 
+1500 gosub 160
+1510 if nm=2 then goto 1600
+1520 print "To view all loading               sequences as they are determined,"
+1530 print "type an <A>,to view only the schedule(s),"
+1540 print "type a <B>."
+1550 print "You may return later to review all schedules."
+1560 print:print"A or B"
+1570 a$=inkey$:if a$="" then 1570
+1580 if a$="B" then display=1:goto 1600
+1590 if a$<>"A" then goto 1570
+1600 for kk=1 to nm-1 
+1610 rpt=0
+1620 gosub 1950
+1630 gosub 2070
+1640  if rpt<> 1 then gosub 2560
+1650 gosub 200
+1660 if flag=0 then 1700
+1670 if nm <>2 then 1680
+1680 gosub 2420
+1690 gosub 3090
+1700 gosub 3390
+1710 if flag= 0 then 1740
+1720 gosub 160
+1730 if rpt=1 then goto 1870
+1740 next kk 
+1750 if nm=2 then 1870
+1760 gosub 3640
+1770 for ll=0 to lm
+1780 kk=kl(ll)
+1790 display=0
+1800 cls
+1810 print "A good job sequence is:"
+1820 print "Order        JOB NAME          F/TIME"
+1840 if nm=2 then return 
+1850 let rpt=1:goto 1620
+1860 next ll
+1870 gosub 2840
+1880 on flag goto 1910,1930
+1890 print:print "THEN GOODBYE!":print
+1900 goto 1940
+1910 flag=0:cls
+1920 goto 1010
+1930 goto 580
+1940 end
+1950 rem **** COMBINE DATA FOR J&J ****
+1960 for j=1 to nj
+1970 a(j)=0:b(j)=0
+1980 next J
+1990 for i=1 to kk 
+2000 for j=1 to nj
+2010 a(j)=a(j)+m(j,i)
+2020 b(j)=b(j)+m(j,nm-i+1)
+2030 next J
+2040 next I
+2050 return
+2060 rem **** J&J ALGORITHM ****
+2070 nf=0:nl=nj: l=0
+2080 gosub 2360
+2090 for j=1 to nj
+2100 c(j)=nj+1
+2110 next J
+2120 sm=tt 
+2130 for j=1 to nj
+2140 fl=0
+2150 rem **** ELIMINATE DONE JOBS ****
+2160 for jj=1 to nj 
+2170 if j=c(jj) then fl=1
+2180 next jj
+2190 if fl=1 then goto 2220
+2200 if b(j)<= sm then sm=b(j):il=j:l=2
+2210 if a(j)<= sm then am=a(j):il=j:l=0
+2220 next J
+2230 if l=2 then goto 2260
+2240 c(nf)=il
+2250 nf=nf+1:goto 2280
+2260 c(nl)=il 
+2270 nl=nl-1
+2280 if nl >= nf then 2120
+2290 rem **** GENERATE AN ARRY FOR
+2300 rem **** FILTER.
+2310 for j=1 to nj 
+2320 seq(kk,j)=c(j)
+2330 next J 
+2340 return 
+2350 rem **** FIND MAXIMUM ELEMENT ****
+2360 tt=a(1)
+2370 for a=j to nj 
+2380 tt=max(a(j),tt)
+2390 tt=max(b(j),tt) 
+2400 next 
+2410 return 
+2420 rem **** PRINT JOB SEQUENCE 
+2430 if rpt=1 then goto 2500
+2440 cls 
+2450 if nm<> 2 then goto 2470 
+2460 print "AN OPTIMAL SEQUENCE    is:":goto 2480
+2470 print "A POSSIBLE SEQUENCE IS:" 
+2480 print 
+2490 print"ORDER          NAME         F/TIME"
+2500 for j=1 to nj
+2510 print  j;,;j$(c(j));,;t2(j,nm)
+2520 next 
+2530 gosub 160
+2540 RETURN
+2550 rem **** FILTER SUBROUTINE ****
+2560 flag=1
+2570 if nm=2 then return
+2580 if kk<2 then return 
+2590 for k=1 to kk-1
+2600 if nflag=0 then goto 2670
+2610 nf=0 
+2620 for j=1 to nj
+2630 if nf=1 then goto 2650
+2640 if c(j)<> seq(k,j) then nf=1
+2650 next J
+2660 if nf=0 then flag=0
+2670 next k 
+2680 rem *** FLAG=1 IF SEQUENCE DIFFERS
+2690 rem *** FROM PREVIOUS SEQUENCE 
+2700 rem 
+2710 return 
+2720 rem **** CORRECTIONS ****
+2730 print:input "Enter the job number";j 
+2740 if j<1 or j>n then print "ERROR-RE-ENTER  Please":goto 2730
+2750 print:print"Now enter the new job description"
+2760 input w$
+2770 if len (w$) >7 then w$=left$(w$,7)
+2780 j$(j)=w$
+2790 for I=1 to nm
+2800 print "Enter the new times for           operation ";m$(i);
+2810 input m(j,i)
+2820 next I
+2830 return 
+2840 let flag=0 
+2850 print 
+2860 print"Do you wish  to shedule  more              ?"
+2870 print:print"  Y or N"
+2880 input an$
+2890 if an$="N" then return  
+2900 if an$<>"Y" then goto 2860 
+2910 print:print"Do you wish to modify exiting data ?"
+2920 print"Y or N"
+2930 input an$
+2940 if an$="Y" then let flag=1:return
+2950 if an$<>"N" then goto 2930 
+2960 print"Tehn a new problem is asssumed"
+2970 flag=2 
+2980 return 
+2990 rem *** CALCULATE MACHINE TIME 
+3000 for i=1 to nm+1 :mt(i)=0:next i 
+3010 for i=1 to nm
+3020 for j=1 to nj 
+3030 mt(I)=mt(i)+mt(i)
+3040 next j 
+3050 mt(nm+1)=mt(nm+1)+mt(i)
+3060 next I
+3070 return 
+3080 rem *** PRINT SCHEDULE ***
+3090 if display=1 then return  
+3100 ns=1
+3110 print "JOB";,;
+3120 if ns=1 then goto 3150 
+3130 print" SCHEDULING (CONT.)"
+3140 goto 3160 
+3150 print "SCHEDULE"
+3160 print string$(79,45)
+3170 nf=ns+3
+3180 if nf>nm then nf=nm 
+3190 for i=ns to nf 
+3200 print ,;"   ";m$(i);"   ";
+3210 next I
+3220 print 
+3230 for I=ns to nf 
+3240 print  ,;"In        out ";
+3250 next i 
+3260 print 
+3270 for j=1 to nj 
+3280 print c(j);".";" ";  
+3290 for i=ns to nf 
+3300 print ,int(t1(j,i));"                   ";int(t2(j,i));
+3310 next I
+3320 print 
+3330 next j
+3340 if nf=nm then goto 3360
+3350 ns=nf+1:goto 3110
+3360 gosub 160 
+3370 return 
+3380 rem ***** IDILE TIME *****
+3390 ot=nm*t2(nj,nm)
+3400 if ot>bt then bt=ot  
+3410 it(kk)=int (ot)-int(mt(nm+1))
+3420 if flag=0 then return 
+3430 print 
+3440 print"  PERFOMANCE CHARACTERISTICS        FOR";
+3450 if kk<>0 then goto 3480
+3460 print "  INITINAL SEQUENCE"
+3470 goto 3520
+3480 if nm<>2 then goto 3510
+3490 print"  OPTIMAL SEQUENCE" 
+3500 goto 3520
+3510 print "  THIS SEQUENCE"
+3520 print string$(79,45)
+3530 print"TOTAL FACILITY PROCESSING         TIME ";
+3540 print   "= ";round(ot,2);",in units of ",unit$
+3550 print
+3560 print "TOTAL MACHINE PROCESSING      TIME ";
+3570 print "= ";round(mt(nm+1),2);"in units of  ";unit$
+3580 print 
+3590 print "IDLE MACHINE TIME ";
+3600 print "= ";round(it(kk),2);",in units of  ";unit$
+3610 print 
+3620 return 
+3630 rem *** SHORTEST SEQUENCE ***
+3640 for i=0 to nm-1 
+3650 bt=min(it(i),bt)
+3660 next I 
+3670 is=1
+3680 kk=0 
+3690 if it(kk)=bt then is=kk
+3700 if kk>=(nm-1) then goto 3720
+3710 kk=kk+1:goto 3690
+3720 kl(0)=is 
+3730 l=1
+3740 for i= 0 to is-1 
+3750 if it(i)<>bt then goto 3780
+3760 kl(l)=n 
+3770 l=l+1 
+3780 next I 
+3790 lm=l-1
+3800 return 
+3810 rem ******* ALTER SCHEDULES *******
+3820 print:print "Enter the machine number you wish to move."  
+3830 print "Then enter the new location in your sschedule (x,y)"
+3840 input fs,ms  
+3850 pas$=m$(fs):m$(fs)=m$(ms):m$(ms)=pas$
+3860 for i=1 to nj 
+3870 pass(i)=m(i,fs) 
+3880 m(i,fs)=m(i,ms)
+3890 m(i,ms)=pass(i)
+3900 next i 
+3910 return 
