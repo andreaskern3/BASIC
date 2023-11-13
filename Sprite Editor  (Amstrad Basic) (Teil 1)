@@ -1,0 +1,117 @@
+10 rem ******************************
+20 rem ****** Sprite Editor *********
+30 rem *** (c) Thomas M.Binzinger *** 
+40 rem ******************************
+50 rem 
+60 goto 70:rem Zur Hauptschleife 
+70 rem *** Tastatur abfragen & Pos ändern 
+80 if inkey(0)=0 or (joy(0) and 1)=1 then y=max(y-1,1)
+90 if inkey(2)=0 or (joy(0) and 2)=2 then y=min(y+1,25)
+100 if inkey(8)=0 or (joy(0) and 4)=4 then x=max(x-1,1)
+110 if inkey(1)=0 or (joy(0) and 8)=8 then x=min(x+1,xmax+1)
+120 rem *** Blink Cursor ***
+130 pen rnd*15:for t=1 to 20:next:locate x,y:call &BB8A
+140 for t=1 to 20:next:call &BB8D
+150 return  
+160 rem *** Bildschirm aufbauen ***
+170 pen 1
+180 mode 0:locate 1,1:for a=0 to ymax:print string$(xmax,144):next 
+190 for f=0 to 15:locate xmax+1,f+2:pen f:print chr$(233);:next
+200 pen 1:a$="ENDE":for x=1 to 5:locate xmax+1,21+x:print mid$(a$,x,1);:next
+210 return 
+220 rem *** Drucke A$ doppelt hoch ***
+230 for a=1 to len(a$):b=asc(mid$(a$,a,1)):dr=(b-32)*8+1+himem 
+240 for s=0 to 7:s(s)=peek(ar+s):next s  
+250 symbol 254,s(0),s(0),s(1),s(1),s(2),s(2),s(3),s(3)
+260 symbol 255,s(4),s(4),s(5),s(5),s(6),s(6),s(7),s(7)
+270 print chr$(254)chr$(10)chr$(8)chr$(255)chr$(11);:next:return  
+280 rem *** Startbild anzeigen ***
+290 if peek(&B295)<>32 then symbol after 32 
+300 mode 1:ink 3,6:ink 1,24:ink 2,15:ink 0,1:border 1  
+310 print chr$(22)chr$(1);:pen 1:a$="Sprite Editor":deg:for w=0 to 360 step 10:x2=cos(w)*150+320:y2=sin(w)*100+300
+320 plot 320,300,3:draw x2,y2:next:locate 15,6:pen 1:gosub 220:print chr$(22)chr$(0);
+330 ink 2,15:pen 2:a$=chr$(164)+"1985 Thomas M.Binzinger":locate 9,17:gosub 220
+340 locate 5,23:print spc(34);:locate 9,23:pen 1:print"X-Breite des Sprites: ";:input "",x:if x<0 or x<16 then 340 else if x mod 2<>0 then x=x+1
+350 locate 5,24:print spc(34);:locate 9,24:pen 1:print"Y-Breite des Sprites: ";:input "",y:if y<0 or y>25 then 340
+360 if x/2*y>250 or x<3 or y<3 then print chr$(7);:goto 340
+370 xmax=x:ymax=y:x=1:y=1:farbe=1
+380 locate 1,23:print string$(80," ");:locate 4,23:print"Möchten Sie eine Farbe ändern?";
+390 aa$=inkey$:if aa$="" then 390 else aa$=lower$(aa$):if aa$<>"j" then return else print" Ja"  
+400 locate 9,24:input "      ink (0-15)? ",i:if i<0 or i>15 then 400
+410 locate 9,24:input "nach Farbe (0-27)? ",f1:if f1<0 or f1>27 then 410
+420 locate 2,24:input "zweite Farbe (nur Enter wenn keine):",f2$
+430 if f2$=""then f2=f1 else f2=val(f2$):if f2<0 or f2>27 then 420
+440 ink i,f1,f2:window #5,1,40,23,25:cls #5:goto 380
+450 rem *** Sprite Edit ***
+460 gosub 70:gosub 120:rem Cursor bewegen und blinken
+470 if(joy(0)and 16)<>16 and inkey(9)<>0 and inkey(47)<>0 then 460
+480 if x>xmax or y>ymax then 510
+490 x1=556+(x*4):y1=128-(y*2):plot x1,y1,farbe:pen farbe 
+500 locate x,y:if farbe=0 then pen 1:print chr$(144);:goto 460 else print chr$(233):goto 460
+510 if x<>xmax+1 then 550 
+520 if y>17 then 560
+530 if y=1 then 460
+540 farbe=y-2:print chr$(7);:goto 460
+550 goto 460
+560 if y<20 then 460
+570 return 
+580 rem *** Bildschirm -> Array ***
+590 ad=&C000+240+1120-1:sp=4:sprite(1)=1=xmax/2:sprite(3)=ymax
+600 xm=xmax/2:xm=xm-1:z=1 
+610 for y1=0 to ymax:for x1=ad to ad+max/2-1:sprite(sp)=peek(x1):sp=sp+1
+620 next x1:gosub 640:next y1
+630 return 
+640 rem *** errechne nächstunteres Byte ***
+650 z=z+1:if z=9 then z=1:ad=ad-7*2048+80:return 
+660 ad=ad+2048:return  
+670 rem *** Hauptprogramm ***
+680 dim sprite(300),pr$(400):przl=1:zlnr=10:schritt=10:ez=0
+690 gosub 280:rem startscreen 
+700 gosub 160:rem Zeichenschablone 
+710 gosub 450:rem Zeichnen
+720 gosub 580:rem in array schreiben 
+730 call &BB30:rem Tastaturpuffer löschen 
+740 mode 2:pen 1:call &BC02:print:input "Bitte den Namen des Sprites eingeben:",sname$:if len(sname$)>39 then 740
+750 print"Die erste Programmzeile wäre"zlnr",die Scritweite"schritt"."
+760 print"Möchten Sie diesen Wert ändern?"chr$(143);
+770 while a$<>"j" and a$<>"n":a$=inkey$:a$=lower$(a$):wend:print chr$(8)a$
+780 if a$="j" then input"Startzeile,Schritweite:",zlnr,schritt 
+790 if zl=0 then zl=zlnr:zl$=smame$
+800 dzeile=zlnr+schritt:wpz=0:z$=str$(zlnr)+" rem------Daten für "+sname$
+810 for x=1 to sp
+820 if wpz=0 then print z$:pr$(przl)=z$:przl=przl+l:zlnr=zlnr+schritt:z$=str$(znlr)+" DATA "
+830 if wpz<>0 then z$=z$+","
+840 z$=z$+"&"+hex$(sprite(x),2)
+850 wpz=wpz+1:if wpz=17 then wpz=0
+860 next X
+870 pr$(przl)=str$(zlnr)+" DATA 9999"
+880 print pr$(przl):przl=przl+1:zlnr=zlnr+schritt 
+890 pr$(prlz)=str$(zlnr)+" "+name$+"s=s"+"string$("+str$(sp)+",0)" 
+900 print pr$(prlz):prlz=prlz+1:zlnr=zlnr+schritt
+910 pr$(przl)=str$(zlnr)+" Restore"+str$(dzeile)+":a=§"+sname$+"$:a=peek (a+2)*256+peek (a+1):w=0:while w<>9999:read w:if w<>9999 then poke a,w"
+920 print pr$(prlz):prlz=prlz+1:zlnr=zlnr+schritt
+930 pr$(prlz)=str$(zlnr)+" a=a+1:wend"
+940 print pr$(prlz):prlz=prlz+1:zlnr=zlnr+schritt 
+950 print:print"-Daten komplett-":print"Möchten Sie ein weiteres Sprite definieren?"chr$(143);:a$=""
+960 while a$<>"j" and a$<>"n":a$=inkey$:a$=lower$(a$):wend:print chr$(8)a$
+970 if a$="j" then 690
+980 print"Soll an die Daten die Sprite-Routine angehängt werden?"chr$(143);:a$=""
+990 while a$<>"j" and a$<>"n":a$=inkey$:a$=lower$(a$):wend:print chr$(8)a$
+1000 if a$="j" then gosub 1080
+1010 print"Das Programm hat als höchste Zeilenummer"zlnr","
+1020 print"es besteht aus"przl"Programmzeilen."
+1030 print"Bitte geben Sie den Namen an,":input"unter dem es abgespeichert werden soll (bei Disk:ohne Extension!!):",name$
+1040 name$=name$+".bas":print"schreibe "name$"...":openout name$
+1050 for x=1 to przl-1: print#9,pr$(x):next:closeout 
+1060 print"Programm komplett abgespeichert."
+1070 End 
+1080 d$(1)="010BA52120A5CDD1BCC916A5C3C7A5C3CCA5C3DA5455BC34745D45055D40000000000000000000000000000FE032813FE04C287A5DD6E00DD23DD6600DD237D322CA5DD6E00DD66012228A5DD6E02DD"
+1090 d$(2)="66032226A5DD6E04DD66052224A5DD2A28A5DD6E01DD66022228A5DD2A28A5DD7E01322AA5DD7E02322BA5DD23DD23DD23DD2228A5C9E1C90000000000C5E5DDE5E106004F7CCBBFFE4038077E4779CD"
+1100 d$(3)="38A67778E1C1093A24A56F2600328CA529EB3A26A56F3EC89D328DA52600CD1DBC22BAA5C900F53E011808F53E021803F53E0332C6A5F1CD2DA5CDA8A52A28A5DD2A8AA53A2BA547C53A8CA54FDD2A8A"
+1110 d$(4)="A53A2AA547C53AC6A5FE01CC24A63AC6A5FE02CC2AA63AC6A5FE03CC33A623DD23C110E1E52ABAA5CD26BC228AA5EICH0C6C97ECD8EA577C9AFCD8EA577CD8EA5C97ECD8EA5C9F53A2CA5FE01280CFE"
+1120 d$(5)="03280BFE02280BF1AE77C9F177C9F1B677C9F1C54FE6AAB72B065F78E655B34779E655B728065F78E6AAB34778C1C900"
+1130 uzl=zlnr:for x=1 to 5:pr$(przl)=str$(zlnr)+" DATA "+d$(x)
+1140 print pr$(przl):zlnr=zlnr+schritt:przl=przl+1:next
+1150 pr$(przl)=str$(zlnr)+ " restore"+str$(uzl)+":ad=&a501:for x=1 to 5:read d$(x):for y=1 to len (d$(x)) step 2:w=val ("+chr$(34)+"&"+chr$(34)+"+mid$(d$(x),y,2)):poke ad,w:ad=ad+1:next x,y:call &a501:":print pr$(przl)
+1160 przl=przl+1:zlnr=zlnr+schritt
+1170 pr$(1)=str$(zl)+" memory &a500:rem daten für ------"+zl$:return
