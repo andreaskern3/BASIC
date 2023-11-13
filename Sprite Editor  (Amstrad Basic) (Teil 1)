@@ -10,7 +10,7 @@
 100 if inkey(8)=0 or (joy(0) and 4)=4 then x=max(x-1,1)
 110 if inkey(1)=0 or (joy(0) and 8)=8 then x=min(x+1,xmax+1)
 120 rem *** Blink Cursor ***
-130 pen rnd*15:for t=1 to 20:next:locate x,y:call &BB8A        -------> Fehler : Impor Argument in 130 
+130 pen rnd*15:for t=1 to 20:next:locate x,y:call &BB8A        -------> Fehler : Improper Argument in 130 
 140 for t=1 to 20:next:call &BB8D
 150 return  
 160 rem *** Bildschirm aufbauen ***
