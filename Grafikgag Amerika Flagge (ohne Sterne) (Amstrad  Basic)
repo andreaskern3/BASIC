@@ -1,0 +1,10 @@
+1 ' Grafikgags Nr. 11 Teil 1
+2 ' 
+100 mode 1:ink 0,13:ink 1,26:ink 2,6:ink 3,2
+110 p=1:for a=1 to 13:origin 0,0,0,640,430-a*30,430-a*30-30:clg p+1:p=abs(p-1):next  
+120 window 1,19,1,13:paper 3:cls  
+130 origin 0,0,0,640,400,0
+140 for c=0 to 1:d=c/2:for b=1+d to 5-d:for a=1+d to-d:gosub 160:next a,b,c  
+150 goto 170
+160 plot a*50-32,420-b*44,1:drawr 8,20:drawr 8,-20:drawr -16,12::drawr 16,0:drawr -16,-12:return  
+170 goto 170  
