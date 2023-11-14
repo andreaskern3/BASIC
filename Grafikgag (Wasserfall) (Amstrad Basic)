@@ -1,7 +1,7 @@
 1 ' Grafikgags Nr. 11 Teil 7
 2 '
 100 mode 0:ink 0,12:border 12:ink 14,1:ink 15,23:randomize 1000
-110 for a=0 to 640 step 4:for b=0 to 32 step 4:plot a,b, int(rnd*14+1):drwar 0,2:next b,a
+110 for a=0 to 640 step 4:for b=0 to 32 step 4:plot a,b, int(rnd*14+1):drwar 0,2:next b,a    --------> Fehler 
 120 for a=240 to 400 step 4:l=36
 130 plot a,1:for b=1 to 13:x=rnd*16:drwar 0,x,b:l=l+x:next:if i<400 then 130 else next
 140 window 1,40,1,4:paper 15:cls:x=20:for a=o to 236 step 4:plot a,336:drwar 0,x:x=x+int(rnd*5)-2:next
