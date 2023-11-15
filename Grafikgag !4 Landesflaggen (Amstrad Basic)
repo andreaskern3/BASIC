@@ -1,0 +1,8 @@
+1 ' Grafikgags  Nr. 11 Teil 2
+2 '
+100 for b=0 to 13:read d,e,f,A$
+110 ink 0,13:border 13:ink 1,d:ink 2,e:ink 3,f:Mode 1
+120 for a=1 to 3:window 1,40,a*8-7,a*8:paper a:cls:next:Window 1,40,1,25:paper o:locate 20-len(a$)/2,25:print a$;
+130 while inkey$="":wend:next  
+140 data 0,6,15,Bundesrepublik Deutschland,2,26,2,Argentinien,6,15,9,Bolivien,2,0,26,Estland,9,24,2,Gabun,9,26,6,Iran,24,9,6,Litauen,6,26,2,Luxemburg,6,26,1,Niederlande,6,26,6,Oesterreich,9,26,2,Sierra Leone,2,24,9,Sudan,6,26,9,Ungarn,0,26,6,Volta  
+150 goto 150 
