@@ -30,7 +30,7 @@
 10160 data "001A000611",49 
 
 
-' zum abspeichern auf Disk/Datasette werden noch 2 Zeilen eingefügt 
+' zum abspeichern auf Disk/Datasette werden noch 2 Zeilen eingefügt..ist aber unötig,da es den CPC mit Datasettenlaufwerk nichr mehr gibt.
 
 180 print"Achtung, abspeichern!"
 190 save"Puzz-mad.pic",b,20000,1605,0
