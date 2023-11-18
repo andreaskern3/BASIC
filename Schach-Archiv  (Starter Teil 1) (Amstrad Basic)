@@ -12,4 +12,7 @@
 180 pen 3:locate 5,18:print chr$(164);"WOOL Soft" 
 190 if g=1 then run "schach.gen" else run "schach.prg"
 200 end 
+
+' bei CPC Für Datesette einfach save"schach.go" ohne Zeilenummer eingeben
+
 210 save"schach.go"
