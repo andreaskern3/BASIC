@@ -13,6 +13,6 @@
 190 if g=1 then run "schach.gen" else run "schach.prg"
 200 end 
 
-' bei CPC Datesette einfach save"schach.go" ohne Zeilenummer eingeben.
+' für CPC Datesette einfach save"schach.go" ohne Zeilenummer eingeben.
 
 210 save"schach.go"
