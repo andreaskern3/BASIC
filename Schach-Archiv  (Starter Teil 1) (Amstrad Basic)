@@ -1,0 +1,15 @@
+1 'SCHACH.GO
+2 '(c) W. Volmering Aug. 1986
+3 ' 
+100 ink 0,0:ink 1,18:ink 2,6:ink 3,26
+110 border 0:paper 0:mode 1::pen 6
+120 input "Generator oder Hauptprogramm laden (G/H)";g$
+130 if g$="G" or g$="g" then g=1:cls:goto 160
+140 if g$="h" or g$="H" then g=2:cls:goto 160 
+150 goto 100 
+160 pen 2:locate 2,3:print chr$(164);"Schach - Arciv";chr$(24):pen 1
+170 print:print:print:print:print:print "Ladevorgang-bitte warten"
+180 pen 3:locate 5,18:print chr$(164);"WOOL Soft" 
+190 if g=1 then run "schach.gen" else run "schach.prg"
+200 end 
+210 save"schach.go"
