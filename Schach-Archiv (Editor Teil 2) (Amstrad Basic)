@@ -1,0 +1,29 @@
+1 ' ***************************
+2 ' ***   Schach - Arciv    ***
+3 ' ***         von         *** 
+4 ' *** Wolfgang Volmering  ***
+5 ' ***         und         ***
+6 ' ***    Oliver Otten     ***
+7 ' ***                     ***
+8 ' ***   (c) WOOL-soft     ***
+9 ' ***************************
+100 border 0::ink 0,0:ink 1,2:paper 0:mode 1:pen 1
+110 print"Partie-Eingabe Generator     ";chr$(164);"WOOl-Soft"
+120 print string$(40,208)
+130 |user,1:cat 
+140 input "Name Partie";name$:if len(name$)>8 then print chr$(7):print:print:print"Falsche Eingabe ! Bitte nochmal.":goto 140
+150 print:print:input "Name schwarz";a$
+160 openout name$:print#9,a$
+170 print:print:input "Name Weiss";a$ 
+180 print#9,a$
+190 print:print:input "Datum der Partie";a$
+200 print#9,a$  
+210 input "";a$:input "Eingabe richtig (J/N)";r$:if r$="j" or r$="J" then print #9,a$:if a$="x" then 230 else 210
+220 print"Zug nochmal eingeben":goto 210
+230 closeout:|user,0
+240 print:print:print"Partie ist gespeichert !"
+250 print:print:input "Nochmal ";a$
+260 ja$=lower$(ja$)
+270 if ja$="j" then run 
+280 call 0 
+290 save"schach.gen"
