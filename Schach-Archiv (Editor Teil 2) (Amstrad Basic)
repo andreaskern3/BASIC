@@ -26,4 +26,7 @@
 260 ja$=lower$(ja$)
 270 if ja$="j" then run 
 280 call 0 
+
+' für CPC Datasette einfach nur save"schach.gen" eingeben.
+
 290 save"schach.gen"
