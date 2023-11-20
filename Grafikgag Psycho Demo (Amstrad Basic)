@@ -1,0 +1,21 @@
+1 ' Grafikgags Teil 1
+10 mode 1:ink 0,0:ink 1,16:ink 2,26:ink 3,11:border 0
+20 z=1 
+30 dim x(93),y(93)
+40 for a=0 to pi*2 step 0.2
+50 x(z)=sin(a)*15+20:y(z)=cos(a)*10+12
+60 z=z+1 
+70 next 
+80 restore:read nr:dim t$(nr):for i=1 to nr:read t$(i):t$(i)=" "+t$(i):next 
+90 for w=1 to nr:pen  (w mod 3)+1
+100 for a=33 to 93:x(a)=a-12+40*(a>53):y(a)=22-(a>53):next
+110 for a=i to 73-len(t$(w))/2 
+120 for b=1 to len (t$(w))
+130 sound 1,x(a+b)*10,1 
+140 locate x(a+b),y(a+b):print mid$(t$(w),b,1)
+150 next:next 
+160 for a=1 to 6:print:next 
+170 next
+180 pen 1
+190 data 3,"PSYCHO","presents","a demo"
+200 ' HAUPTPROGRAMM 
