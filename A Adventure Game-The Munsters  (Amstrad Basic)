@@ -1,0 +1,140 @@
+10 ' ************************************************
+20 ' ****     The Monster's Final Hour           ****
+30 ' **** An Adventure game for Amstrad CPC 464  ****
+40 ' ****          by Steve W.Lucas              ****
+50 ' ************************************************
+60 symbol after 250
+70 as$="       The Monster's Final Hour            "
+80 at$="An Adventure game for the Amstrad CPC 464"
+90 aq$=" By      Steve W. Lucas. "
+100 mode 1:ink 0,26:ink 1,2:ink 2,6:ink 3,18:paper 0:border 0
+110 symbol 252,128,224,0,0,255,254,252,248
+120 symbol 251,1,1,1,1,255,127,63,31
+130 symbol 253,0,128,143,241,255,127,3,2
+140 symbol 254,0,0,0,8,232,252,8,8
+150 ed$=" "+chr$(251)+chr$(252)
+160 ef$=" "+chr$(253)+chr$(254):for x=1 to 40
+170 pen 1:locate x,2:print ed$:locate x,4:print mid$(as$,x,1):next:locate 36,2:print"       ";
+180 pen 2:for x=1 to 40:locate x,10:print ed$:locate x,12:print mid$(at$,x,1):next:locate 38,10:print"       ";
+190 pen 3:for x=1 to 40:locate x,19:print ef$:locate x,21:print mid$(aq$,x,1):next:locate 38,9:print"    ";
+200 gosub 2640
+210 dim q$(50),s%(50,4),x$(40),n$(40),n%(40),g$(40),v$(5),b%(40) 
+220 restore:for x=1 to 46:read q$(x):for y=1 to 4:read s%(x,y):next y,x  
+230 for x=1 to 26:read g$(x),b%(x),n$(x)
+240 n%(x)=x:next x:p%=13
+260 data in a small lounge. There is a large sofaunderneath the window.,o,0,3,0,in a large dining room. There is an      enormous highly polished table in the    centre.,0,6,4,2
+270 data in a small kitchen. The sink is full of dirty plates and the worktops look as    though they haven't been cleaned for    years.,0,7,0,3
+280 data in a large bedroom. A four poster bed      stands at the far end.,0,8,0,0,in an oak panelled libary. A large  bookcase covers an entire wall.,3,0,7,0
+290 data in a small hallway. A staircase pider hangs from a thread above me.,0,0,0,27
+390 data by a large altar. The walls are covered with ancient sepluchres.,0,31,0,0,inside a small crypt. An old woman is   sitting on the floor and appears to be asleep.,30,32,0,0,out side a crypt. The entrance is open.,0,0,33,44
+400 data on a dirt track beetwenn two rows of verytall conifers.,23,34,0,32,by a large metal gate. A sign on the gatepost reads 'Pulse Hill Cemtry'.,33,35,0,0,on a dirt track. The way South leads    towards a glomoy forest.,34,36,0,0,0
+410 data on a footpath at the start of the dense forest.Wolves can be heared in the    distance.,35,37,40,38,in a small clearing. The forest is to dense to travel in any direction exept North.,36,0,0,0
+420 data lost in a dense forest,38,38,38,38,inside the woodcutter's cottage.His    wife sits in a chair reading her book   and ignores me.,0,0,0,0
+430 data outside the woodcutter's cottage. I heartehe sound of someone sawing.,0,0,0,36,at the bottom of a freshly dug grave.,0,0,0,0,at the side of a freshly dug grave.,0,0,43,34 
+440 data standing on a footpath with tombstones  on either side. One of the graves has a vase of flowers on the top.,0,0,0,42,on a wide gravel path with flower beds  on either side.,0,45,32,0 
+450 data by a granite monolith. A large red leverprotrudes from the base.,44,0,0,0,0,inside a small secret chamber. There is a large painting of a wolf on one wall.,45,0,0,0
+460 data a crumpled note,13,note,a small key,13,key,a real of cotton,4,cotton,a lemon,4,lemon,a dustbin,1,dustbin 
+470 data a candle,3,candle,a pen in a holder,6,pen,a monster strapped to the operating     table,19,monster,a sharp scalpel,20,scalpel 
+480 data a bootle,21,bottle,a large lever,22,lever,a rusty padlock,22,padlock,a painting on the wall,8,painting 
+490 data a pair of rubber gloves,5,gloves,"",8,map,an old diary,12,diary 
+500 data a stale sandwich,9,sandwich,a spade,28,spade,an ornate coffin,41,coffin,a corpse,a heart,41,heart  
+510 data a screwdriver,39,screwdriver,some gold electrodes,46,electrodes,a large crucifix,30,crucifix 
+520 data "",8,map,"",1,match  
+530 n$(25)="crowbar":g$(20)="":g$(21)="":b%(25)=29:g$(25)="a strong crowbar":g$(3)="a needle and thread":n$(3)="needle"
+540 s%(7,4)=6
+550 cls  
+560 while rr<99  
+570 if p%=19 and at=1 then at=2:print"The monster spots me. I'd better get outof here!"
+580 if at=2 then print"The monster's one step behind you!"
+590 if at=2 and ax=1 then x$="The monster catches you and kills you!":goto 1800
+600 if p%=15 and ae<>2 then x$="You trip ped and fell in the dark!":goto 1800
+610 if p%=19 and ar=2 then pen 3:print"The monster is connected to some gold  eklectrodes!":pen 1
+620 if p%=34 and ak<2 then print"To the east there is a vicious wolf. It snarls at you!"
+630 if p%=24 and aj<>3 then x$="You must have missed the path! You think into the bog!":goto 1800
+640 print:pen 1:print"You are :-":pen 2:print q$(p%):print:pen 1:a$="":k=0
+650 a%=p%:if s%(p%,1)>0 then a$="North"
+660 if s%(p%,2)>0 and len(a$)>0 then a$=a$+",South" else if s%(p%,2)>0 then a$="South"
+670 if s%(p%,3)>0 and len(a$)>0 then a$=a$+",East" else if s%(p%,3)>0 then a$="East"
+680 if S%(p%,4)>0 and len(a$)>0 then a$=a$+",West" else if s$(p%,4)>0 then a$="West"
+690 if p%=1 then a$="In" else if p%=31 or p%=26 or p%=4 then a$=a$+",Out"
+700 if p%=40 or p%=25 or p%=32 then a$=a$+",In" else if p%=39 then a$="Out"
+710 if p%=16 or p%=8 then a$=a$+",Down" else if p%=10 or p%=7 then a$=a$+",Up" else if p%=41 then a$="Up"
+720 if p%=42 and am>1 then a$=a$+",Down"
+730 pen 1:print"You can go :-":pen 3:print a$:pen 1:print 
+740 e=0:for t=1 to 26:pp%=0:if b%(t)=p% then pp%=1:goto 760
+750 next:goto 780
+760 if e=0 then print"You can see :-":pen 2
+770 print g$(t):e=1:goto 750
+780 print:pen 1:print"What do you want to do ";:input z$
+790 z$=lower$(z$):b$=left$(z$,2)c$=left$(z$,3):d$=left$(z$,4)
+800 print chr$(7):cls:pen 3:
+810 if c$="hel" then print"I'm sorry i don't have a clue!":k=1 else if c$="pra" then k=1:print"That made me feel better!"
+820 if c$="scoo" then print"You aren't taking this seriously enough.This isn't a game youknow!":k=1 else if c$="rem" then k=1:gosub 2600
+830 if right$(z$,3)="off" then print"How dare you speak to me like that!!!!":k=1 else if c$="rub" then k=1:print"Don't be absurd!"
+840 if c$="pho" then print"You can't do that here!":K=1 else if c$="rid" then k=1:print"What in ?"
+850 if c$="loo" then print"There's nothing unusual to see!":k=1 else if c$="eat" then k=1:print"There's is no food here!" else if c$="dri" then print"You have nothing to drink!"
+860 if (b$="n" or d$="go n") and s%(p%,1)>0 then p%=s%(p%,1):k=1 
+870 if (b$="s" or d$="go s") and s%(p%,2)>0 then p%=s%(p%,2):k=1 
+880 if (b$="e" or d$="go e") and s%(p%,3)>0 then p%=s%(p%,3):k=1
+890 if (b$="w" or d$="go w") and s%(p%,4)>0 then p%=s%(p%,4):k=1 
+900 if k=0 and (b$="n" or b$="s" or b$="e" or b$="w") then k=1:print"Yoo can't go that way here"
+910 if c$="swi" then print"Don't be ridiculous! I can't swimm here !":k=1 else if c$="was" then print"Don't be absurd!":k=1
+920 if c$="get" or c$="tak" or c$="gra" then k=1:gosub 1120 else if c$="wea" then k=1:gosub 2540
+930 if c$="inv" then k=1:gosub 1490 else if c$="rea" then k=1:gosub 1530
+940 if c$="ope" then k=1:gosub 1630 else if c$="unl" then k=1:gosub 1590
+950 if c$="dro" or c$="lea" then k=1:gosub 1380 else if c$="in" or d$="go i" then k=1:gosub 1670 else if c$="out" or d$="go o" then k=1:gosub 1700
+960 if c$="up" or d$="go u" then k=1:gosub 1720 else if c$="dow" or d$="go d" then k=1:gosub 1740
+970 if c$="sea" then k=1:gosub 1760 else if c$="lig" then k=1:gosub 1770 else if c$="squ" then k=1:gosub 1850 else if c$="dia" then k=1:gosub 1870
+980 if c$="dig" then k=1:gosub 1920 else if c$="uns" or c$="scr" then k=1:gosub 1940
+990 if c$="bre" or c$="sma" then k=1:gosub 1970 else if c$="pul" then k=1:gosub 1990
+1000 if c$="qui" then cls:print"Do you wan't to save the game <Y/N> ?":gosub 2510
+1010 if c$="att" or c$="kil" then k=1:gosub 2060 else if c$="cut" or c$="sta" then k=1:gosub 2090 else if c$="fit" or c$="ins" or c$="fix" then k=1:gosub 2140
+1020 if c$="con" then k=1:gosub 2210 else if c$="sew" then k=1:gosub 2190 else if c$="say" or c$="tal" or c$="ask" then k=1:print"Do you like talking yourself ?"
+1030 if c$="loa" then gosub 2420
+1040 if c$="row" or c$="sai" then print"What a silly suggestion that is!":k=1 else if c$="wai" then k=1:print"O.K.":for x=1 to 1000:next x 
+1050 if c$="jum" then x$="You jump but unfortuately,you miss    your footing, slip and breack your neck!":gosub 1800
+1060 if c$="kis" or c$="rub" or c$="dan" then print"What a stupid idea!":k=1 
+1070 if c$="sav" then gosub 2320
+1080 if p%=a% then ax=1 else ax=0
+1090 if k=0 then print"I'm sorry I don't seem to understand you";
+1100 if p%=24 and at=2 then goto 2270
+1110 wend 
+1120 gosub 1330 
+1130 if l%<1 then return 
+1140 e%=0:for h=1 to 26:if b%(h)=p% and b%(n%(r))=p% then e%=1
+1150 next h: If e%=0 then print"I don't se it here. (Maybe I need     glasses!)":return
+1160 if r=1 then aa=1 else if r=2 then ab=1 
+1170 if r=3 and ac=0 then ac=1 else if r=4 then ad=1 else if r=6 then ae=1 else if r=9 then af=1 
+1180 if r=13 and p%=8 and ag=0 then ag=1:q$(8)=q$(8)+"  There is a save on the wall!":g$(13)="a painting of Victor Frankenstein"
+1190 if r=7 and ah=0 then ah=1:print"A secret panel slides on the side!":q$(6)=q$(6)+" A secretpanel has opend.":s%(6,4)=15 
+1200 if r=14 then az=1 
+1210 if r=26 then ai=1 else if r=8 then x$="Two hands reach for your throat. Aagghh!":gosub 1800 
+1220 if r=12 then print"It's locked around the lever!":return else if r=11 then print"That would be foolish!":return 
+1230 if r=15 and aj=0 then aj=1 else if r=17 and ak=0 then ak=1 
+1240 if r=17 and ak=2 then return 
+1250 if r=18 then am=1 else if r=22 then an=1 
+1260 if r=19 then print"It's to heavy!":return else if r=20 then print"I can't carry it!":return else if r=21 and an<3 then print"I can't do that yet!":return 
+1270 if r=16 then ao=1 else if r=25 then ap=1 else if (r=23 and ar=0) then ar=1 else if (r=21 and as=0) then as=1 
+1280 e%=0:for d=1 to 5 
+1290 if v$(d)="" then v$(d)=g$(n%(r)):e%=1:d=6 
+1300 next:if e%=0 then print"I'm sorry my hands are full!":return 
+1310 b%(n%(r))=0 
+1320 return 
+1330 l$="":for h=1 to len(z$)
+1340 if mid$(z$,h,1)=" " then l$=rights(z$,(len(z$)-h)):h=100 
+1350 next h:r=0:l%=0:if len(l$)<2 then return  
+1360 for h=1 to 26:if left$(n$(h),len(l$))=l$ then l%=1:r=h 
+1370 next:return 
+1380 gosub 1330: if l%<>1 then pen 2:print"You can't see a";l$;"here!":return 
+1390 e%=0:for d=1 to 5:if v$(d)=g$(n%(r)) then v$(d)="":e%=1 
+1400 next:if e%<1 then print"You aren't carrying it!":return 
+1410 b%(n%(r))=p% 
+1420 if r=1 then aa=0 else if (r=2 and ab=1) then ab=0 else if (r=3 and ac=1) then ac=0
+1430 if r=4 then ad=0 else if r=6 then ae=0 else if r=9 then af=0 else if r=10 then x$="The bootle breaks and You are sprayed   with acid !!   AAAggghhh !!!!":gosub 1800
+1440 if r=14 and az=1 then az=0 
+1450 if r=26 then ai=0 else if (r=15 and aj=1) then aj=0 else if (r=17 and ak=1 and p%=34) then ak=2:s%(34,3)=42:print"The wolf eats it and runs away!":g$(17)="":b%(17)=0 else if r=17 then ak=0 
+
+
+Ich bin krank !!!..Selber nachdenken,selber schreiben 
+
+https://archive.org/details/amstrad-computer-cpc-464-user-magazine/AmstradComputerUser05-0485.pdf   (Ab Seite 59)
