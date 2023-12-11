@@ -102,6 +102,6 @@
 1010 if b$="m" then aw=2:as=1:gosub 760:print#2:print#2:print#2," Matt !":goto 880 
 
 
-Selber nachdenken,selber schreiben !!!.  
+' Selber nachdenken,selber schreiben !!!.  
 
-https://www.cpcwiki.eu/imgs/d/d3/CPC_Magazin_1986-11_(missing_pages_129-130).pdf  (Ab Seite 85)
+' https://www.cpcwiki.eu/imgs/d/d3/CPC_Magazin_1986-11_(missing_pages_129-130).pdf  (Ab Seite 85)
