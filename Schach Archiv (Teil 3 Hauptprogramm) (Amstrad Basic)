@@ -1,0 +1,107 @@
+1 '*******************************
+2 '***   Schach - Arciv V1.0   *** 
+3 '***          von            ***
+4 '***   Wolfgang Volmering    ***
+5 '***          und            ***
+6 '***      Oliver Otten       ***
+7 '***                         ***
+8 '***    (C) WOOL-Soft'       ***
+9 '******************************* 
+10 ' 
+100 ink 0,0:ink 1,13::ink 2,2::ink 3,24:border 0:fa=1:wv=3
+110 gosub 1780 
+120 paper 0:mode 1:pen 2
+130 restore 140:for i=1 to 6:for z=1 to 9:Read a:b$(i)=b$(i)+chr$(a):next z:next i  
+140 data 200,201,200,200,202,200,203,204,205
+150 data 206,207,208,209,211,212,203,214,205
+160 data 200,213,200,200,210,200,203,204,205
+170 data 216,217,218,219,220,221,222,214,223
+180 data 224,207,225,200,202,200,203,204,205 
+190 data 226,199,215,209,202,212,203,204,205
+200 for i=a to 6:for j=0 to 2:for k=1 to 3
+210 a$=mid$(b$(i),j*3+k,1):a$(i)=a$(i)+chr$(ASC(a$)):next 
+220 a$(i)=a$(i)+chr$(10)+chr$(8)+chr$(8):next:next  
+230 dim b(8,8)
+240 for i=7 to 1 step -2:for j=1 to 7 step 2:b(i,j)=1:next:next 
+250 for i=8 to 2 step -2:for j=2 to 8 step 2:b(i,j)=1:next:next 
+260 dim a(8,8)
+270 gosub 1610
+280 dim p(20),p$(20),p1$(20),ja$(20):p=0:d=0 
+290 p=p+1:read p$(p),p1$(p),ja$(p):d=d+3
+300 read a$:d=d+1:if a$="e" or a$="x" then 320
+310 goto 300
+320 if a$="x" then 340
+330 p(p)=d:goto 290
+340 restore 1710:paper 0
+350 cls:locate 5,1:print"-Auswahl -    ";chr$(164);" WOOL-Soft"
+360 locate 1,3
+370 print:print:print"Parteien laden (j/n)"
+380 print:print:input "";z$:z$=lower$(z$):if z$="n" or z$="j" then goto 390: else print chr$(7):print:print:print"Falsche eingabe ! Bitte nochmal.":goto 370
+390 if z$="n" then print:print:goto 430
+400 print:print:print"Richtige Diskette eingelegt ?":call &BB06:print:print:print"Name der Partie":print:print:input "";name$:if len(mame$)>8 then print chr$(7):print:print:print"Falsche Eingabe ! Bitte nochmal.":goto 400
+410 if name$="" then |USER,1:cat:|USER,0:goto 400
+420 |user,1:dir=1:openin name$:cls:goto 450 
+430 for i=1 to p:print i;tabp$(4)tab(18)p1$(i)tab(35);ja$(i):next 
+440 print:print:input "";w:if w<1 or w>p then 440  
+450 print:print "Tastendruck oder automatisch (T/A)":print:print:input "";taste$
+460 cls:if dir=1 then 490
+470 cls:if w=1 then 490 
+480 for i=1 to p(w-1):read a$:next 
+490 for j=1 to 22 step 3:for i=2 to 23 step 3
+500 if fa=2 then fa=1 else fa=2
+510 paper#1,fa:window #1,i,i+2,j,j+2:cls#1:next:if fa=1 then fa=2 else fa=1
+520 next 
+530 pen 3
+540 e=9:for i=2 to 23 step 3:e$=str$(e):locate 1,i:print chr$(8)+e$
+550 next 
+560 locate 3,25:print"A  B  C  D  E  F  G  H"
+570 locate 1,1 
+580 for y=7 to 8:for x=1 to 8
+590 gosub 1520:next:next 
+600 for y=1 to 2:for x=1 to 8:gosub 1520:next:next 
+610 paper 3:pen 2
+620 locate 27,1 :print chr$(24);"Schwarz";chr$(24)
+630 locate 27,24:print  chr$(24);"Weiss";chr$(24)
+640 locate 27,4 :print chr$(24);"Zug :";chr$(24);" 1"
+650 Window#2,27,40,6,19:pen#2,0:paper#2,2:cls#2 
+660 if dir=1 then input#9,a$ else read a$
+670 a$=left$(a$,13):locate 27,2:print a$
+680 if dir=1 then input#9,a$ else read a$
+690 a$=left$(a$,13):locate 27,25:print a$ 
+700 if dir=1 then input#9,a$ else read a$
+710 locate 27,22:print a$
+720 zu=1:z1=-1:aw=0 
+730 z1=z1+1:if z1=2 then z1=0:zu=zu+1:locate 32,4:print zu 
+740 if dir=1 then input#9,a$ else read a$
+750 if len(a$)<>4 then 940
+760 b$=left$(a$,2):gosub 1590:x=x2:y=y2 
+770 b2$=b$
+780 b$=right$(a$,2):gosub 1590
+790 o$="-":if a(x2,y2)<>0 then  o$="x"
+800 if sa=1 then b$=b$+"+":sa=0 
+810 if sa=2 then b$=b$+"ep":sa=0 
+820 a$=b2$+o$+b$
+830 if z=0 then print#2,a$:  else print#2,tab(8);a$;
+840 for i=1 to 4:gosub 1520:gosub 1490:next 
+850 a1=a(x,y):a(x,y)=0:a(x2,y2)=a1 
+860 x=x2:y=y2:for i=1 to 4:gosub 1490:gosub 1520:next 
+870 if as=1 then as=0:return 
+880 if aw=4 then gosub 1290:aw=1 
+890 if aw=3 then aw=0:return 
+900 if aw=2 then 1670: 
+910 gosub 1600
+920 if aw=1 then aw=0
+930 goto 730 
+940 if a$="e" then 1670
+950 if a$="sa" then 1110
+960 if a$="wa" then 1130
+970 if a$="kr" then 1170
+980 if a$="lr" then 1220 
+990 b$=right$(a$,1):a$=left$(a$,4)
+1000 if b$="s" then aw=2:sa=1:goto 760
+1010 if b$="m" then aw=2:as=1:gosub 760:print#2:print#2:print#2," Matt !":goto 880 
+
+
+Selber nachdenken,selber schreiben !!!.  
+
+https://www.cpcwiki.eu/imgs/d/d3/CPC_Magazin_1986-11_(missing_pages_129-130).pdf  (Ab Seite 85)
