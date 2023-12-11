@@ -135,6 +135,6 @@
 1450 if r=26 then ai=0 else if (r=15 and aj=1) then aj=0 else if (r=17 and ak=1 and p%=34) then ak=2:s%(34,3)=42:print"The wolf eats it and runs away!":g$(17)="":b%(17)=0 else if r=17 then ak=0 
 
 
-Ich bin krank !!!..Selber nachdenken,selber schreiben 
+' Ich bin krank !!!..Selber nachdenken,selber schreiben !!!. 
 
-https://archive.org/details/amstrad-computer-cpc-464-user-magazine/AmstradComputerUser05-0485.pdf   (Ab Seite 59)
+' https://archive.org/details/amstrad-computer-cpc-464-user-magazine/AmstradComputerUser05-0485.pdf   (Magazin 5, Ab Seite 59)
