@@ -133,6 +133,49 @@
 1430 if r=4 then ad=0 else if r=6 then ae=0 else if r=9 then af=0 else if r=10 then x$="The bootle breaks and You are sprayed   with acid !!   AAAggghhh !!!!":gosub 1800
 1440 if r=14 and az=1 then az=0 
 1450 if r=26 then ai=0 else if (r=15 and aj=1) then aj=0 else if (r=17 and ak=1 and p%=34) then ak=2:s%(34,3)=42:print"The wolf eats it and runs away!":g$(17)="":b%(17)=0 else if r=17 then ak=0 
+1460 if r=18 and am=1 then am=0 else if (r=22 and an=1) then an=0 else if r=16 then ao=0 else if r=25 then ap=1 
+1470 if r=23 and ar=1 then ar=0 else if r=21 and a$=1 then a$=0
+1480 return 
+1490 pen 1:print"You are carring :-":pen 2: if az=1 then print"A pair of rubber gloves (worn)"
+1500 f%=0 for h=1 to 5:if v$(h)<>""then print v$(h):f%=1
+1510 next:if f%=0 and az<2 then print"Nothing at all!" 
+1520 return 
+1530 gosub 1330:if p%=23 and left$(l$,3)="sig" then print tab(8);"The signpost reads :-":pen 2:print:print tab(10);"'Beware of the Dog'":return 
+1540 if p%=23 and aj=1 and r=15 then print"I thing You could follow the path now !":aj=3 else if r=15 then print"not here!" :return 
+1550 if p%=23 and aj=0 then print"You heaven't got the map!":return else if p%=23 then return 
+1560 if left$(l$,3)="dia" and ao=1 then print"The diary reads :-":pen 2:print:print"April 1st. 1895":pen 1:print"The Monster must be destroyed":pen 3:print"Find electrodes, bring it back to life an take to it to the bog!":return
+1570 if aa=1 and left$(l$,3)="not" then print"The note reads :-":pen 2:print"As my sole living heir, I am trusting   you with a gangerous mision. DESTROY    THE MONSTER!":return 
+1580 if left$(l$,3)="not" then print"You heaven't got it!":return else if len(l$)<2 then print"What do you want to read?":return else print"You can't read that!":return
+1590 if p%=8 and ag>0 then print"You don't know the code for the lock!":return 
+1600 if p%<>13 then print"You can't do that here!":return 
+1610 if ab<1 then print"You need the key!":return 
+1620 print"O.K.":ab=2:return 
+1630 if p%=41 then gosub 1940:return 
+1640 if p%=8 and ag>0 then print"You don't know the code for the lock!":return
+1650 if p%<>13 then print"Not here!":return 
+1660 if ab<2 then print"It's locked!":return else print"O.K.!":s%(13,1)=7:return 
+1670 if p%=13 and ab<2 then print"The door is locked!!":return else if p%=13 then p%=7:print"O.K.":return 
+1680 if p%=1 then p%=4:print"O.K.":return else if p%=25 then p%=26:print"O.K.":return else  if p%=40 then p%=39:print"O.K.":return 
+1690 if p%=32 then p%=31:print"O.K.":return  else print"You can't do that here !":return 
+1700 if p%=26 then p%=25:print"O.K.":return  else if p%=39 then p%=40:print"O.K.":return else if P%=31 then p%=32:print"O.K."return else if p%=4 then p%=1:print"O.K.":return else if p%=7 then p%=13:print"O.K.":return  
+1710 print"Do you have to be so stupid ?":return
+1720 if p%=41 then p%=42:print"O.K.":return 
+1730 if p%=17 then p%=16:print"O.K.":return else if p%=7 then p%=8:print"O.K.":return else print"Don't be stupid!":return 
+1740 if p%=42 and am<2 then print"You will need to dig a hole first!":return else if p%=42 then p%=41:print"O.K.":return 
+1750 if p%=16 then p%=17:print"O.K.":return   else if P%=8 then p%=7:print"O.K.":return else print"Don't be absurd!":return 
+1760 if p%=1 and ai=0 then print"You can see something amongst all the   rubbish!":g$(26)="a box of matches":return   else print"You didn't find a nytihing here!":return 
+1770 if ae<1 then print"How are you going  to do that ?":return else if ai<1  then print"You don't have anything to do that with!":return 
+1780 print"O.K.":for x=1 to 5:if v$(x)=g$(6) then v$(x)=g$(6)+" (lit)"
+1790 next:g$(6)=g$(6)+" (lit)":ae=2:return
+1800 cls:pen 1:locate 1,1:print x$ :gosub 2640 
+1810 pen 2:locate 10,10:print"You are  << DEAD >>"
+1820 pen 3:locate 4,20:print"Would you like another game <y/n> ?"
+1830 d$=inkey$:d$=lower$(d$):if d$="y" then run else if d<>"n" then 1830 
+1840 cls:pen 1:print"Goodbye.  Thank you for playing.":end 
+1850 if ad<>1 then print"You have nothing worth squeezing!":return else if aa<>1 then print"A few drops of lemon juice fall to the floor!":return 
+1860 al=2000+int(rnd(1)*2000):print"You squeeze the lemon and some juice  lands on the note. a message appears :-":pen 2:print"To open the safe DIAl :-";al:return
+1870 if p%<>8 then print"You can't do that here DUMMY!":return 
+1880 if ag<>1 then print"How?":return 
 
 
 ' Ich bin krank !!!..Selber nachdenken,selber schreiben !!!. 
