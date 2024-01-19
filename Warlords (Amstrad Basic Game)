@@ -1,4 +1,4 @@
-100 '*********************************
+il100 '*********************************
 110 '*********************************
 120 '**                             **
 130 '**      W A R L O R D S        **
@@ -49,4 +49,4 @@
 560 xj=xj+xl:yj=yj+yl:gosub 1370:gosub 1370:if inkey(47)=0 then 570 else 550
 570 while inkey$<>"":wend:next sp:goto 610
 
-' Noch nicht fertig,mitmachen wenn Ihr wollt. 
+' Noch nicht fertig,mitmachen wenn Ihr wollt. In Zeile 510 gehört ein Sonderzeichen eingefügt.
