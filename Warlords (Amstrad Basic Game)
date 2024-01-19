@@ -1,0 +1,52 @@
+100 '*********************************
+110 '*********************************
+120 '**                             **
+130 '**      W A R L O R D S        **
+140 '**      ===============        **
+150 '**                             **
+160 '** Written By Sebastian Ritter **
+170 '** Artworx By Stefan Kloos     **
+180 '**                             **
+190 '*********************************
+200 '*********************************
+210 '
+220 defint a-z:symbol after 256:memory 35935:symbol after 32:na$(2)="S":env 1,15,-1,30:env 2,1,-5,1,10,-1,3,1,0,30
+230 env 1,15,-1,30:env 2,15,-1,3,1,0,30:restore 1390:for i=0 to 15:read a:ink i,a:next:speed ink 3,10:ink 12,26,20:symbol 196,&FF,&FF,&81,&81,&81,&81,&81,&81:symbol 198,&81,&81,&81,&81,&81,&81,&FF,&FF 
+240 symbol 224,0,&22,&55,&88,&88,&55,&22:symbol 225,&18,&24,&42,&24,&18,&24,&42,624:symbol 226,0,&3E,&41,&40,&40,&43,&24,&24:symbol 227,0,&3C,&42,&82,&82,&42,&3C:symbol 229,&18,&24,&34,&40,&40,&43,&3C  
+250 dim va(20,12),exis(20.12),sta(20,12),mov(20,12),kah(20,12),kav(20,12),tot(20,12),tostr(20,12),ran(48),mob(48),str(48),hea(48),par(48),toh(240,2),tov(240,2),stim1(66),stim2(34),stim3(92),lan1(66),lan2(34),lan3(92)
+260  |size,4,2:for i=0 to 48:par(i)=2:next:restore 1400:for i=1 to 9:read nr,ran(nr),mob(nr),str(nr),hea(nr):ran(nr+1)=ran(nr):mob(nr+1)=mob(nr):str(nr+1)=str(nr):hea(nr+1)=hea(nr):par(nr)=1:par(nr+1)=0:next:par(18)=2
+270 restore 1440:for i=1 to 8:read nr(i):next:restore 1470:for i=1 to 8:read stim1(i),stim2(i),stim3(i):lan1(i)=256:lan2(i)=256:lan3(i)=256:stim1(i+58)=stim1(i):stim2(i+26)=stim2(i):lan1(i+58)=256:lan2(i+26)=256:next 
+280 for i=9 to 16:read stim1(i),stim2(i),stim3(i):lan1(i)=256:lan2(i)=256:lan3(i)=256:next:for i=17 to 37:read stim1(i),lan1(i):stim1(i+21)=stim1(i):lan1(i+21)=lan1(i):next 
+290 for i=17 to 21:read stim2(i),lan2(i):stim2(i+5)=stim2(i):lan2(i+5)=lan2(i):next:for i=17 to 59 step 6:restore 1490:for t=0 to 5:read lan3(i+t):stim3(i+t)=0:next t,i:for i=65 to 92:read stim3(i),lan3(i):next 
+300 muo=1:mus1=0:mus2=0:mus3=0:sound 7,0,200,0:on sq(1)gosub 1170:on sq(2)gosub 1190:on sq(4)gosub 1210:every 20,1 gosub 1140
+310 while inkey$<>"":wend:gosub 1040:mam$(0)=ma$(zo+1):nam$(1)=na$(1-zo+1):ink 1,2,26:border 9:mode 0:tt=0:t2=0:for i=1 to 12:for t=1 to 20:va(t,i)=peek(&AEFF+(i-1)*20+t):n=va(t,i):|put,(t-1)*4,(i-1)*2,35936+n*64 
+320 for m=0 to 1::if n=8+m or n=10+m or n=12+m or n=14+m or n=16+m or n=19+m or n=21+m then arm(m)=arm(m)+1
+330 if n=30-m then tt(m)=tt(m)+1:tov(tt(m),m)=i:toh(tt(m),m)=t:tostr(t,i)=hea(30)
+340 tot(t,i)=0:next m,t,i:for t=1 to 12:for i=1 to 20:kah(i,t)=0:kav(i,t)=0:exis(i,t)=hea(va(i.t)):sta(i,t)=mob(va(i,t)):next i,t:play=round(rnd)
+350 ' 
+360 ' Hauptschleife 
+370 ' 
+380 play=1-play:if pla=1 then ste=1 else ste=-1 
+390 for sp=1-play to pla step ste:locate 1,25:paper 14:pen 2-sp:print"Open/Close Portals !";:xj=10:yj=6 
+400 jo=JOY(sp*jfglag):yl=0:if j=1 and yj>1 then yl=l else if jo=2 and yj>12 then y1=1 else if jo=4 and xj>1 then xl=-1 else if jo=8 and xj<20 then xl=1 else if jo=16 then 420 
+410 xj=xj+x1:yj=yj+y1:gosub 1360:gosub 1360:if inkey(47)=0 then 440 else 400 
+420 if tt(sp)=0 then 400 else for i=1 to tt(sp):if xj<>toh(i,sp) or yj<>tov(i,sp) or tostr(xj,yj)<=0 then next:goto 400 else if va(xj,yj)=0 then va(xj,yj)=30-sp else if va(xj,yj)=30-sp then va(xj,yj)=0 else 400
+430  |put,(xj-1)*4,(yj-1)*2,35936+64*va(xj,yj):while JOY(sp*flag)=16:wend:goto 400
+440 while inkey$<>"":wend:next sp:goto 450
+450 for sp=1-play to play step ste:for t=1 to 20:for i=1 to 12:mov(t.i)=0:next i,t:locate 1,25:paper 14:pen 2-sp:print"Move your Army now !";:xj=10:yj=6 
+460 jo=JOY(sp*flag):y1=0:xl=0:while JOY(sp*jflag)=16:wend 
+465 if jo=1 and yj>1 then yl=-1 else if jo=2 and yj<12 then yl=1 else if jo=4 and xj>1 then xl=-1 else if jo=8 and xj<20 then xl=1 else if jo=16 and exis(xj,yj)>o and par (va(xj,yj))<>sp and mov(xj,yj)=0 then 490 
+470 xj=xj+xl:yj=yj+y1:gosub 1360:gosub 1360:if inkey(47)=0 then 480 else 460 
+480 while inkey$<>"":wend:next sp:goto 540 
+490 while joy(1-sp)=16:wend:sc=mob(va(xj,yj)):fi=va(xj,yj):be=mob(va(xj,yj)):sg=exis(xj,yj):for i=1 to sc 
+500 jo=joy(sp*jflag):yl=0:xl=0:if jo=16 then while joy(sp*jflag)<>0:wend:goto 460 else if jo=0 then 500 else if jo=1 and yj>1 then yj=-1 else if jo=2 and yj<12 then yl=1 else if jo=4 and xy>1 then xl=-1 else if jo=8 and xj<20 then xl=1
+510 if jo=5 and yj>1 and xj>1 then xl=-1:yl=-1 else if jo=6 and yj<12 and xy>1 then xl=-1:yl=1 else if jo=9 and yj>1 and xj<20 then xl=1:yl=-1 else if jo=10 and yj<12 and xj<20 then xl=1:yl=1
+520 if va(xj+xl,yj+yl)<>0 then 500 else va(xj,yj)=0:exis(xj,yj)=0:sta(xj,yj)=0: |put,(xj-1)*4, (yj-1)*2,35936:xj=xj+xl:yj=yj+yl:mov(xj,yj)=1:va(xy,yj)=fi: |put,(xj-1)*4,(yj-1)*2,35936+64*fi
+530 be=be-1:sta(xj,yj)=be:exis(xj,yj)=sg:while joy(sp*jflag)<>0:wend:next:goto 460
+540 for sp=1-play to play step ste:locate 1,25:paper 14:pen 2-sp:print"Prepare for Battle !";:xj=10:yj=6
+550 j=joy(sp*jflag):yl=0:xl=0
+555 if j=1 and yj>1 then yl=-1 else if j=2 and yj<12 then yl=1 else if j=4 and xj>1 then xl=-1 else if j=8 and xj<20 then xl=1 else if j=16 and exis(xj,yj)>0 and par(va(xj,yj))=1-sp then x=xj:y=yj:while joy (sp*jflag)<>0:wend:goto 580
+560 xj=xj+xl:yj=yj+yl:gosub 1370:gosub 1370:if inkey(47)=0 then 570 else 550
+570 while inkey$<>"":wend:next sp:goto 610
+
+' Noch nicht fertig,mitmachen wenn Ihr wollt. 
