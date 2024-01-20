@@ -50,3 +50,4 @@ il100 '*********************************
 570 while inkey$<>"":wend:next sp:goto 610
 
 ' Noch nicht fertig,mitmachen wenn Ihr wollt. In Zeile 510 gehört ein Sonderzeichen eingefügt.  https://andreaskern.hpage.com/amstad-basic-cpc.html
+' http://www.homecomputerworld.at/magazine/cpc-magazin/Computer_Partner_1989-08_(missing_pages_67-68).pdf -------> Seite 39
