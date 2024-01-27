@@ -1,0 +1,11 @@
+1 ' Grafikgags 2 - Teil 1
+10 symbol after 230::symbol 231,60,94,191,191,189,189,122,60
+20 mode 1:ink 0,0:ink 1,13:ink 2,26:ink 3,18:border 0
+30 locate 37,20:pen 3:print chr$(231):pen 1
+40 for a=0 to 180 step 5:plot 120,a,1:draw a+40-200,0:plot 120,a:draw 400-a-200,0:next 
+50 for a=0 to 640 step 20:plot 640,a:draw a,0:next 
+60 for a=0 to 200 step 10:plot 0,a:draw 200-a,0:next  
+70 for a=100 to 140 step 2:plot 544+rnd*5,a:drawr 30-rnd*5,0,0:next 
+80 for a=0 to 2*pi step pi/5:plot 86,252,2:drawr sin(a)*40,cos (a)*40:for b=0 to 2*pi step 0.6:plot 86*sin(a)*40,252+cos(a)*40:drawr sin(b)*20,cos(b)*20,rnd*2+1:next b,a 
+90 tag:for a=0 to 1.4 step 0.1:plot sin(a)*500+80,cos(a)*200+60,3:print chr$(231);:next
+200 goto 200
