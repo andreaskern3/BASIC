@@ -1,0 +1,9 @@
+1 ' Grafikgags 44 -Teil 7
+2 ' Taschenlampe 
+10 mode 1:ink 0,0:ink 1,16:ink 2,13:ink 3,24.0:border 0:speed ink 40,40
+20 symbol 253,0,0,28,34,227,190,128,128:symbol 254,0,0,0,127,255:symbol 255,0,0,0,224,224,63,1,1
+30 for a=0 to 400 step 2:plot 0,a,3:draw 320,200:next 
+40 c=0:r=80:for y=-r to 1 step 2:x=sqr(6400-y*y)/2:plot 200-x,200+y,2:drawr 2,0:f=0:for d=0 to x:f=1-f:plotr 2,0,3*f:next:drawr 20,0,c:drawr 2,9,2:draw 300+x/2,200+y/2,1:drawr 2,0,2
+50 e1=int(e)*2:drawr 180,0,2-e1:drawr 30,0,e1:drawr 2,0,2:c=1-c:e=e+0.5+1.5*(e=1):next:for y=-20 to 20 step 2:x=sqr(400-y*y):plot 230-x,200+y,3:draw 240,200+y:next  
+60 locate 21,10:pen 2:print chr$(253)chr$(254)chr$(255):speed ink 30,60
+70 goto 70
