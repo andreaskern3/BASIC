@@ -1,0 +1,9 @@
+1 ' Grafikgags 2 - Teil 3
+10 mode 1:ink 0,11:border 11:ink 1,0:ink 2,26:ink 3,3 
+20 for a=1 to 5 step 0.4:plot 0,340-a*50,2:drawr 50*a,0:drawr 50*a,50*a:drawr 0,50*a:next 
+30 plot 0,340:draw 340,0:plot 0,340:drawr 640,0:plot 0,0:drawr 0,400:plot 0,340:drawr 80,60
+40 for a=1 to 7:locate 30,a+10:for b=0 to 2:read c:print chr$(c);:next b,a 
+50 data 204,208,205,211,159,209,211,149,209,205,171,204,217,207,219,40,32,41,181,191,181
+60 for a=0 to 3:plot 468,180-6*a,1:drawr  -20,4:drawr -20,20:plot 508,180-6*a:drawr 20,4:drawr 20,20:next 
+70 plot 488,240,2:drawr 0,100 
+200 goto 200 
