@@ -1,0 +1,11 @@
+1 ' Grafikgags 2 - Teil 5 
+10 mode 1:border 2:ink 0,2:ink 1,14:ink 2,26:ink 3,13
+20 for a=-160 to 160 step 8
+30 plot a*2+320,400,1:draw a+320,250:drawr 0,-100:draw a*2+320,0:next 
+40 for a=-80 to 80 step 16
+50 plot 0,a*2+200:draw 160,a/2+200:drawr 320,0:draw 640,a*2+200:next 
+60 x=20:for a=1 to 53:y=180-x:plot y,y:drawr 640-2*y,0:drawr 0,400-2*y:drawr 2*y-640,0:drawr 0,2*y-400:x=x1.1:next 
+70 for a=316 to 324 step 2:plot a,40,3:drawr 0,140:next:plot 320,40,2:drawr 0,140
+80 for a=0 to 2*pi step 0.5:plot 320,220,2:drawr sim(a)*40,cos(a)*40:for b=0 to 2*pi step 0.5:plot 320+sin(a)*40,220+cos(a)*40:drawr sin(b)*20,cos(b)*20,int(rnd*2+2):next b,a  
+90 for b=100 to 200 step 20:plot b,b/2,2:drawr 0,30:for a=0 to 2*pi step 0.5:plot b,b/2+30:drawr sin(a)*20,int(rnd*2+2):next a,b  
+200 goto 200 
