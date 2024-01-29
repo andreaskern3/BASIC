@@ -1,0 +1,8 @@
+1 ' Grafikgags 2 - Teil 6
+10 randomize 1000
+20 mode 1:ink 0,1:border 1:ink 1,0:ink 2,24:ink 3,13
+30 pen 3:for a=11 to 25:locate 1,a:print string$(40,chr$(207));:next 
+40 for f=0 to 1:x=0:while x<640:w=rnd*20+20:y=rnd+50+50:x=x+w+4:for a=1 to w step 2:plot a+x-w,184+f*50,3:drawr 0,-y  
+50 for b=1 to 3:q=rnd*y:plot a+x-w,q+292-f*50,2:plot a+x-w,184-q+f*50:next b,a:plot x-w,292-f*50,3:drawr 0,y:drawr w+2,0:drawr 0,-y:wend:next
+60 for a=0 to 200:plot rnd*630,rnd*240,0:drawr 6,2:plot rnd*630,rnd*240,3:drawr 6,-2:next 
+200 goto 200 
