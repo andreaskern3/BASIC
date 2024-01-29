@@ -1,0 +1,10 @@
+1 ' Grafikgags 2 - Teil 7
+10 randomize 1000
+20 mode 1:ink 0,0:border 0:ink 1,1:ink 2,2:ink 3,14 
+30 x=10:for a=0 to 640 step 2:plot a,240,1:drawr 0,x:x=x+rnd*4-2.2*(x<3):plot rnd*640,rnd*120+290,rnd*3+1:next 
+40 for a=11 to 25:locate 1,a:print string$(40,chr$(143));:next
+50 for b=0 to 2:for a=1 to 100+50*b step 2:plot 100+b*200-a/2,300-a-b*50,2:Drawr a,0:drawr a/6,a/5,3:next a,b  
+60 for b=0 to 1:for a=1 to 100+50*b step 2:plot 50+b*175,100+a-b*150,0:drawr a,0:next a,b  
+70 for a=0 to pi*2 step 0.2:plot 472,360,3:drawr sin(a),cos(a)*30:next 
+80 while inkey$="":wend:ink 1,1:ink 2,2:ink 3,14:while inkey$="":wend:ink 1,3:ink 2,6:while inkey$="":wend:ink 1,15:ink 2,24:ink 3,25:goto 80
+200 goto 200
