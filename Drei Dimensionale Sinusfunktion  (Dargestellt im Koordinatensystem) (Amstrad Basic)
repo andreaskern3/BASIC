@@ -1,0 +1,13 @@
+100 mode 2
+110 deg 
+120 while inkey$ <> chr$(13)
+130       print chr$(23);chr$(0);
+140       for i=0 to 639
+150           plot i,199+sin (i)*150
+160       next i 
+170       print chr$(23);chr$(1);
+180       for i=0 to 639
+190           plot i,199+sin (i)*150
+200       next i 
+210 wend 
+220 end 
