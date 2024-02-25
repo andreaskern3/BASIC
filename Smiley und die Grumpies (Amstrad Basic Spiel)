@@ -23,7 +23,7 @@
 230 end 
 240 : 
 250 rem 
-260 rem bonus interrput 
+260 rem bonus interrupt 
 270 rem 
 280 :
 290 t%=t%+1 
@@ -35,7 +35,7 @@
 350 rem Initialisierung 
 360 rem 
 370 :
-380 dim maZe$(30)
+380 dim maze$(30)
 390 dim ghost%(2,1)
 400 dim gtime%(2)
 410 dim gdelay%(2)
@@ -58,7 +58,7 @@
 580 for i%=1 to 23
 590 read maze$(i%)
 600 for j%=1 to 20 
-610 k%=82 +ASC (mid$ (maze$ (i%),j%,1))
+610 k%=82 + ASC (mid$ (maze$ (i%),j%,1))
 620 if k% < 147 then pen screen else pen screen+1 
 630 print chr$(k%); 
 640 next 
@@ -97,7 +97,7 @@
 970 restore 910 
 980 mdelay%=mdelay%-1 
 990 mtime%=mdelay% 
-1000 man%=2 
+1000 manx%=2 
 1010 many%=2 
 1020 ok=-1 
 1030 t%=0 
@@ -114,7 +114,7 @@
 1140 locate x%,y% 
 1150 print chr$(255)
 1160 next 
-1170 maze$(2) = left$ (maze$(2),1) + ""+mid$(maze$(2),3)
+1170 maze$(2) = left$ (maze$(2),1) + " " + mid$(maze$(2),3)
 1180 score%=score% + 10 
 1190 dots%=183 
 1200 pen 14
@@ -152,14 +152,14 @@
 1530 :
 1540 if mtime% > t% then return 
 1550 mtime% = t% + mdelay% 
-1560 x% = man% - (inkey (d%) > -1) + (inkey (c%) > -1)
+1560 x% = manx% - (inkey (d%) > -1) + (inkey (c%) > -1)
 1570 if x%=0 then x%=20 
 1580 if x%=21 then x%=1 
 1590 y% = many% - (inkey (b%) > -1) + (inkey (a%) > -1) 
 1600 if (x%=ghost%(0,0) and y%=ghost%(0,1)) or (x%=ghost%(1,0) and y%=ghost%(1,1)) or (x%=ghost%(2,0) and y%=ghost(2,1)) then ok=0 
 1610 if mid$ (maze$(y%),x%,1) > ">" then return 
 1620 pen 14 
-1630 locate manx%,many%     ---------> Fehler 
+1630 locate manx%,many% 
 1640 print " "
 1650 locate x%,y% 
 1660 print chr$(224) 
@@ -179,8 +179,8 @@
 1800 rem Bewegung der Geister 
 1810 rem 
 1820 : 
-1830 for i=0 to 2 
-1840 if gtime%(i%)<t% then gosub 1920                                  
+1830 for i%=0 to 2 
+1840 if gtime%(i%)<t% then gosub 1920 
 1850 next 
 1860 return 
 1870 : 
@@ -190,7 +190,7 @@
 1910 : 
 1920 sound 130,370*i%+370,10,14 
 1930 gtime%(i%) = t% + gdelay%(i%) 
-1940 y% = ghostt%(i%,1) + ( ghost%(i%,1) > many% ) - (ghost%(i%,1) < manx%) 
+1940 y% = ghostt%(i%,1) + ( ghost%(i%,1) > many% ) - (ghost%(i%,1) < many%) 
 1950 if mid$ (maze$(y%),ghost% (i%,0),1) > "?" then y% = ghost% (i%,1) 
 1960 x% = ghost%(i%,0) - (ghost%(i,0) < manx% ) + (ghost%(i%,0) > manx%) 
 1970 if mid$ (maze$(y%),x%,1) > "?" then x%=ghost%(i%,0) 
@@ -228,7 +228,7 @@
 2290 border 0 
 2300 ink 0,0 
 2310 ink 1,0 
-2320 ink 1,0 
+2320 ink 2,6 
 2330 ink 3,24 
 2340 paper 0 
 2350 cls 
@@ -260,7 +260,7 @@
 2600 d%=31 
 2610 while inkey (47) =-1 
 2620       if inkey (37) > -1 then locate 1,17:print chr$(243):print:print " ":pen 3:locate 1,22:print "A ...oben    Z ... unten                                         < ...links     > ... rechts":pen 2:a%=69:b%=71:c%=39:d%=31 
-2630       If inkey (45) >1 then locate 1,22:print space$(80):locate 1,17:print " ":print:print chr$(243):a%=72:b%=73:c%=74:d%=75 
+2630       If inkey (45) > -1 then locate 1,22:print space$(80):locate 1,17:print " ":print:print chr$(243):a%=72:b%=73:c%=74:d%=75 
 2640 wend 
 2650 paper 0 
 2660 return 
@@ -306,9 +306,9 @@
 3060 print string$ (20,"*") 
 3070 pen 13 
 3080 locate 1,15 
-3090 print "Nochein Spiel (J/N)"
-3100 k%=-1 
-3110 while k% =-1 
+3090 print "Noch ein Spiel (J/N)"
+3100 k%= -1 
+3110 while k% = -1 
 3120       if inkey (45) > -1 then k%=43 
 3130       if inkey (46) > -1 then k%=46 
 3140 wend 
