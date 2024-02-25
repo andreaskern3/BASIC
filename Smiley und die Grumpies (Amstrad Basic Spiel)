@@ -190,7 +190,7 @@
 1910 : 
 1920 sound 130,370*i%+370,10,14 
 1930 gtime%(i%) = t% + gdelay%(i%) 
-1940 y% = ghostt%(i%,1) + ( ghost%(i%,1) > many% ) - (ghost%(i%,1) < many%) 
+1940 y% = ghost%(i%,1) + ( ghost%(i%,1) > many% ) - (ghost%(i%,1) < many%) 
 1950 if mid$ (maze$(y%),ghost% (i%,0),1) > "?" then y% = ghost% (i%,1) 
 1960 x% = ghost%(i%,0) - (ghost%(i,0) < manx% ) + (ghost%(i%,0) > manx%) 
 1970 if mid$ (maze$(y%),x%,1) > "?" then x%=ghost%(i%,0) 
@@ -313,3 +313,5 @@
 3130       if inkey (46) > -1 then k%=46 
 3140 wend 
 3150 return 
+
+' ************ Funktioniert einwandfrei ************* Juhu,Juhu **************** 
