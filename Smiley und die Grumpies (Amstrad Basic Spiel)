@@ -159,7 +159,7 @@
 1600 if (x%=ghost%(0,0) and y%=ghost%(0,1)) or (x%=ghost%(1,0) and y%=ghost%(1,1)) or (x%=ghost%(2,0) and y%=ghost(2,1)) then ok=0 
 1610 if mid$ (maze$(y%),x%,1) > ">" then return 
 1620 pen 14 
-1630 locate manx%,many% 
+1630 locate manx%,many%     ---------> Fehler 
 1640 print " "
 1650 locate x%,y% 
 1660 print chr$(224) 
@@ -180,7 +180,7 @@
 1810 rem 
 1820 : 
 1830 for i=0 to 2 
-1840 if gtime%(i%)<t% then gosub 1920                                  --------------------------------> Fehler !!!!.
+1840 if gtime%(i%)<t% then gosub 1920                                  
 1850 next 
 1860 return 
 1870 : 
