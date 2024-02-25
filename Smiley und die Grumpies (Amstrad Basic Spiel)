@@ -95,7 +95,7 @@
 950 rem 
 960 : 
 970 restore 910 
-980 mdlay%=mdlay%-1 
+980 mdelay%=mdelay%-1 
 990 mtime%=mdelay% 
 1000 man%=2 
 1010 many%=2 
