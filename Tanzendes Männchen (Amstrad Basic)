@@ -18,5 +18,3 @@
 180 locate 20,10
 190 return 
 200 rem *************
-
-' Fehler in Zeile 190 : Unexpected Return in 190 
