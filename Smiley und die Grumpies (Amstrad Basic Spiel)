@@ -180,7 +180,7 @@
 1810 rem 
 1820 : 
 1830 for i=0 to 2 
-1840 if gtime%(i%)<t% then gosub 1920 
+1840 if gtime%(i%)<t% then gosub 1920                                  --------------------------------> Fehler !!!!.
 1850 next 
 1860 return 
 1870 : 
