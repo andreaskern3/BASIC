@@ -1,0 +1,22 @@
+10 rem Tanzendes Maennchen 
+20 rem (c) 1985 
+30 mode 1
+40 cls 
+50 gosub 150 
+60 print chr$(250)
+70 gosub 150 
+80 print chr$(249)
+90 gosub 150 
+100 print chr$(251)
+110 gosub 150 
+120 print chr$(250)
+1340 goto 50 
+140 rem *************
+150 rem Postion des Maennchen 
+160 for verzoegerung=1 to 100 
+170 next verzoegerung 
+180 locate 20,10
+190 return 
+200 rem *************
+
+' Fehler in Zeile 190 : Unexpected Return in 190 
