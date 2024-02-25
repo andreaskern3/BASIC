@@ -10,7 +10,7 @@
 100 print chr$(251)
 110 gosub 150 
 120 print chr$(250)
-1340 goto 50 
+130 goto 50 
 140 rem *************
 150 rem Postion des Maennchen 
 160 for verzoegerung=1 to 100 
