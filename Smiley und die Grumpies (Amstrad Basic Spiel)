@@ -1,3 +1,5 @@
+' ************ Funktioniert einwandfrei ************* Juhu,Juhu **************** 
+
 10 mode 1
 20 gosub 2280
 30 mode 0
@@ -313,5 +315,3 @@
 3130       if inkey (46) > -1 then k%=46 
 3140 wend 
 3150 return 
-
-' ************ Funktioniert einwandfrei ************* Juhu,Juhu **************** 
