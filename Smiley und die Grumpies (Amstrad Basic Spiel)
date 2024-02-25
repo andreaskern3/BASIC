@@ -1,0 +1,315 @@
+10 mode 1
+20 gosub 2280
+30 mode 0
+40 gosub 380 
+50 while k%=43
+60 gosub 1330 
+70 while lives 
+80 gosub 560 
+90 gosub 970 
+100 every 2,1 gosub 290 
+110 every 50 gosub 310 
+120 while ok and dots%
+130 gosub 1540 
+140 gosub 1830 
+150 wend 
+160 t%=remain(0)
+170 if ok then gosub 2720 else gosub 2140
+180 wend 
+190 gosub 2860 
+200 wend 
+210 mode 1
+220 while inkey$ <>"":wend 
+230 end 
+240 : 
+250 rem 
+260 rem bonus interrput 
+270 rem 
+280 :
+290 t%=t%+1 
+300 return 
+310 if bonus% then bonus%=bonus%-1:locate #1,7,24:print#1,bonus%
+320 return 
+330 :
+340 rem 
+350 rem Initialisierung 
+360 rem 
+370 :
+380 dim maZe$(30)
+390 dim ghost%(2,1)
+400 dim gtime%(2)
+410 dim gdelay%(2)
+420 restore 900 
+430 for i%=0 to 15 
+440 read j%
+450 ink i%,j%
+460 next 
+470 border 0
+480 k%=43 
+490 hi%=0 
+500 return 
+510 : 
+520 rem 
+530 rem Zeichen des Labyrinthes 
+540 rem 
+550 : 
+560 locate 1,1 
+570 restore 670 
+580 for i%=1 to 23
+590 read maze$(i%)
+600 for j%=1 to 20 
+610 k%=82 +ASC (mid$ (maze$ (i%),j%,1))
+620 if k% < 147 then pen screen else pen screen+1 
+630 print chr$(k%); 
+640 next 
+650 next 
+660 return 
+670 data DHHHHHHHHJDHHHHHHHHJ
+680 data C>>>>>>>>CC>>>>>>>>C 
+690 data C>DHHHHJ>CC>DHHHHJ>C 
+700 data C>D====C>AG>C====C>C 
+710 data C>AHHHHG>>>>AHHHHG>C 
+720 data C>>>>>>>>DJ>>>>>>>>C 
+730 data C>DJ>DHJ>CC>DHJ>DJ>C 
+740 data C>CC>AHG>CC>AHG>CC>C 
+750 data C>AG>>>>>AG>>>>>AG>C 
+760 data C>>>>DHJ>>>>DHJ>>>>C 
+770 data AHHH>C=C>DJ>C=C>HHHG
+780 data >>>>>C=C>CC>C=C>>>>>
+790 data DHHH>C=C>AG>C=C>HHHJ
+800 data C>>>>AHG>>>>AHG>>>>C 
+810 data C>DJ>>>>>DJ>>>>>DJ>C 
+820 data C>CC>DHJ>CC>DHJ>CC>C 
+830 data C>AG>AHG>CC>AHG>AG>C 
+840 data C>>>>>>>>AG>>>>>>>>C 
+850 data C>DHHHHJ>>>>DHHHHJ>C 
+860 data C>C====C>DJ>C====C>C 
+870 data C>AHHHHG>CC>AHHHHG>C 
+880 data C>>>>>>>>CC>>>>>>>>C 
+890 data AHHHHHHHHGAHHHHHHHHG 
+900 data 0,1,7,5,12,3,9,4,10,8,12,24,6,11,26,18
+910 data 19,2, 19,22, 2,22 
+920 :
+930 rem 
+940 rem Start Position
+950 rem 
+960 : 
+970 restore 910 
+980 mdlay%=mdlay%-1 
+990 mtime%=mdelay% 
+1000 man%=2 
+1010 many%=2 
+1020 ok=-1 
+1030 t%=0 
+1040 pen 14 
+1050 locate 2,2 
+1060 print chr$(224)
+1070 for i%=0 to 2 
+1080 gdelay%(i%)=gdelay%(i%)-2*(i%+1) 
+1090 gtime%(i%)=gdelay%(i%)
+1100 read x%,y% 
+1110 ghost%(i%,0)=x%
+1120 ghost%(i%,1)=y% 
+1130 pen 11+i% 
+1140 locate x%,y% 
+1150 print chr$(255)
+1160 next 
+1170 maze$(2) = left$ (maze$(2),1) + ""+mid$(maze$(2),3)
+1180 score%=score% + 10 
+1190 dots%=183 
+1200 pen 14
+1210 locate 15+lives,25 
+1220 print " ";
+1230 bonus%=100 
+1240 pen#1,10 
+1250 locate #1,1,24
+1260 print #1,"Bonus:";bonus% 
+1270 return 
+1280 : 
+1290 rem 
+1300 rem Aufsetzen 
+1310 rem 
+1320 : 
+1330 cls 
+1340 pen 15 
+1350 locate 1,25 
+1360 print "Score:";0;
+1370 pen 14 
+1380 locate 16,25 
+1390 print string$(3,224); 
+1400 gdelay%(0)=20 
+1410 gdelay%(1)=40 
+1420 gdelay%(2)=80 
+1430 mdelay%=6 
+1440 score%=0 
+1450 bonus%=0 
+1460 screen=1 
+1470 lives=3 
+1480 return 
+1500 rem 
+1510 rem Bewegung des Mannes 
+1520 rem 
+1530 :
+1540 if mtime% > t% then return 
+1550 mtime% = t% + mdelay% 
+1560 x% = man% - (inkey (d%) > -1) + (inkey (c%) > -1)
+1570 if x%=0 then x%=20 
+1580 if x%=21 then x%=1 
+1590 y% = many% - (inkey (b%) > -1) + (inkey (a%) > -1) 
+1600 if (x%=ghost%(0,0) and y%=ghost%(0,1)) or (x%=ghost%(1,0) and y%=ghost%(1,1)) or (x%=ghost%(2,0) and y%=ghost(2,1)) then ok=0 
+1610 if mid$ (maze$(y%),x%,1) > ">" then return 
+1620 pen 14 
+1630 locate manx%,many% 
+1640 print " "
+1650 locate x%,y% 
+1660 print chr$(224) 
+1670 manx%=x% 
+1680 many%=y% 
+1690 if mid$ (maze$(y%),x%,1) = " " then return 
+1700 sound 129,30,5,15 
+1710 dots% = dots% - 1
+1720 score% = score% + 10 
+1730 pen 15 
+1740 locate 7,25
+1750 print score%; 
+1760 maze$(y%) = left$ (maze$ (y%),x%-1) + " " + mid$ (maze$(y%),x%+1) 
+1770 return 
+1780 : 
+1790 rem 
+1800 rem Bewegung der Geister 
+1810 rem 
+1820 : 
+1830 for i=0 to 2 
+1840 if gtime%(i%)<t% then gosub 1920 
+1850 next 
+1860 return 
+1870 : 
+1880 rem 
+1890 rem Geister 
+1900 rem 
+1910 : 
+1920 sound 130,370*i%+370,10,14 
+1930 gtime%(i%) = t% + gdelay%(i%) 
+1940 y% = ghostt%(i%,1) + ( ghost%(i%,1) > many% ) - (ghost%(i%,1) < manx%) 
+1950 if mid$ (maze$(y%),ghost% (i%,0),1) > "?" then y% = ghost% (i%,1) 
+1960 x% = ghost%(i%,0) - (ghost%(i,0) < manx% ) + (ghost%(i%,0) > manx%) 
+1970 if mid$ (maze$(y%),x%,1) > "?" then x%=ghost%(i%,0) 
+1980 if mid$ (maze$ (ghost% (i%,1)),ghost% (i%,0),1) = ">" then temp$ = chr$(144) else temp$ = " "
+1990 pen screen 
+2000 locate ghost% (i%,0),ghost% (i%,1) 
+2010 print temp$ 
+2020 pen 11+i% 
+2030 locate x%,y% 
+2040 print chr$(225) 
+2050 ghost% (i%,0) = x% 
+2060 ghost% (i%,1) = y%
+2070 if x% = manx% and y% = many% then ok = 0 
+2080 return 
+2090 : 
+2100 rem 
+2110 rem gefangen 
+2120 rem 
+2130 : 
+2140 for i% = 255 to 128 step -1 
+2150 pen int (rnd*15) 
+2160 locate manx%,many% 
+2170 print chr$(i%)
+2180 call &BD19 
+2190 sound 132,int (rnd*1000) + 1000,5,15 
+2200 next 
+2210 lives = lives -1 
+2220 if lives = 0 then locate 6,12:pen 14:print chr$(22);chr$(1);"Spielende";chr$(22);chr$(0)
+2230 return 
+2240 : 
+2250 rem 
+2260 rem Anleitung 
+2270 : 
+2280 env 1,10,1,100,10,-1,20
+2290 border 0 
+2300 ink 0,0 
+2310 ink 1,0 
+2320 ink 1,0 
+2330 ink 3,24 
+2340 paper 0 
+2350 cls 
+2360 pen 1 
+2370 locate 1,25 
+2380 print "Smiley und die Grumpies"; 
+2390 sound 1,60,1100,4,1 
+2400 sound 2,80,1100,2,1 
+2410 sound 4,95,1100,0,1 
+2420 for x%=0 to 368 step 2 
+2430 for y%=0 to 16 step 2 
+2440 if test (x%,y%) then plot x% + 120,y%*2 + 336,3 
+2450 next 
+2460 next 
+2470 locate 1,7 
+2475 ink 1,11 
+2480 pen 1 
+2490 print 
+2500 print 
+2510 print "J ---> Joystick" 
+2520 print 
+2530 print "K ---> Keyboard" 
+2540 print 
+2550 pen 2 
+2560 print "Zum Starten --Space-- druecken !"
+2570 a%=69 
+2580 b%=71 
+2590 c%=39 
+2600 d%=31 
+2610 while inkey (47) =-1 
+2620       if inkey (37) > -1 then locate 1,17:print chr$(243):print:print " ":pen 3:locate 1,22:print "A ...oben    Z ... unten                                         < ...links     > ... rechts":pen 2:a%=69:b%=71:c%=39:d%=31 
+2630       If inkey (45) >1 then locate 1,22:print space$(80):locate 1,17:print " ":print:print chr$(243):a%=72:b%=73:c%=74:d%=75 
+2640 wend 
+2650 paper 0 
+2660 return 
+2670 : 
+2680 rem 
+2690 rem naechstes Bild 
+2700 rem 
+2710 : 
+2720 pen 14 
+2730 locate 2,12 
+2740 print chr$(22);chr$(1);"Bild ";screen;" beendet";chr$(22);chr$(0) 
+2750 screen=screen + 1 + 10 * (screen=9) 
+2760 score% = score% + bonus 
+2770 pen 15 
+2780 locate 7,25 
+2790 print score%; 
+2800 return 
+2810 : 
+2820 rem 
+2830 rem Spiel vorbei
+2840 rem 
+2850 : 
+2860 for t%=0 to 5000 
+2870 next 
+2880 for x%=0 to 320 step 4 
+2890     move x%,0 
+2900     draw x%,400,0 
+2910     move 640-x%,0 
+2920     draw 640-x%,400,0 
+2930 next 
+2940 if score% > hi% then hi% = score% 
+2950 pen 14 
+2960 locate 1,3 
+2970 print string$ (20,"*")
+2980 pen 11
+2990 print "HISCORE = ";hi% 
+3000 print 
+3010 print 
+3020 pen 12 
+3030 print "Ihr Score = ";score%
+3040 print 
+3050 pen 14 
+3060 print string$ (20,"*") 
+3070 pen 13 
+3080 locate 1,15 
+3090 print "Nochein Spiel (J/N)"
+3100 k%=-1 
+3110 while k% =-1 
+3120       if inkey (45) > -1 then k%=43 
+3130       if inkey (46) > -1 then k%=46 
+3140 wend 
+3150 return 
