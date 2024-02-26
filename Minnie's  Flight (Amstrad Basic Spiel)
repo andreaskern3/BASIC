@@ -252,3 +252,5 @@
 23410 p(1)=60:p(2)=66:p(3)=219:p(4)=219:p(5)=255:p(7)=231:p(8)=126:return 
 23510 p(1)=36:p(2)=24:p(3)=126:p(4)=219:p(5)=255:p(7)=231:p(8)=126:return
 33333 c=joy(0):print c:goto 33333 
+
+' Offiziel noch die Zeile : 2306 |dump  einfügen 
