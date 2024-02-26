@@ -255,7 +255,8 @@
 
 ' Offiziel noch die Zeile : 2306 |dump  einfügen 
 
-'*********** Tastatur Belegungs Programm falls kein Joystick verfügbar ist,bitte diese Zeilen nachträglich einfügen *********  
+'*********** Tastatur Belegungs Programm****
+'***********Falls kein Joystick verfügbar ist,bitte diese Zeilen nachträglich einfügen *********  
 
 1 speed key 1,1 
 2307 a$=inkey$: if a$=" " then 2310 else 2307 
