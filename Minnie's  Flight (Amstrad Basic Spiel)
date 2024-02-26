@@ -254,3 +254,21 @@
 33333 c=joy(0):print c:goto 33333 
 
 ' Offiziel noch die Zeile : 2306 |dump  einfügen 
+
+'*********** Tastatur Belegungs Programm falls kein Joystick verfügbar ist,bitte diese Zeilen nachträglich einfügen *********  
+
+1 speed key 1,1 
+2307 a$=inkey$: if a$=" " then 2310 else 2307 
+2310 a$="":clear 
+6610 feu$=a$:a$=inkey$
+6710 rem 
+6810 if upper$(a$)="P" then a=a+1:gosub 12410 else 7010
+7010 if upper$(a$)="O" then a=a-1:gosub 12410 else 7210 
+7210 if upper$(a$)="Z" then b=b+1:gosub 12410 else 7410 
+7410 if upper$(a$)="Q" then b=b-1:gosub 12410 else 7610 
+7610 if upper$(a$)=" " and bom>0 then gosub 11110 
+10910 a$=inkey$: if a$=" " then run 2210 else 10910 
+11510 if upper$(FEU$)="O" then m=m+1 
+11610 if upper$(FEU$)="Q" then n=n+1 
+11710 if upper$(FEU$)="Z" then n=n-1 
+11810 if upper$(FEU$)="P" then m=m-1
