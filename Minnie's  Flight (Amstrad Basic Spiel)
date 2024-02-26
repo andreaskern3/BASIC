@@ -1,0 +1,254 @@
+' *********************Juche,Juche*****Funktioniert einwandfrei**********
+
+5 mode 1
+10 symbol after 130 
+110 rem ******************************
+210 rem scrolling nach unten 
+310 data 06,0,205,77,188,201 
+410 for adr=20000 to 20005 
+510 read wert 
+610 poke adr,wert 
+710 next adr 
+810 rem ******************************
+910 rem Zeichendefination 
+1010 symbol 130,60,126,219,219,126,36,231
+1110 symbol 131,60,90,219,219,255,126,36,231
+1210 symbol 132,60,126,201,201,255,126,36,231
+1310 symbol 133,60,126,147,147,255,126,36,231
+1410 symbol 134,60,126,219,219,255,126,36,231
+1510 symbol 135,0,0,0,12,12,0,0,0
+1610 symbol 136,17,4,41,8,48,120,120,48
+1710 symbol 137,60,126,129,219,255,126,36,231
+1810 symbol 138,96,224,240,63,31,25,25,25 
+1910 symbol 139,6,7,15,252,240,152,152,152 
+2010 symbol 140,31,14,15,31,242,227,97,0
+2110 symbol 141,248,112,224,248,79,199,134,0 
+2210 rem ************** initialisierung 
+2211 mode 1:ink 2,20:ink 3,6 
+2220 ink 0,0:border 0 
+2230 ink 1,20,6:locate 5,1:print"MINNIE'S FLIGHT":locate 16,2:print"by D.BIZAU jr.    '85" 
+2235 locate 10,4:print chr$(132):plot 156,344,2:plot 150,344,2:locate 15,4:print"Minnie"
+2240 locate 10,6:print chr$(135);chr$(135):locate 15,6:print"M. Giftige Bonbons"
+2245 locate 10,8:print chr$(136):locate 15,8:print"M. bombe"
+2250 locate 10,10:print chr$(137):plot 154,248,3:plot 148,248,3:locate 15,10:print"Bad Max"
+2260 locate 1,12:print" Bad Max ist immun gegen giftige Bonbons"
+2265 locate 4,14:print"Sie haben eine Bombe pro Minnie"
+2270 locate 3,16:print"Alle 400 Punkte erreichen sie denn "
+2271 locate 10,17:print"Naechstes Level "
+2280 locate 4,18:print"Jeden 4. Level erhalten sie" 
+2281 locate 9,19:print"Ein Bonus Leben"
+2290 locate 2,20:print"Ausserdem gibt es 100 Punkte pro Level "
+2300 locate 6,22:print"Und 200 Punkte fuer Bad Max "
+2304 locate 6,23:print" "
+2305 locate 10,25:print"Feuerknopf Druecken" 
+2307 sk=joy(0):if sk=16 then 2310 else 2307 
+2310 clear 
+2410 top=peek(18000)*255+peek(18001)
+2510 origin 0,0 
+2910 bom=1 
+3010 zaehler=0 
+3110 stufe=1 
+3210 a=20:b=12 
+3310 rem zufaellige Zahlen fuer gegners Anfangsposition 
+3410 x=int(rnd*37+2)
+3510 y=int(rnd*23+2)
+3610 if x=a or y=b then 3410 
+3710 rem *****************************
+3810 rem initialisierung 
+3910 p$=chr$(134)+" "+chr$(134)+" "+chr$(134)
+4010 s=0:c=3 
+4110 rem ***************************** 
+4210 rem schleife nach krach,aufbau des Bildschirms 
+4310 :cls:clg:randomize time
+4410 gosub 14210 
+4510 sp=20-stufe*3 
+4610 on stufe gosub 23010,23110,23210,23310,23410,23510,23010,23110,23210,23310,23410,23510,23010,23110,23210,23310,23410,23510,23010,23110,23210,23310,23410,23510,23010,23110,23210,23310,23410,23510
+4710 for sy=1 to stufe*2+15 
+4810 zf=int(rnd*255+1) 
+4910 symbol 149+sy,p(1),p(2),p(3),p(4),p(5),zf,p(7),p(8)
+5010 xx=int(rnd*37+2):yy=int(rnd*22+2)
+5110 if xx=20 or yy=12 then goto 5010 
+5210 ep=xx*16-6:dp=400-(yy*16-8)
+5310 locate xx,yy:print chr$(149+sy):plot ep,dp,3:plot ep-6,dp,3
+5410 next sy 
+5510 a=20:b=12 
+5610 plot 13,13:draw 13,385:draw 626,385:draw 626,13:draw 13,13
+5710 zl=int(rnd*4+1):if zl=3 then zl=8 
+5810 locate 14,1:print p$ 
+5910 locate 21,1:print"LEVEL:";stufe 
+6010 locate 31,1:print"TOP:";TOP 
+6110 rem *****************************
+6210 rem Hauptschleife,meine Bewegungen 
+6310 for z=1 to sp:next z 
+6410 if a=1 or a=40 then 8210 
+6510 if b=1 or b=25 then 8210 
+6610 al=joy(0) 
+6710 if al=0 or al=5 or al=9 or al=6 or al=10 or bom=0 and al=16 or al>16 then al=zl
+6810 if al=8 then a=a+1:gosub 12410 else 7010
+6910 locate a,b:print chr$(132):plot ap+2,bp+2,2:plot ap-4,bp+2,2:locate a-1,b:print chr$(135):zl=al:sound 1,100,1
+7010 if al=4 then a=a-1:gosub 12410 else goto 7210 
+7110 locate a,b:print chr$(133):plot ap-2,bp+2,2:plot ap-8,bp+2,2:locate a+1,b:print chr$(135):zl=al:sound 1,150,1 
+7210 if al=2 then b=b+1:gosub 12410 else goto 7410
+7310 locate a,b:print chr$(130):plot ap,bp+2,2:plot ap-6,bp+2,2:locate a,b-1:print chr$(135):zl=al:sound 1,200,1
+7410 if al=1 then b=b-1:gosub 12410 else goto 7610
+7510 locate a,b:print chr$(131):plot ap,bp+4,2:plot ap-6,bp+4,2:locate a,b+1:print chr$(135):zl=al:sound 1,50,1 
+7610 if al=16 and bom>0 then gosub 11110
+7710 s=s+1:locate 1,1:print"Score:";s 
+7810 if s=400*stufe then 17610 
+7910 zaehler=zaehler+1
+8010 if (zaehler mod 2)=0 then gosub 12910
+8110 goto 6110 
+8210 rem *****************************
+8310 rem rand oder hinderniss getroffen 
+8410 bom=1 
+8510 c=c-1 
+8610 p$="":for i=1 to c:p$=p$+chr$(134)+" ":next i 
+8710 if b=25 or al=2 then b=b-1 
+8810 if a=40 or al=8 then a=a-1 
+8910 sound 2,758:sound 2,804:sound 2,851:sound 2,902:sound 2,956
+9010 locate a,b:print chr$(138);chr$(139):locate a,b+1:print chr$(140);chr$(141) 
+9110 for tyu=4 to 777:next 
+9210 if c=0 then 9410 
+9310 goto 4310 
+9410 rem *****************************
+9510 rem Ende des Spiels
+9610 cls:clg:mode 0 
+9710 if s>top then goto 9810 else 10410
+9810 sound 3,200:sound 3,150:sound 3,200:sound 3,150,4:sound 3,100,50
+9910 za2=(s mod 255):za1=int(s/255)
+10010 poke 18000,za1:poke 18001,za2
+10110 locate 1,2:print"New high score";s
+10210 ink 1,26,19 
+10310 goto 10510 
+10410 locate 1,2:print"    Your score";s  
+10510 locate 3,12:print chr$(138);chr$(139):locate 3,13:print chr$(140);chr$(141)
+10610 locate 6,12:print"   THE END   ";chr$(138);chr$(139):locate 17,13:print chr$(140);chr$(141)
+10710 plot 62,226:draw 580,226,14:draw 580,190,15:draw 62,190,14:draw 62,226,15
+10810 locate 1,24:print" Press Fire to play" 
+10910 kl=joy(0):if kl=16 then run 2210 else 10910 
+11110 rem ****************************
+11210 rem Legen der Bombe 
+11310 sound 3,7,10,3,,,11 
+11410 m=a:n=b 
+11510 if zl=4 then m=m+1 
+11610 if zl=1 then n=n+1 
+11710 if zl=2 then n=n-1 
+11810 if zl=8 then m=m-1 
+11010 locate m,n:print chr$(136)
+12010 bom=bom-1 
+12110 return 
+12210 rem ****************************
+12310 rem test, ob posi des maennchens auf irgendein punkt stoesst 
+12410 ap=a*16-6:bp=400-(b*16-7) 
+12510 if test(ap,bp)<>0 then 8210 
+12610 ab=a*16-1:bb=400-(b*16-15)
+12710 if test(ab,bb)<>0 then 21410 
+12810 return 
+12910 rem ****************************
+13010 rem Gegner 
+13110 locate x,y:print" " 
+13210 if (x-a)>0 then x=x-1 else x=x+1 
+13310 if (y-b)>0 then y=y-1 else y=y+1 
+13410 xp=x*16-6:yp=400-(y*16-8)
+13510 if test(xp,yp)<>0 then s=s-1:sound 2,500,10,12 
+13610 xb=x*16-1:yb=400-(y*16-15) 
+13710 if test(xb,yb)<>0 then 19910 
+13810 if a=x and b=y then 8310 
+13910 sound 1,300,2,12 
+14010 locate x,y:print chr$(137):plot xp,yp,3:plot xp-6,yp,3 
+14110 return 
+14210 rem **************************** 
+14310 rem bildschirmfarben 
+14410 bor=int(rnd*14) 
+14510 on stufe goto 15110,15010,15610,15510,15210,15710,16110,16010,16210,16410,16310,16510,14910,14810,14710,16710,16610,16810,17110,17010,17210,14610,15310,15410,15810,15910,16910,17310,17410,17510
+14610 ink 0,0:ink 1,5:border bor:return
+14710 ink 0,0:ink 1,12:border bor:return 
+14810 ink 0,0:ink 1,13:border bor:return
+14910 ink 0,0:ink 1,14:border bor:return 
+15010 ink 0,0:ink 1,24:border bor:return 
+15110 ink 0,0:ink 1,25:border bor:return 
+15210 ink 0,0:ink 1,26:border bor:return 
+15310 ink 0,1:ink 1,5:border bor:return
+15410 ink 0,1:ink 1,14:border bor:return 
+15510 ink 0,1:ink 1,24:border bor:return 
+15610 ink 0,1:ink 1,25:border bor:return 
+15710 ink 0,1:ink 1,26:border bor:return 
+15810 ink 0,3:ink 1,13:border bor:return 
+15910 ink 0,3:ink 1,17:border bor:return 
+16010 ink 0,3:ink 1,24:border bor:return 
+16110 ink 0,3:ink 1,25:border bor:return 
+16210 ink 0,3:ink 1,26:border bor:return 
+16310 ink 0,4:ink 1,24:border bor:return 
+16410 ink 0,4:ink 1,25:border bor:return 
+16510 ink 0,4:ink 1,26:border bor:return 
+16610 ink 0,9:ink 1,24:border bor:return
+16710 ink 0,9:ink 1,25:border bor:return 
+16810 ink 0,9:ink 1,26:border bor:return 
+16910 ink 0,13:ink 1,17:border bor:return 
+17010 ink 0,13:ink 1,24:border bor:return 
+17110 ink 0,13:ink 1,25:border bor:return 
+17210 ink 0,13:ink 1,26:border bor:return 
+17310 ink 0,14:ink 1,24:border bor:return 
+17410 ink 0,14:ink 1,25:border bor:return 
+17510 ink 0,14:ink 1,26:border bor:return 
+17610 rem ****************************
+17710 rem neachste stufe 
+17810 sound 1,300,50,13:sound 1,200,25,13
+17910 cls:clg 
+18010 stufe=stufe+1 
+18110 s=s+100 
+18210 if (stufe mod 4)<>0 then 18410 
+18310 p$="":c=c+1:for ty=1 to c:p$=p$+chr$(134)+" ":next ty
+18410 bors=int(rnd*27) 
+18510 bor2=int(rnd*27)
+18610 if bors=bor2 then 18410 
+18710 border bors,bor2:ink 1,bor2+1,bors+2:ink 0,bors+3,bor2+4
+18810 locate 1,1:print string$(40,chr$(224)) 
+18910 locate 1,3:print"    L     E    V     E     L    ";stufe
+19010 locate 1,4:print string$(40,chr$(224)) 
+19110 for rou=1 to 25 
+19210 call 20000
+19310 for tfr=1 to 75:next 
+19410 sound 1,300,10,13:sound 1,200,10,13
+19510 call &BD19 
+19610 next rou 
+19710 border 0:ink 1,24:ink 0,1
+19810 goto 4110 
+19910 rem ****************************
+20010 rem Explosion des gegners 
+20110 ink 1,6:ink 0,6:border 20 
+20210 s=s+100 
+20310 sound 2,426,440,15,,,15 
+20410 for dfg=1 to 99 
+20510 plot xb,yb 
+20610 qx=int(rnd*640)
+20710 qy=inz(rnd*400)
+20810 draw qx,qy,3 
+20910 next dfg 
+21010 ink 0,26:ink 1,0:border 26 
+21110 sound 3,426,50,14,,,13 
+21210 for ri=1 to 333:next 
+21310 goto 17610 
+21410 rem ****************************
+21510 rem Explosion des maennchens 
+21610 ink 0,20:ink 1,20:border 20 
+21710 sound 2,426,440,15,,,15 
+21810 for atr=1 to 99 
+21910 plot ab,bb 
+22010 va=int(rnd*640)
+22110 vb=int(rnd*400)
+22210 draw va,vb,2
+22310 next atr 
+22410 ink 1,0:ink 0,26:border 26 
+22510 sound 3,426,50,14,,,13 
+22610 for ri=1 to 333:next 
+22710 goto 8210 
+22810 rem ****************************
+22910 rem zufallsmonster 
+23010 p(1)=60:p(2)=126:p(3)=129:p(4)=219:p(5)=255:p(7)=231:p(8)=126:return
+23110 p(1)=66:p(2)=36:p(3)=60:p(4)=90:p(5)=255:p(7)=231:p(8)=126:return
+23210 p(1)=66:p(2)=60:p(3)=90:p(4)=219:p(5)=255:p(7)=231:p(8)=126:return
+23310 p(1)=60:p(2)=126:p(3)=255:p(4)=219:p(5)=255:p(7)=231:p(8)=126:return 
+23410 p(1)=60:p(2)=66:p(3)=219:p(4)=219:p(5)=255:p(7)=231:p(8)=126:return 
+23510 p(1)=36:p(2)=24:p(3)=126:p(4)=219:p(5)=255:p(7)=231:p(8)=126:return
+33333 c=joy(0):print c:goto 33333 
