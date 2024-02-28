@@ -1,0 +1,195 @@
+10 defint b-z:env 1,1,15,10,15,-1,40:env 2,11,-1,2:env 3,15,-1,50:ent 1,20,-5,2:ent 2,20,5,2:ent 3,1,0,100,1,-49,100,1,-31,100:hp=0:randomize time
+20 rem **** VORSPANN **** 
+30 mode 0:border 4:ink 0,4:paper 0:pen 1:cls:tag:restore 280 
+40 every 20,1 gosub 290:every 37,2 gosub 270
+50 a$="Runner":b$="Line" 
+60 for l=0 to 100 step 2 
+70 for k=60 to 560 step 100 
+80 v=(k+55)/100:origin k,180+1:print mid$(a$,v,1);
+90 next k 
+100 for k=110 to 610 step 100 
+110 v=(k+5)/100:origin k,380-1+3:draw 25,0,0:origin k,380-1:draw 0,0,1:print mid$(b$,v,1);
+120 next k,l
+130 ff=remain (1):ff=remain (2):ink 1,6,24
+140 sound 1,770,500,15,1:sound 4,780,500,15,1 
+150 origin 45,220:drawr 560,0:drawr 0,100:drawr -560,0:drawr 0,-100
+160 tagoff:ink 2,19:pen 2:for z=1 to 10000:next z 
+170 locate 3,2:print chr$(164);" 1985  G.S.":for z=1 to 2000:next z 
+180 locate 3,15:print"Ein Spiel von":for z=1 to 2500:next z
+190 locate 10,21:print chr$(224):for z=1 to 500:next z
+200 for k=10 to 19 
+210 locate k,21:print" "+chr$(224):sound 4,60,5,14
+220 for z=1 to 200:next z,k 
+230 for k=0 to 19 
+240 locate 20-k,21:print chr$(224);left$("-Gerd Schroeder     ",k):sound 1,300,10,14
+250 for z=1 to 400-k*10:next z,k  
+260 locate 1,21:print"  ":for z=1 to 10000:next z:goto 310 
+270 read n:read m:sound 1,n,75,15:sound  4,m,75,15:return
+280 data 716,179,956,239,851,213,851,213,358,89,478,119,426,106,426,106,478,63,426,71,379,80,358,89,319,95,358,89,379,80,500,510,600,610,800,810
+290 farbe=rnd*26:if farbe=4 then 290 
+300 ink 1,farbe:return 
+310 rem **** VERIABLENBESETZUNG ****
+320 dim m(21,23),mx(2),my(2),b(2),pe(21,23)
+330 level=1:leben=3:p=0:pkte=0:fhm=3
+340 rem **** FARBEN ****
+350 v=int(rnd*6)+1:w=int(rnd*4)+1
+360 on v gosub 370,380,390,400,410,420:goto 430
+370 ink 1,14:return 
+380 ink 1,7:return 
+390 ink 1,15:return 
+400 ink 1,16:return 
+410 ink 1,6:return 
+420 ink 1,2:return 
+430 on w gosub 440,450,460,470:goto 480
+440 ink 0,0:return 
+450 ink 0,3:return 
+460 ink 0,1:return 
+470 ink 0,4:return 
+480 ink 2,26:ink 3,24:ink 4,9:ink 5,24,6:ink 6,0:ink 8,26:ink 9,26
+490 rem **** MONSTER-AUSWAHL **** 
+500 v=int(rnd*6)+1 
+510 on v gosub 520,530,540,550,560,570:goto 580 
+520 symbol 255,0,129,90,60,102,126,102:return 
+530 symbol 255,126,90,90,126,24,24,36,66:return 
+540 symbol 255,129,66,60,52,44,60,66,129:return 
+550 symbol 255,36,90,153,24,36,66,66,0:return
+560 symbol 255,68,40,16,40,40,16,40,68:return 
+570 symbol 255,66,165,66,189,66,165,66,0:return 
+580 rem **** BILDAUFBAU **** 
+590 restore 660:cls:pen 1:v=rnd*26:border v 
+600 sound 1,1000,300,13:sound 4,1007,300,13
+610 for k=2 to 22 
+620 for l=2 to 19 
+630 read m:if m<147 then l=l+m:goto 650 
+640 m(l,k)=m:locate l,k:print chr$(m);
+650 next l,k:goto 870 
+660 data 150,154,154,154,154,158,154,154,154,154,158,154,154,154,154,154,154,156 
+670 data 149,3,149,3,149,5,149
+680 data 149,3,149,3,149,5,149 
+690 data 151,154,154,154,154,155,158,154,154,154,157,5,149
+700 data 149,4,149,2,149,5,149 
+710 data 149,4,149,2,151,154,154,154,154,154,154,157
+720 data 149,4,149,2,149,5,149 
+730 data 149,4,151,154,154,154,157,5,149
+740 data 151,154,154,154,154,154,157,2,151,154,154,154,154,154,154,157
+750 data 157,4,149,2,149,5,151 
+760 data 149,4,149,2,149,5,149
+770 data 149,4,149,2,149,5,149 
+780 data 151,154,154,154,158,154,155,154,154,154,157,5,149
+790 data 149,2,149,4,151,154,154,154,154,154,154,157
+800 data 149,2,149,4,149,5,149 
+810 data 149,2,149,4,149,5,149 
+820 data 151,154,154,154,155,154,158,154,154,154,155,158,154,154,154,154,154,157
+830 data 149,4,149,3,149,4,149
+840 data 149,4,149,3,149,4,149 
+850 data 149,4,149,3,149,4,149 
+860 data 147,154,154,154,154,154,155,154,154,154,154,155,154,154,154,154,154,153 
+870 locate 1,11:print chr$(127):locate 20,11:print chr$(127):m(1,11)=127:m(20,11)=127
+880 window #1,1,20,24,25:paper #1,4:pen #1,2:cls #1
+890 print #1,"Punkte"tab(18);string$(fhm,chr$(229)):locate #1,1,2:print #1,"LEVEL";level;"LEBEN";string$(leben-1,chr$(224))
+900 rem **** VARIABLENBESETZUNG **** 
+910 xx=1:yy=11:b(1)=2:b(2)=4:psoll=169:pkte=pkte+p:p=0:for k=1 to 21:for l=1 to 23:pe(k,l)=1:next l,k
+920 for l=1 to 2 
+930 mx(l)=int(rnd*17+2):my(l)=int(rnd*20+2):if m(mx(l),my(l))=0 then 930 
+940 next l     
+950 rem **** FIGUREN SETZEN **** 
+960 locate xx,yy:pen 2:print chr$(224) 
+970 pen 3:for k=1 to 2:locate mx(k),my(k):print chr$(255):next k 
+980 rem **** SCHWIERIGKEITSGRAD **** 
+990 if level>1 and level <6 then every 1000-level*100 gosub 1580 else if level>5 and level<12 then every 750-level*50 gosub 1580 else if level>11 then every 1500 gosub 1580 
+1000 if level>3 and level<15 then every 1400-level*70,1 gosub 1630 else if level>14 then every 400,1 gosub 1630
+1010 rem **** HAUPT-ROUTINE **** 
+1020 di:for k=1 to 2 
+1030 gosub 1220:locate #1,8,1:print #1,p+pkte:if p=psoll then gosub 1650:goto 340
+1040 locate mx(k),my(k):pen pe(mx(k),my(k)):print chr$(m(mx(k),my(k)))
+1050 if b(k)<2 then gosub 1100 else gosub 1160
+1060 locate mx(k),my(k):pen 3:print chr$(255)
+1070 if(xx=mx(1) and yy=my(1)) or (xx=mx(2) and yy=my(2)) then 1350  
+1080 next k:ei:goto 1020
+1090 rem **** BEWEGUNG MONSTER HORIZONTAL **** 
+1100 if k=1 then if mx(1)<xx then b(1)=1 else b(1)=-1 
+1110 if m(mx(k),my(k)+1)>127 and my(k)<yy then my(k)=my(k)+1:b(k)=4:return
+1120 if m(mx(k),my(k)-1)>127 and my(k)>yy then my(k)=my(k)-1:b(k)=2:return
+1130 if m(mx(k)+b(k),my(k))>127 then mx(k)=mx(k)+b(k):return 
+1140 gosub 1160 
+1150 rem **** BEWEGUNG MONSTER VERTIKAL **** 
+1160 if k=2 and xx<>1 and xx<>20 then if my(2)<yy then b(2)=4 else b(2)=2 
+1170 if m(mx(k)+1,my(k))>127 and mx(k)<xx then mx(k)=mx(k)+1:b(k)=1:return 
+1180 if m(mx(k)-1,my(k))>127 and mx(k)>xx then mx(k)=mx(k)-1:b(k)=-1:return
+1190 if m(mx(k),my(k)+b(k)-3)>127 then my(k)=my(k)+b(k)-3:return 
+1200 gosub 1100
+1210 rem **** BEWEGUNG SPIELEFIGUR **** 
+1220 xv=0:yv=0 
+1230 if inkey(76)=0 then gosub 1920 
+1240 if inkey(75)=0 then xv=1:goto 1290 
+1250 if inkey(74)=0 then xv=-1:goto 1290 
+1260 if inkey(73)=0 then yv=1:goto 1290 
+1270 if inkey(72)=0 then yv=-1:goto 1290 
+1280 return 
+1290 if m(xx+xv,yy+yv)=0 or (m(xx+xv,yy+yv)=202 and fh=0) then return
+1300 locate xx,yy:if fh and pe(xx,yy)=5 then pen 5 else pen 8:pe(xx,yy)=8
+1310 print chr$(m(xx,yy))
+1320 xx=xx+xv:yy=yy+yv:locate xx,yy:pen 9:print chr$(224)
+1330 if pe(xx,yy)<>1 then sound 2,200,2,13 else p=p+1:sound 2,70,2,13
+1340 if (xx=mx(1) and yy=my(1)) or (xx=mx(2) and yy=my(2)) then 1350 else return 
+1350 rem **** SUBROUTINE KOLLISION **** 
+1360 ff=remain(0):ff=remain(1):f=remain(1):fh=0:sound 2,800,400,,3,,10 
+1370 pen 5:locate xx,yy:print chr$(166):for z=1 to 1000:next z 
+1380 for l=yy to 22
+1390 locate xx,yy:print " "
+1400 yy=yy+1:locate xx,yy:print chr$(225):for z=1 to 200:next z,l
+1410 border 0:pen 2 
+1420 for l=22 to 2 step -1
+1430 locate 10,1:print chr$(143):next l  
+1440 locate 6,8:print string$(9,chr$(143)):locate 10,8:pen 3:print chr$(225)
+1450 restore 1500 
+1460 for l=1 to 21 
+1470 read u,v,w:sound 1,u,w,15:sound 4,v,w,15
+1480 next l    
+1490 leben=leben-1:for z=1 to 4000:next z:goto 1520 
+1500 data 638,80,80,0,0,20,638,80,70,0,0,20,638,80,20,0,0,5,638,80,80,0,0,30
+1510 data 536,67,60,0,0,15,568,71,30,0,0,5,568,71,50,0,0,15,638,80,30,0,0,5,638,80,50,0,0,15,716,89,30,0,0,5,638,80,100
+1520 rem **** BILDSCHIRM LOESCHEN **** 
+1530 pen 6:for ze=1 to 25 
+1540 for sp=1 to 20 
+1550 locate sp,ze:print chr$(143) 
+1560 next sp:sound 2,ze*20,5,13:next ze
+1570 if leben=0 then 1750 else 340 
+1580 rem **** HINDERNISSE SETZEN **** 
+1590 di:xh=rnd*17+2:yh=rnd*20+2:if m(xh,yh)=0 or m(xh,yh)=202 then 1590 
+1600 pkte=pkte-10:if pe(xh,yh)<>8 then psoll=psoll-1
+1610 m(xh,yh)=202:locate xh,yh:pen 5:pe(xh,yh)=5:print chr$(202):sound 4,50,20,14:return
+1620 rem **** MONSTER SETZT ALTE FARBEN **** 
+1630 if pe(mx(1),my(1))=8 then pe(mx(1),my(1))=1:pkte=pkte-5:psoll=psoll+1:sound 4,400,30,14:return else return 
+1640 rem **** NAECHSTES LEVEL **** 
+1650 ff=remain(0):ff=remain(1):ff=remain(2):fh=0:ink 8,0,26:level=level+1:if level<9 then pkte=pkte+100 else pkte=pkte+200
+1660 for k=1 to 5:for l=160 to 30 step -2 
+1670 sound 2,1,1,15:ink 0,k:border k  
+1680 next l,k 
+1690 for k=1 to 26:for l=160 to 60 step -10 
+1700 sound 2,1,1,15:ink 0,k:border k  
+1710 next l,k 
+1720 ink 0,0:ink 1,6,26:border 0:pen 1:cls 
+1730 locate 5,10:print"L E V E L":locate 8,15:print level 
+1740 sound 1,239,300,14,,3:for z=1 to 6000:next z:return 
+1750 rem **** SPIELENDE ****
+1760 speed ink 30,30:border 15,6:ink 0,6,15:ink 2,0:cls 
+1770 pen 2:locate 2,1:print" S P I E L E N D E"
+1780 locate 1,5:print"HOECHSTPUNKTEZAHL:";locate 7,7:print hp
+1790 locate 1,11:print"IHRE PUNKTEZAHL:":locate 7,13:print p+pkte
+1800 if (p+pkte)<hp then for k=60 to 400 step 5:sound 1,k,5,14:next:goto 1860
+1810 locate 1,15:print"GLUECKWUNSCH !!":hp=p+pkte 
+1820 restore 1910 
+1830 for k=1 to 16 
+1840 read v:sound 1,v,50,14 
+1850 next k 
+1860 pen 3:locate 1,22:print"NEUES SPIEL ?"
+1870 locate 1,24:print"TASTE <J/N> DRUECKEN" 
+1880 a$=inkey$:if a$="j" or a$="J" then 1900
+1890 if a$<>"n" and a$<>"N" then 1880 else end 
+1900 speed ink 10,10:goto 330 
+1910 data 179,239,213,0,89,119,106,0,200,200,250,250,300,300,280,280
+1920 rem **** HINDERNIS-BONUS ****
+1930 if level<2 or fhm=0 or fh then return else fh=1:pkte=pkte-50:ink 9,6,18:sound 1,200,60,14,,1:after 500,2 gosub 1940:fhm=fhm-1:locate #1,18,1:print #1,string$(fhm,chr$(229));string$(abs(fhm-3)," "):return
+1940 rem **** ENDE HINDERNIS-BONUS **** 
+1950 fh=0:ink 9,26:sound 1,100,60,14,,2:return 
