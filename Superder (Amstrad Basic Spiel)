@@ -1,0 +1,357 @@
+' ******* Jipieh,Johe******Funktioniert einwandfrei  **********
+
+10 dim p(50),n$(50)
+20 cls:print"  HI-SCORE TABELLE LADEN J/N"
+30 HIGH$=inkey$:if HIGH$="" and upper$(HIGH$)<>"J" and upper$(HIGH$)<>"N" then 30
+40 if upper$(HIGH$)="N" then 100
+50 openin "SUPERDER HI-S.T." 
+60 for i=1 to 50 
+70 input #9,p(i):input #9,n$(i)
+80 next 
+90 closein 
+100 goto 510 
+110 rem ********************************
+120 rem *                              *
+130 rem *         Superder             *
+140 rem *                              *
+150 rem * Copyright '84 by Jens Barthe *
+160 rem *                              *
+170 rem*********************************
+180 '
+190 ' Titelbild 
+200 ' 
+210 mode 0
+220 border 0:ink 0,0:ink 1,6:ink 2,7:ink 3,16:ink 4,5:ink 5,23:ink 6,2:ink 7,15
+230 ink 8,20:ink 9,9:ink 10,12:ink 11,3:ink 12,24:ink 14,25,12:ink 15,13,26
+240 cls 
+250 for i=1 to 200:plot rnd*640,rnd*400,15-cint(rnd*1):next
+260 tag:for i=170 to 177:plot 700,0,i-168:move 80+(i-170)*64,360:print chr$(i);" ";:next
+270 restore 360:po=0:for i=0 to 640 step 4
+280 plot 700,0:call &BD19:move i,70:print chr$(126);
+290 if i<>80+po or po>511 then 350
+300 po=po+64:move i+12,72:drawr 0,284,12:for ii=1 to 10:next
+310 drawr 0,-284,0:plot 700,0,1
+320 plot 700,0,15-cint(rnd*1):for ii=1 to 4:sound 7,1000+ii*200,16,7,,,30:move i,360:print chr$(202);
+330 for iii=1 to 30:next:move i,360:print chr$(203);:next 
+340 read a$:plot 700,0,1+po/64:move i,360:print a$; 
+350 move i-4,70:print" ";:next 
+360 data S,U,P,E,R,D,E,R  
+370 data 1,2,2,4,2,3,5,1,1
+380 restore 370:for ii=0 to 8:read p:if inkey(47)=0 or joy(0)=16 then 420 
+390 sound 7,1100-ii*100,280,4,,,22-ii*2:plot 700,0,2+ii
+400 x=640:for i=30 to 19 step -0.5:x=x-i:move x,300-ii*26:print chr$(170+ii);" ....";p;"Punkt";:if p=1 then print "   "; else print "e  ";
+410 next 
+420 next 
+430 if inkey(47)=0 or joy(0)=16 then 500 
+440 sound 7,200,280,4,,,4:plot 700,0,11:x=640:for i=30 to 19 step -0.5:x=x-i
+450 move x,66:print chr$(179);" ....   Energie ";:next 
+460 sound 7,100,280,4,,,2:plot 700,0,12:x=640:for i=30 to 17 step -0.5:x=x-i 
+470 move x,16:print chr$(164);"  Jens Barthe '1985 ";:next  
+480 for i=24 to 0 step -1:sound 7,4000,4,7,,,30:ink 0,26:border 26:for ii=1 to 10:next:ink 0,0:border 0:next 
+490 if inkey(47)=-1 and joy(0)<>16 then 490
+500 mode 0:for i=1 to 500:next:return
+510 randomize time 
+520 ' 
+530 ' Zeichen definieren 
+540 ' 
+550 symbol after 126 
+560 symbol 126,16,56,68,56,124,254,124,40
+570 symbol 170,0,0,56,124,170,124,56
+580 symbol 171,40,68,170,16,16,170,68,40 
+590 symbol 172,0,130,146,186,238,186,146,130
+600 symbol 173,84,84,254,68,68,40,40,16 
+610 symbol 174,0,130,108,16,56,16,108,130
+620 symbol 175,0,0,0,146,124,40 
+630 symbol 176,40,40,56,56,16,56,16,16
+640 symbol 177,0,68,130,146,108,16,40 
+650 symbol 178,60,102,60,24,126,255,129,66
+660 symbol 179,56,68,68,40,16,56,56,0
+670 symbol 180,127,85,127,85,127,85,119
+680 symbol 181,127,85,127,85,127,85,127,85 
+690 symbol 182,0,4,14,31,21,31,27
+700 symbol 190,124,68,40,16,127,85,127,119
+710 symbol 191,56,212,100,204,16,84,204,100  
+720 symbol 192,92,84,100,76,244,212,204,228  
+730 symbol 202,0,0,4,16,8,32
+740 symbol 203,0,2,80,2,40,0,34,8 
+750 gosub 180:mode 0 
+760 border 0:ink 0,0:ink 3,19:ink 4,22:ink 5,17:ink 6,9:ink 7,24:ink 8,21:ink 9,25,12:ink 10,13,26:ink 13,4:ink 14,11:ink 15,26
+770 raumschiff=2:level=1:an=1:landung=0:zusammenstoss=0:trefferG=0:trefferR=0
+780 ' 
+790 ' Aufbau Anzeige und Haeuser 
+800 ' 
+810 gosub 3170 
+820 tag:clg 
+830 gosub 2930 
+840 hx=639 
+850 for i=1 to 20 
+860 plot 700,0,cint(rnd*1)+14 
+870 ha=rnd*4+1 
+880 hx=hx-32 
+890 on ha goto 900,930,920,910
+900 move hx,60:print chr$(182);:goto 940 
+910 tag:move hx,92:print chr$(181);
+920 move hx,76:print chr$(181); 
+930 move hx,60:print chr$(180); 
+940 next 
+950 plot 700,0,1 
+960 move 0,47:drawr 639,0 
+970 ' 
+980 ' Einstellen d. Eigenschaften d. Gegner 
+990 ' 
+1000 if an<>1 then 1090 else an=0 
+1010 if raumschiff>-1 then energie=256:gosub 2930 else 3240
+1020 for i=62 to 100 step 2::move 300,i:drawr 42,0,0:next:plot -1,-1,0
+1030 plot 700,0,13:move 300,62:print chr$(190);chr$(192);
+1040 move 332,78:print chr$(192); 
+1050 move 332,94:print chr$(191); 
+1060 plot 700,0,1:x=300:y=78:move x,y:print chr$(126);
+1070 if joy(0)<>16 and inkey(47)<>0 then 1070 
+1080 for i=1 to 40:sound 7,800+i*-10,4,7,,,i/2:move x,y:print" ";:y=y+i/20:move x,y:print chr$(126);:next
+1090 on cint(rnd*8+1) goto 1190,1200,1210,1220,1230,1240,1250,1260,1270
+1100 data 170,3,0.95,12,12,2,1,12,4,7
+1110 data 171,1,0.9,12,12,4,2,2,2,16
+1120 data 172,2,0.976,12,12,8,3,8,2,5
+1130 data 173,4,0.93,12,12,20,3,8,1,23
+1140 data 174,1,0.91,12,12,16,5,4,1,2
+1150 data 175,3,0.9,12,12,8,5,12,1,15
+1160 data 176,5,0.959,4,4,10,8,4,3,20
+1170 data 177,4,0.89,12,12,10,3,8,1,9
+1180 data 178,2,0.96,16,12,10,2,8,2,10 
+1190 restore 1100:goto 1280 
+1200 restore 1110:goto 1280 
+1210 restore 1120:goto 1280 
+1220 restore 1130:goto 1280 
+1230 restore 1140:goto 1280 
+1240 restore 1150:goto 1280 
+1250 restore 1160:goto 1280 
+1260 restore 1170:goto 1280
+1270 restore 1180:ta=1 
+1280 read ch,p,S1,S2,S3,S4,S5,S6,S7,f:ink 2,f 
+1290 S4=cint((S4-2)+level*1.5):S5=cint((S5-2)+level*1.5)
+1300 '
+1310 ' Steuerprogramm 
+1320 ' 
+1330 a=2*cint(rnd*320):b=cint(rnd*100+400) 
+1340 plot 700,0,2:move 300,26:print chr$(ch);
+1350 every 15 gosub 1720 
+1360 every 70,1 gosub 1930 
+1370 plot 700,0,1:move x,y:print chr$(126);
+1380 j=joy(0) 
+1390 if X-(S2+12)>A or X+S3+12<A then 1420
+1400 if Y+16>B and Y-20<b then 1410 else 1420
+1410 move a,b:print " ";:gosub 3080:xx=a:yy=b:gosub 2000:zusammenstoss=1:goto 1970
+1420 if rnd>S1 and b<399 then gosub 1850
+1430 if trefferG=1 then 1970 
+1440 if trefferR=S7 then 2250 
+1450 if landung=1 then 2130 
+1460 if weiter=level+4 then 2400 
+1470 if energie>3 then 1500 else gosub 3080
+1480 move x,y:print " "; 
+1490 if y>62 then y=y-2:move x,y:print chr$(126);:goto 1480 else 1970
+1500 if j=0 and inkey(19)=-1 and inkey(47)=-1 and inkey(22)=-1 and inkey(71)=-1 and inkey(63)=-1 then 1380 
+1510 if j>=16 or inkey(47)<>-1 then gosub 1630
+1520 di:move x,y:print " "; 
+1530 if j=1 or inkey(19)<>-1 then y=y+16
+1540 if j=2 or inkey(22)<>-1 then y=y-16
+1550 if j=4 or inkey(71)<>-1 then x=x-16
+1560 if j=8 or inkey(63)<>-1 then x=x+16 
+1570 if y<106 then y=y+16 
+1580 sound 1,478,2,7,0,0,5 
+1590 plot 700,0,1:move x,y:print chr$(126);:ei:goto 1380
+1600' 
+1610 ' Schuss eig. Raumschiff 
+1620 ' 
+1630 if (X-S2>A or X+S3<A)and Y<B-16 then L1=399:goto 1650
+1640 L1=b-10:trefferR=trefferR+1:ink 2,26:for i=1 to 40:next:ink 2,f
+1650 di:move x+12,y+2:draw x+12,L1,12:for i=1 to 10:next
+1660 for i=1 to 27 step 6:sound 7,478,2,7,0,0,i:next
+1670 draw x+12,y+2,0:ei:eg=eg+1:if eg=2 then eg=0:gosub 1930
+1680 return 
+1690 '
+1700 ' Steurung d. Gegners 
+1710 '
+1720 move a,b:print " ";
+1730 b=b-(rnd*S4+S5):a=a+(cint(rnd*2)-1)*S6
+1740 if (X-S2>A or X+S3<A) and y<B-16 then 1760 else A=A+((2*cint(rnd*1))-1)*S6    
+1750 if a+8>x and a<x then a=a+(rnd*16-8)
+1760 if a<32 then a=a+32
+1770 if a>607 then a=a-32 
+1780 plot 700,0,2 
+1790 if b<110 then landung=1:weiter=0
+1800 sound 1,0,6,5,0,0,1 
+1810 di:move a,b:print chr$(ch);:ei:return 
+1820 ' 
+1830 ' Schuss Gegner 
+1840 ' 
+1850 if a+16>x and a-16<x and b>y then L1=b-(y+16):TrefferG=1 else L1=b-64
+1860 di:move a+12,b-16:drawr 0,-L1,12:for i=1 to 10:next
+1870 for i=4 to 27 step 7:sound 7,23,2,7,0,0,i:next
+1880 drawr 0,L1,0:ei:return   
+1890 landung=0:zusammenstoss=0:trefferG=0:trefferR=0:move a,b:print " ";:gosub 3080:goto 1000
+1900 ' 
+1910 ' Energie abzug 
+1920 '
+1930 di:move energie+3,5:drawr 0,11,0:energie=energie-4:ei:return
+1940 '
+1950 ' Explosion eig.R.
+1960 '
+1970 gosub 3080 
+1980 weiter=0 
+1990 xx=x:yy=y:gosub 2000:goto 2120 
+2000 ii=7 
+2010 for i=1 to 7 
+2020 sound 7,4000-ii*300,10,7,0,0,27-ii*2
+2030 for i1=1 to 30:next 
+2040 ink 0,0 
+2050 plot 700,0,1:move xx,yy:print chr$(202); 
+2060 for i1=1 to 30:next 
+2070 plot 700,0,10:move xx,yy:print chr$(203);
+2080 ii=ii-1
+2090 next 
+2100 move xx,yy:print " ";
+2110 ink 0,0:border 0:return 
+2120 raumschiff=raumschiff-1:an=1
+2130 gosub 3080:if zusammenstoss=1 then 1890 
+2140 move a,b:print" ";:b=b-rnd*5-2:a=a+(rnd*2-8)*8
+2150 if a<0 then a=a+8
+2160 if a>639 then a=a-8 
+2170 plot 700,0,2:sound 1,0,6,5,0,0,1
+2180 call &BD19:move a,b:print chr$(ch);:if b>100 then 2140  
+2190 move a,b:print" ";:xx=a:for is=1 to 2:b=b-12:yy=b:gosub 2000:next
+2200 yy=60:gosub 2000 
+2210 goto 1890 
+2220 '
+2230 ' Explosion Gegner
+2240 ' 
+2250 gosub 3080:if ch=178 then 2530 
+2260 weiter=weiter+1 
+2270 ii=7 
+2280 for i=1 to 7 
+2290 sound 7,3000,2,ii,0,0,27
+2300 for i1=1 to 20:next
+2310 plot 700,0,10:move a,b:print chr$(202);
+2320 for i1=1 to 20:next 
+2330 plot 700,0,1:move a,b:print chr$(203);
+2340 ii=ii-1 
+2350 next 
+2360 plot 700,0,7:score=score+p:move 540,39:print using "###";score;
+2370 goto 1890 
+2380 '
+2390 ' Bonus Level geschafft 
+2400 '
+2410 gosub 3080 
+2420 tagoff:pen 4:locate 7,10:print "Bonus:":bo=0
+2430 for i=0 to 639:if test(i,57)=0 and test(i,55)=0 and test(i,53)=0 and test(i,49)=0 then 2460
+2440 sound 7,100,1,7,,,1:Bo=Bo+0.5:locate 13,10:print using "##";Bo
+2450 drawr 0,54,0 
+2460 next:plot -1,-1,1 
+2470 tag:plot 700,0,7:score=score+cint(bo):move 540,39:print using "###";score;
+2480 tagoff:locate 1,10:print SPC(19):tag 
+2490 weiter=0:trefferG=0:trefferR=0:landung=0:an=1:raumschiff=raumschiff+1:energie=256:level=level+1:goto 810
+2500 '
+2510 ' Unterprogramme 
+2520 '
+2530 ' 
+2540 ' Ballon
+2550 ' 
+2560 every 10 gosub 2720 
+2570 ch=179:S1=20:S2=8:S3=8:S4=8:S5=2:S6=8:S7=2
+2580 j=joy(0)
+2590 if x-(S2+12)>a or x+S3+12<a then 2610
+2600 if y+16>b and y-20<b then 2810 
+2610 if landung=1 then 2130
+2620 if trefferR>2 then 2250 
+2630 di:move x,y:print" ";
+2640 if J>=16 or inkey(47)<>-1 then gosub 1630 
+2650 if J=1 or inkey(19)<>-1 then y=y+16 
+2660 if J=2 or inkey(22)<>-1 then y=y-16 
+2670 if J=4 or inkey(71)<>-1 then x=x-16 
+2680 if J=8 or inkey(63)<>-1 then x=x+16 
+2690 if y<120 then y=y+16 
+2700 sound 1,478,2,7,0,0,5 
+2710 plot 700,0,1:move x,y:print chr$(126);:ei:goto 2580
+2720 move a,b:print " ";
+2730 b=b-(rnd*S4+S5):a=a+(rnd*2-1)*S6
+2740 plot 700,0,3:sound 1,0,6,5,0,0,1
+2750 di:plot 700,0,11:move a,b:print chr$(ch);:ei 
+2760 if b<110 then landung=1:weiter=0 
+2770 return 
+2780 ' 
+2790 ' gelungenes Andocken 
+2800 '
+2810 energie=energie+100:if energie>256 then energie=256
+2820 plot 700,0,1:move a,b:print " ";:move x,y:print chr$(126);
+2830 gosub 3080:restore 2880 
+2840 read no 
+2850 if no=-1 then 2870 
+2860 sound 4,no,10,7:goto 2840
+2870 for i=1 to 200:next:gosub 2910:goto 1890 
+2880 data 253,253,169,169,150,150,169,190,190,201,201,225,225,253,169,169,190,190,201,201,225,169,169,190,201,201 
+2890 data 255,253,253,169,169,150,150,169,169,150,150,169,190,190,201,201,225,225,223,-1
+2900 ' 
+2910 ' Anzeige 
+2920 ' 
+2930 for i=45 to 47:move 0,i:drawr 639,0,6:next
+2940 for i=1 to 30:plot rnd*640,rnd*300+100,9+cint(rnd*1):next 
+2950 plot 700,0,5:move 27,39:print "Energie"; 
+2960 move 354,39:print "Score:";
+3970 move 540,39:drawr 0,0,7:print using "###";score;
+2980 plot 700,0,5:move 386,15:print "TOP:";
+2990 move 540,15:drawr 0,0,8:print using "###";p(1); 
+3000 move 5,19:drawr 255,0,3:drawr 0,-17:drawr -257,0:drawr 0,17
+3010 move 294,30:drawr 40,0:drawr 0,-22:drawr -40,0:drawr 0,22 
+3020 for i=1 to energie step 2:move i+3,5:drawr 0,11,11:mover 0,-11:next
+3030 tagoff:pen 1:locate 1,1:print SPC(30):locate 1,1:print string$(raumschiff,chr$(126)):tag
+3040 return 
+3050 '
+3060 ' Every ausschalten 
+3070 ' 
+3080 every 0 gosub 3080:every 0,1 gosub 3080:return
+3090 '
+3100 ' Energie 
+3110 '
+3120 gosub 3080:if energie>256 then EN=256
+3130 for i=1 to energie step 2:move i+3,5:drawr 0,11,11:mover 0,-11:next:return
+3140 '
+3150 ' STAGE Anzeige 
+3160 ' 
+3170 speed ink 30,30 
+3180 cls:clg:tagoff:locate 7,11:pen 11:print "LEVEl";level:pen 10:locate 6,13:print "Get Ready":tag
+3190 if inkey(47)<>0 and joy(0)<>16 then 3190 
+3200 return 
+3210 ' 
+3220 ' Ende eines Spieles 
+3230 '
+3240 tagoff:restore 3250:locate 6,12:for i=1 to 9:read a$:print a$;:next:print:goto 3260  
+3250 data G,A,M,E,"  ",O,V,E,R   
+3260 for i=1 to 1000:next
+3270 locate 2,14:print"Weiter mit <ENTER>":pen 0:input a$:pen 1
+3280 for i=1 to 50 
+3290 if score>p(i) then 3320 
+3300 next 
+3310 goto 3370 
+3320 daten=1:for ii=50 to i+1 step-1 
+3330 p(ii)=p(ii-1):n$(ii)=n$(ii-1) 
+3340 next 
+3350 p(ii)=score:n$(ii)="":x=ii:score=0
+3360 goto 3300 
+3370 i=0:mode 1:locate 1,25:print"      SUPERDER HI-SCORE TABELLE              "
+3380 i=i+1:if i=x then call &BB9C:print using "  ##";i;:print ".";n$(i):locate 34,25:print using "###";p(i);:locate 6,25:line input "";n$(i):call &BB9C:locate 1,25:goto 3400 
+3390 print using " ##";i;:print"."n$(i):locate 34,25:print using "###";p(i); 
+3400 print"                             ":for ii=1 to 100:next:if joy(0)=16 or inkey(47)=0 then 3420
+3410 if i>49 then x=0:goto 3370 else 3380 
+3420 print "                            ":print "Noch ein Spiel <J> <N> ?"
+3430 if inkey(45)<>-1 then mode 0:goto 760  
+3440 if inkey(46)=-1 then 3440 
+3450 if daten<>1 then end 
+3460 cls:print"Es gab eine Veraenderung in der SUPERDER HI-SCORE TABELLE. Bitte speichern Sie die Tabelle nach dem Programm 'SUPERDER' ab."
+3470 print "                                                                    ":speed write 1
+3480 openout "SUPERDER HI-S.T."
+3490 for i=1 to 50
+3500 print #9,p(i):print#9,n$(i)
+3510 next 
+3520 closeout 
+3530 print"Nochmal speichern ?"
+3540 if inkey(45)<>-1 then 3480 
+3550 if inkey(46)<>-1 then end else 3540 
