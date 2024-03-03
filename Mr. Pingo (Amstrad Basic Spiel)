@@ -212,3 +212,5 @@
 2100 mode 1:ink 1,26:paper 0:pen 1:print"Fehler"ERR"in"ERL:end
 
 ' ****** Zeile 1900 offiziel : 1900 mode 1:ink 0,0:ink 1,26:ink 2,13:ink 3,9:z=0:poke &A101,@z mod 256:poke &A102,@az\256 ------> Meldung : Fehler 5 in 1900 ******
+' ****** Das Programm "Pingo" befindet sich in der Zeitschrift "CPC International-Ausgabe Dezember 1985"- in meiner Hompage  https://andreaskern.hpage.com könnt Ihr Einsicht nehmen. ******
+' ****** In meiner Hompage findet Ihr einen Download Center,dort befinden sich auch diese Zeitschriften in PDF *****
