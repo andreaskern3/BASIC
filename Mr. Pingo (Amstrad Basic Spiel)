@@ -1,0 +1,214 @@
+` ************ Dieses Programm ist leider viel zu alt.Es wurde ohne Fehler abgetippt.Dieses Programm enthält keine Fehler,trotzdem funktioniert dieses Spiel gar nicht !!! *******************
+
+10 ' ***********************************
+20 ' *                                 *
+30 ' *          P I N G O              *
+40 ' *                                 *
+50 ' *         (c) 1985 by             *
+60 ' *        Werner Slabon            *
+70 ' *                                 *
+80 ' *       Geislingen/Steige         *
+90 ' *                                 * 
+100 '***********************************
+110 '-----------------------------------
+120 '************ INIT *****************
+130 '-----------------------------------
+140 if himem<>20479 then gosub 1220:rem Zeichendefini+MC-Routinen
+150 defint a-q,t-z:for f=0 to 20 step 4:rpin$(f/4+1,1)=chr$(232+f)+chr$(233+f):rpins$(f/4+1,2)=chr$(234+f)+chr$(235+f):next:for f=1 to 10:scr(f)=1100-f*100:name$(f)="Schneider CPC 464":next 
+160 env 1,3,2,4,2,-3,2:ent -1,2,10,2,3,-5,4:env 2,10,-1,8,5,-1,4:ent -2,80,1,1,20,2,1:env 3,5,1,1,5,-1,1:ent -3,5,-5,1,5,5,1:env 4,15,-1,30:ent -4,31,1,5,26,2,5,22,4,5,20,6,5,5,10,5:ent -5,8,2,1,7,3,1,6,4,1,5,6,1,4,10,1:env 5,10,-1,1,5,-1,2 
+170 on error goto 2100 
+180 gosub 1870:call &A117 
+190 gosub 1580 
+200 ' ----------------------------------
+210 ' ********* Spielroutine ***********
+220 ' ----------------------------------
+230 ' ***** Spielinit Bildaufbau *******
+240 sc=0:liv=3:lev=1:x=21:y=11:gep=5:gz=1:pingo=2:dim g(gz,2)
+250 window 1,40,1,23:window#1,1,40,23,25:call &A12B:paper#1,1:pen#1,0:locate#1,8,1:print#1,sc:locate#1,30,1:print#1,sch;:locate#1,8,3:print#1,liv;:locate#1,30,3:print#1,lev;:for f=1 to gz:g(f,1)=(int(rnd*11)+1)*2-1:g(f,2)=(int(rnd*20)+1)*2-1:next 
+260 ' ********* Spielschleife **********
+270 if gep>2 then for g=3 to gep*3-6 
+280 locate x,y:print rpin$(pingo,1):locate x,y+1:print rpin$(pingo,2):poke &A000+x\2+(y\2)*20,255 
+290 call &A100:if tk=5 then 1070 
+300 if z=0 then nl=-1:goto 680 
+310 j=joy(0)
+320 locate#1,8,1:print#1,sc; 
+330 if inkey(0)>-1 or (j and 1) then ri=1:pin=1
+340 if inkey(2)>-1 or (j and 2) then ri=2:pin=2
+350 if inkey(8)>-1 or (j and 4) then ri=4:pin=3 
+360 if inkey(1)>-1 or (j and 8) then ri=8:pin=4
+370 if ri<>0 then altx=x:alty=y:gosub 520:x=altx:y=alty 
+380 if inkey(47)>-1 or (j and 16) then altx=x:alty=y:gosub 870
+390 if gep>2 then next g 
+400 ' ----------------------------------
+410 ' ***** Bewegnung der Gegner *******
+420 ' ----------------------------------
+430 if gep<3 then for g=1 to 3-gep 
+440 pin=5:for i=1 to gz:alty=g(i,1):altx=g(i,2):ri=int(rnd*4)+1
+450 gosub 520:g(i,1)=alty:g(i,2)=altx:if rc=255 then gosub 710
+460 if inkey(47)>-1 or (j and 16) then altx=x:alty=y:gosub 870
+470 next i:if gep<3 then next g  
+480 goto 270 
+490 ' ----------------------------------
+500 ' ***** Bewegung von Figuren *******
+510 ' ----------------------------------
+520 neux=altx:neuy=alty:locate altx,alty:print"  ":locate altx,alty+1:print"  ":poke &A000+altx\2+(alty\2)*20,32:if pin<>5 then 550 
+530 if ri=4 then ri=8 
+540 if ri=3 then ri=4 
+550 if ri=1 and alty>2 then neuy=alty-2
+560 if ri=2 and alty<20 then neuy=alty+2
+570 if ri=4 and altx>2 then neux=altx-2 
+580 if ri=8 and altx<38 then neux=altx+2
+590 rc=peek(&A000+(neuy\2)*20)
+600 if rc<>79 or pin=5 then sound 1,800,10,10,3,3
+610 if pin=5 then locate neux,neuy:print rpin$(5,1):locate neux,neuy+1:print rpin$(5,2):poke &A000+neux\2+(neuy\2)*20,254:ri=0:altx=neux:alty=neuy:return
+620 if ri=4 then ri=3 
+630 if ri=8 then ri=4 
+640 pingo=ri:if rc=79 then neux=altx:neuy=alty
+650 if rc=254 then 710 
+660 locate neux,neuy:print rpin$(ri,1):locate neux,neuy+1:print rpin$(ri,2)
+670 altx=neux:alty=neuy:poke &A000+altx\2+(alty\2)*20,255:ri=0:return
+680 ' ---------------------------------
+690 ' ********** Pingo tot ************
+700 ' ---------------------------------
+710 sound 1,50,450,15,4,4,20:liv=liv-1:locate#1,8,3:print#1,liv;
+720 if liv=0 then locate 11,10:print"G A M E   O V E R";
+730 if nl and liv<>0 then nl=0:goto 1070
+740 for f=1 to 7000:next:x=21:y=11:if liv<>0 then goto 270 
+750 erase g:call &BB03:mode 1:ink 1,26:locate 10,1:print"Hall of Fame";tab (10);"------------"
+760 for f=10 to 1 step-1:if sc<scr(f) then 780
+770 next 
+780 f=f+1:if f<11 then for i=10 to f step -1:name$(i)=name$(i-1):scr(i-1)=scr(i-1):next:name$(f)="":scr(f)=sc 
+790 for i=1 to 10:locate 5,i*2+3:print i".";tab (10);scr(i);tab (20);name$(i):next
+800 if f<11 then locate 20,f*2+3:input"",name$(f)
+810 sch=scr(1)
+820 f=0:while f<>10000 and inkey$="":f=f+1:wend:if f=10000 then gosub 1580
+830 goto 240 
+840 ' ----------------------------------
+850 ' ** Verschieben eines Eisblocks **
+860 ' ----------------------------------
+870 ab=0:padr=&A000+altx\2+(alt\2)*20:try=0:trx=0
+880 if pingo=1 then off=-20:madr=&A000+altx\2:try=-1:alty=alty-2
+890 if pingo=2 then off=20:madr=&A000+altx\2+200:try=1:alty=alty+2
+900 if pingo=3 then off=-1:madr=&A000+(alty\2)*20:trx=-1:altx=altx-2
+910 if pingo=4 then off=1:madr=&A000+(alty\2)*20+19:trx=1:altx=altx+2
+920 if ppek(padr+off)<>79 or padr=madr then return
+930 adr=padr+off:ef=-1
+940 if adr=madr and peek(adr)=79 then pc=79:goto 970
+950 adr=adr+off:pc=peek(adr):if pc=254 then sound 2,200,15,2,2,10
+960 if pc=32 or pc=254 then sound 4,100,16,9,1,1 :for f=1 to 2:locate altx,alty:print"  ":locate altx,alty+1:print"  ":altx=altx+trx:alty=alty+try:locate altx,alty:print rpin$(6,1):locate altx,alty+1:print rpin$(6,2):next:ef=0
+970 if pc=79 and ef then sc=sc+10:locate altx,alty:print"  ":locate altx,alty+1:print"  ":poke padr+off,32:sound 4,100,30,10,5,5,10:return
+980 if pc=254 then sc=sc+100:tk=tk+1:poke adr,79:poke padr+off,32:goto 1020
+990 if pc=79 and not ef then poke padr+off,32:poke adr-off,79:return 
+1000 if adr=madr then poke padr+off,32:poke adr,79:return
+1010 goto 950
+1020 for f=1 to gz:if g(f,1)*20+g(f,2)=altx+alty*20 then goto 1050 
+1030 next 
+1040 return 
+1050 g(f,1)=(int(rnd*11)+1)*2-1:g(f,2)=(int(rnd*20)+1)*2-1
+1060 if g(f,1)=y and g(f,2)=x then 1050 else return 
+1070 ' ---------------------------------
+1080 ' ******* Level hoeher ************
+1090 ' ---------------------------------
+1100 lev=lev+1 
+1110 locate 12,12:print"L E V E L  "lev 
+1120 locate#1,30,3:print#1,lev;
+1130 gep=gep-1:if gep<1 then gep=5:gz=gz+1
+1140 for f=1 to 5000:next f
+1150 erase g:dim g(gz,2) 
+1160 tk=0:x=21:y=11:for f=1 to gz:if g(f,1)=y and g(f,2)=x then g(f,1)=(int(rnd*11)+1)*2-1:g(f,2)=(int(rnd*20)+1)*2-1
+1170 next 
+1180 goto 250 
+1190 ' ---------------------------------
+1200 ' ******* Initialisierung *********
+1210 ' ---------------------------------
+1220 symbol after 231 
+1230 memory &4FFF 
+1240 mode 1:locate 10,12:print"*** Bitte warten *** "
+1250 ' Pingo hoch 
+1260 symbol 232,&1,&3,&7,&7,&7,&7,&F,&F
+1270 symbol 233,&C0,&E0,&F0,&F0,&F0,&F0,&F8,&F8
+1280 symbol 234,&1F,&1F,&37,&47,&7,&3,&1,&7
+1290 symbol 235,&FC,&FC,&F6,&F1,&F0,&E0,&40,&70
+1300 ' Pingo runter 
+1310 symbol 236,&1,&3,&4,&5,&4,&5,&D,&C 
+1320 symbol 237,&C0,&60,&10,&50,&10,&D0,&D8,&98
+1330 symbol 238,&1C,&1C,&34,&44,&4,&3,&1,&7
+1340 symbol 239,&1C,&1C,&16,&11,&10,&E0,&40,&70
+1350 ' Pingo links 
+1360 symbol 240,&1,&3,&4,&4,&1C,&3C,&5,&5
+1370 symbol 241,&C0,&60,&10,&90,&10,&10,&30,&50
+1380 symbol 242,&4,&4,&4,&4,&4,&3,&1,&7
+1390 symbol 243,&90,&90,&10,&10,&10,&60,&80,&80
+1400 ' Pingo rechts 
+1410 symbol 244,&3,&C,&8,&9,&8,&8,&A,&A
+1420 symbol 245,&80,&60,&20,&20,&38,&3C,&A0,&A0
+1430 symbol 246,&9,&9,&8,&8,&8,&6,&1,&1
+1440 symbol 247,&20,&20,&20,&20,&20,&C0,&80,E0
+1450 ' Pingo's Feind 
+1460 symbol 248,&40,&C3,&2C,&10,&12,&10,&C,&2 
+1470 symbol 249,&2,&C3,&34,&8,&48,&8,&30,&40
+1480 symbol 250,&2,&2,&4,&C,&13,&20,&C0,&40
+1490 symbol 251,&40,&40,&20,&30,&C8,&4,&3,&2
+1500 ' Eisblock 
+1510 symbol 252,&0,&3F,&44,&51,&44,&40,&49,&41
+1520 symbol 253,&0,&FC,&2,&92,&2,&42,&2,&92
+1530 symbol 254,&42,&50,&41,&48,&42,&40,&3F,&0
+1540 symbol 255,&42,&A,&22,&2,&4A,&2,&FC,0 
+1550 restore 1560:for f=&A100 to &A13E:read r$:poke f,val("&"+r$):next
+1560 data 21,0,0,36,0,01,00,a0,0a,fe,4f,28,7,0c,3e,dc,b9,c8,18,f4,34,18,f6,21,00,c0,11,00,50,01,ff,3f,ed,b0,21,00,a0,01,db,00,ed,b0,c9,21,00,50,11,00,c0,01,ff,3f,ed,b0,11,00,a0,01,db,00,ed,b0,c9 
+1570 return 
+1580 ' ---------------------------------
+1590 ' ******** Spielanleitung *********
+1600 ' ---------------------------------
+1610 mode 1:window 1,40,5,25:window#1,1,40,1,4:ink 0,0:ink 1,26:ink 2,0,26:ink 3,11:window swap 1,0:pen 2:paper 3:cls:locate 15,2:print"P I N G O";:locate 6,4:print" (C) 1985 by Werner Slabon ";:window swap 1,0:pen 1 
+1620 locate 1,2:print"In dem Reaktionspiel PINGO muessen Sie" 
+1630 print"durch geschicktes Manoeverieren Ihren"
+1640 print"Feind mit den Eisbloecken, die in der"
+1650 print"Gegend herumstehen, toeten, da er Sie"
+1660 print"sonst irgendwann erwischt, Sie koennen" 
+1670 print"aber auch die Eisbloecke zerstoeren,"
+1680 print"indem Sie einen Eisblock gegen einen"
+1690 print"nebenstehenden druecken. aber Vorsicht,"
+1700 print"denn auch Ihr Feind zerstoert die"
+1710 print"Eisbloecke. Wenn diese alle zerstoert"
+1720 print"sind, verlieren sie ein Leben und kommen";
+1730 print"in den naechsten Level. Um dies zu "
+1740 print"verhindern, muessen Sie ihren Feind"
+1750 print"fuenfmal toeten. Wernn Sie dies geschafft";
+1760 print"haben, dann komen Sie in den neachsten"
+1770 print"Level, ohne ein Leben zu verlieren."
+1780 locate 1,21:print"Die Steuerung -> Taste druecken"
+1790 call &BB18 
+1800 cls:locate 1,2:print"Die Steurung:";tab(1);"---------------"
+1810 locate 20,6:print chr$(196);tab(20);chr$(149);tab(18)chr$(199)chr$(154)chr$(159)chr$(154)chr$(197);tab(20)chr$(149);tab(20);chr$(198)
+1820 locate 5,14:print"Leertaste = Feuertaste" 
+1830 locate 5,18:print"oder benutzen Sie Ihren Joystick" 
+1840 locate 6,21:print"Spielen --> Taste druecken !"
+1850 call &BB18 
+1860 mode 1:ink 0,0:ink 1,26:ink 2,13:ink 3,9:border 0:pen 2:paper 0:return
+1870 '----------------------------------
+1880 '******* Bildschirmaufbau *********
+1890 '----------------------------------
+1900 mode 1:ink 0,0:ink 1,26:ink 2,13:ink 3,9:z=0:poke &A101,z mod 256:poke &A102,az\256
+1910 border 0:pen 2:paper 0:cls 
+1920 pen 2:pen#1,2 
+1930 eb=0:restore 1990:for f=1 to 21 step 2:read r$:for i=1 to 40 step 2:locate i,f:print"  ";:locate i,f+1:print"  ";:r1$=mid$(r$,i/2,1):poke &A000+i\2+(f\2)*20,asc(r1$):if r1$="O" then locate i,f:print rpin$(6,1):locate i,f+1:print rpin$(6,2);:e=e+1
+1940 next I,F 
+1950 window 1,40,1,23:window#1,1,40,23,25:paper#1,1:cls#1:pen#1,2 
+1960 window swap 1,0:locate 1,1:print"Score :";tab(20);"HI-Score :";:locate 1,3:print"Lives :";tab(23);"Level :";
+1970 locate 8,1:print sc:locate 30,1:print sch;:locate 8,3:print liv;:locate 30,3:print lev;
+1980 window swap 1,0:return 
+1990 data " O OOOO  OOO  OO  O "
+2000 data "OOO  O  O O   OOOOOO"
+2010 data "OOO  OOO  OOOOO OOOO"
+2020 data "OO OO OO O OOOO OOOO"
+2030 data "OOOOO OOOO OO OO   O"
+2040 data " OOOO OO    O OO OOO"
+2050 data " OOO  OOOO OO OO    "
+2060 data "    OOOO   OO OOOOO "
+2070 data "OOO OOOO OOOO OOOOO "
+2080 data "OOO  O  OO  OOO  OOO"
+2090 data "  OO  OO  OOOOOO    "
+2100 mode 1:ink 1,26:paper 0:pen 1:print"Fehler"ERR"in"ERL:end
+
+' Zeile 1900 offiziel : 1900 mode 1:ink 0,0:ink 1,26:ink 2,13:ink 3,9:z=0:poke &A101,@z mod 256:poke &A102,@az\256 
