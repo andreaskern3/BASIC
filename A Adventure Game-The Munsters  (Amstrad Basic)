@@ -176,7 +176,9 @@
 1860 al=2000+int(rnd(1)*2000):print"You squeeze the lemon and some juice  lands on the note. a message appears :-":pen 2:print"To open the safe DIAl :-";al:return
 1870 if p%<>8 then print"You can't do that here DUMMY!":return 
 1880 if ag<>1 then print"How?":return 
-
+1890 pen 2:print"What number do you want to dial ";:pen 3:input ba:if ba<>al then print"That cobination doesn't not work!":return 
+1900 if al=0 then print"That#s not the right combination!":return 
+1910 print"The save opens!":g$(15)="an old map showing a secret path througthe bog!":return 
 
 ' Ich bin krank !!!..Selber nachdenken,selber schreiben !!!. 
 
