@@ -70,6 +70,56 @@ SAVE "Deprotector" (auf Disk) (für ,P)
 
 SAVE "File Examiner" (auf Disk)
 
+File Examiner (neu,nur für Datasette)
+
+100 rem =========================================
+110 rem
+120 rem              File Examiner
+130 rem 
+140 rem       (C) 1985 by Andreas Zallmann
+150 rem
+160 rem ==========================================
+170 |TAPE
+180 cpc=1768
+190 symbol after 255:symbol 255,0,0,0,0,0,0,66,126
+200 mode 1:pen 1
+210 print "--------------------------------------";:pen 2:print "   CPC 464/664/6128 - Header Reader"
+220 pen 1:print "--------------------------------------";:pen 2:print "      (C) 1985 by Andreas Zallman."
+240 window 1,40,7,25
+250 gosub 540
+260 pen 1
+270 on break gosub 290
+280 cat
+290 cls:print:print
+300 a=peek(47262-cpc):b=(a and 14)/2
+310 if b=0 then print "Programm:";
+320 if b=1 then print "Bytes:";
+330 if b=2 then print "Screen:";
+340 if b=3 then print "ASCII:";
+350 n$=""
+360 for i=47244-cpc to 47259-cpc
+370 if peek(i)=0 then poke i,255 
+380 n$=n$+chr$(peek(i))
+390 next i
+400 print n$;
+410 print " Block:";peek (47260-cpc)
+420 print:print:print "Startadresse         :";peek(47265-cpc)*peek(47266-cpc)
+430 print:print "Laenge des Blockes     :";peek(47263-cpc)+256*peek(47264-cpc)
+440 print:print  "Laenge des ganzen Files :";peek(47268-cpc)+256*peek(47269-cpc)
+450 print:print"Auto-Start             :";peek (47261-cpc)+256*peek  (47271-cpc)
+460 print:print:print "Bemerkung: ";
+470 if peek(47261-cpc)<>0 and peek(47267-cpc)<>0 then print "Der einzige Block":goto 490
+480 if peek(47261-cpc)<>0 then Print "Der letzte Block" else print"Weder erster noch","letzter Block"
+490 c=a and 1
+500 if c=1 then print "Geschueztes Programm" else if b=0 then print "Ungeschuetztes Progamm"
+510 locate 12,19:pen 2:print "E-Ende  W-Weiter":pen 1
+520 i$=upper$(inkey$)
+530 if i$="E" then mode 1:end else if i$="W" then cls:goto 280 Else 520
+540 cls:print:Print "Druecken sie eine Taste um das Band zu starten.Nach dem einlesen des Namens koennen sie 2 x >ESCAPE< druecken,um alle Informationen ueber das File zu erhalten "
+550 print:print "Druecken Sie nach der Ausgabe der Information >W< um weiterzulesen oder >E< um das Progranmm zu beenden."
+560 locate 7,19:pen 2:print "Bitte eine Taste druecken."
+570 while inkey$<>"":wend:while inkey$="":wend:cls:return
+
 POKE &B092,0
 POKE &B093,&C0
 POKE &B094,0
