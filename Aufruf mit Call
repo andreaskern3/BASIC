@@ -57,5 +57,5 @@ BCD1             30 logext:     epu  #BCD1
 Pass 2 error=  00 
 Table used:    82  from 232
 
-Die Zeile 14  8000   10    org   #8000 ist kein Standard Amstrad Basic Befehl sondern ein Asssambler Befehl,daher liegt leider ein Fehler vor und das Programm "Aufruf mit Call" eird leider nicht auf CPC Emulatoren funtionieren.Aber bei CPC Computer ab 1982-1985 müßte da Programm funktionieren.Es gibt eine weitere Möglichkeit den Memory Befehel in Zeile
+Die Zeile 14  8000   10    org   #8000 ist kein Standard Amstrad Basic Befehl sondern ein Asssambler Befehl,daher liegt leider ein Fehler vor und das Programm "Aufruf mit Call" eird leider nicht auf CPC Emulatoren funtionieren.Aber bei CPC Computer ab 1982-1985 müßte das Programm funktionieren.Es gibt eine weitere Möglichkeit den Memory Befehel in Zeile
 6 zu ändern.
