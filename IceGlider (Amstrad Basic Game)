@@ -1,0 +1,97 @@
+10 ' **** IceGlider ****
+20 ' (c) 1988 by Tomda & The rat
+30 mode 1:border 11:ink 0,20:ink 1,0:ink 2,6:ink 3,2:paper 0:pen 1
+40 locate 10,2:pen 2:print "I C E -- G L I D E R"
+50 locate 8,4:pen 1:print chr$(164);"1988 by Tomda & The Rat"
+60 locate 13,6:print "press any key!":call &BB18
+70 print chr$(24)"1"chr$(24)" Farb oder "chr$(24)"2" chr$(24)" Gruen Monitor ";
+80 input mo:if mo<>1 and mo<>2 then 70
+90 print chr$(24)"1"chr$(24)" Joystick oder "chr$(24) "2"chr$(24)" Keyboard ";
+100 input jk:if jk<>1 and jk<>2 then 90
+110 gosub 420
+120 ' Steuerung
+130 if inkey(8)=0 then if a1>-8 then a1=a1-1 
+140 if inkey(1)=0 then if a1<8 then a1=a1+1
+150 if inkey(0)=0 then if b1<8 then b1=b1+1
+160 if inkey(2)=0 then if b1>-8 then b1=b1-1
+170 if inkey(18)=0 then if s1>0 then gosub 740
+180 if inkey(k3)=0 then if a2>-8 then a2=a2-1
+190 if inkey(k4)=0 then if a2<8 then a2=a2+1
+200 if inkey(k1)=0 then if b2<8 then b2=b2-1
+210 if inkey(k2)=0 then if b2>-8 then b2=b2-1
+220 if inkey(k5)=0 then if s2>0 then gosub 830
+230 if inkey(79)=0 then end
+240 sound 1,0,8,3,0,0,ABS(a1+b2)/2:sound 4,0,8,3,0,0,ABS(a2+b2)/2
+250 x1=x1+a1:y1=y1+b1
+260 'Bewegungskontrolle
+270 if x1<-16 then x1=640 else if x1>640 then x1=-16
+280 if y1<0 then y1=400 else if y1>400 then y1=0
+290 x2=x2+a2:y2=y2+b2
+300 if x2<-16 then x2=640 else if x2>640 then x2=-16
+310 if y2<0 then y2=400 else if y2>400 then y2=0
+320 'Zeichnen der Objekte
+330 plot -10,0,1:Move c1,d1:print chr$(200);:mover e1*20,f1*20:print chr$(209);
+340 move x1,y1:print chr$(200);:mover a1*20,b1*20:print chr$(209);
+350 plot -10,0,2:move cc2,d2:print chr$(200);:mover a2*20,f2*20:print chr$(209);
+360 move x2,y2:print chr$(200);:mover a2*20,b2*20:print chr$(209);
+370 c1=x1:d1=y1:c2=x2:d2=y2:e1=a1:e2=a2:f1=b1:f2=b2
+380 'Kollisionsabfrage
+390 t1=test(x1+8,y1-8):if t1<>0 then if t1=3 then tagoff:print "ROT hat gewonnen!":goto 960 else if t1=2 then gosub 930 else if s1<15 then s1=s1+1:origin 0,0,0,640,0,400:move s1*6,400:drawr 0,-10,1:origin 0,0,0,640,0,386:Sound 7,400,5,5,0,1
+400 t2=test(x2+8,y2-8):if t2<>0 then if t2=3 then tagoff:print "SCHWARZ hat gewonnen!":goto 960 else if t2=1 then gosub 940 else if s2<15 then s2=s2+1:origin 0,0,0,640,0,400:move 322+s2*6,400:drawr 0,-10,2:origin 0,0,0,640,0,386:sound 7,400,5,5,0,1
+410 goto 130
+420 'init
+430 mode 1
+440 if mo=1 then ink 2,6 else ink 2,13
+450 if jk=1 then k1=72:k2=73:k3=74:k4=75:k5=47
+460 ent 1,15,-5,1:env 1,5,3,1,15,-1,5
+470 'Symboldefination
+480 symbol after 199
+490 symbol 200,60,118,219,167,229,219,110,60
+500 symbol 201,1,7,31,51,37,72,38,254
+510 symbol 202,128,224,152,204,164,150,206,95
+520 symbol 203,250,115,105,37,51,25,7,1
+530 symbol 204,127,202,18,164,204,248,224,128
+540 symbol 205,6,3,3,1,227,113,63,15
+550 symbol 206,4,8,134,132,198,238,252,248
+560 symbol 207,7,79,63,30,56,96,64,0
+570 symbol 208,208,224,240,240,120,54,66,120
+580 symbol 209,&X11000011,&X1100110,&X100100,0,0,&X100100,&X1100110,&X11000011
+590 x1=100:y1=200:a1=0:b1=0:c1=x1:d1=y1:s1=10:e1=0:f1=0
+600 x2=540:y2=200:a2=0:b2=0:c2=x2:d2=y2:s2=10:e2=0:f2=0
+610 'Aufbau des Bildschirms 
+620 locate 20,13:print "1";chr$(201);"2";"2";chr$(203);"1";chr$(204);
+630 pen 1:locate 1,2
+640 print chr$(23);chr$(1);:tag
+650 plot -10,0,1:move x1,y1:print chr$(200);:mover a1*20,b1*20:print chr$(209);
+660 plot -10,0,2:move x2,y2:print chr$(200);:mover a2*20,b2*20:print chr$(209);
+670 for s=1 to 10
+680 move s*6,400:drawr 0,-10,1
+690 move 322+s*6,400:drawr 0,-10,2
+700 next
+710 move 0,386:drawr 640,0,3:move 320,400:drawr 0,-12
+720 origin 0,0,0,640,0,386
+730 return 
+740 'Feuer 1
+750 origin 0,0,0,640,0,400
+760 move s1*6,400:drawr 0,-10,1:s1=s1-1
+770 origin 0,0,0,640,0,386
+780 move x1+8,y1-8:drawr a1*230,b1*20,3
+790 mover -8,8:print chr$(205)chr$(206);:mover -32,-16:print chr$(207)chr$(208);
+800 sound 135,0,80,0,1,0,5
+810 move x1+8,y1-8:drawr a1*20,b1*20,3
+820 return
+830 'Feuer 2
+840 origin 0,0,0,640,0,400
+850 move 322+s2*6,400:drawr 0,-10,2:s2=s2-1
+860 origin 0,0,0,640,0,386
+870 move x2+8,y2-8:drawr a2*20,b2*20,3
+880 mover -8,8:print chr$(205)chr$(206);:mover -32,-16:print chr$(207)chr$(208);
+890 sound 135,0,80,0,1,0,5
+900 move x2+8,y2-8:drawr a2*20,b2*20,3
+910 return
+920 'Kollision 
+930 a1=0-a1:b1=0-b1:return 
+940 a2=0-a2:b2=0-b2:return 
+950 'Ende
+960 print "<Enter>-Taste fuer neues Spiel!"
+970 while inkey(18)<>0:wend:goto 110
